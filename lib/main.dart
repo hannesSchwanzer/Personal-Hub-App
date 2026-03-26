@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:personal_hub_app/ui/hub/widgets/hub_view.dart';
 
 void main() {
-  runApp(const PersonalHubApp());
+  runApp(const AppRoot());
 }
 
-class PersonalHubApp extends StatelessWidget {
-  const PersonalHubApp({super.key});
+/// The root widget of the Personal Hub app.
+class AppRoot extends StatelessWidget {
+  const AppRoot({super.key});
 
   @override
   Widget build(BuildContext context) {
