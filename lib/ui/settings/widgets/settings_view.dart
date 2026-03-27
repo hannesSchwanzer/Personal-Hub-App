@@ -1,23 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:personal_hub_app/l10n/app_localizations.dart';
+import 'package:personal_hub_app/main.dart';
+import 'package:personal_hub_app/ui/settings/widgets/language_picker.dart';
 
-/// SettingsView allows users to change app-wide preferences such as language.
 class SettingsView extends StatelessWidget {
-    /// Creates a settings view for user preferences.
-    const SettingsView({Key? key}) : super(key: key);
+  const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final supportedLocales = AppLocalizations.supportedLocales;
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'No additional settings available yet.',
-              style: TextStyle(fontSize: 16),
+            Text(AppLocalizations.of(context)!.languagePickerTitle),
+            const SizedBox(height: 8),
+            ValueListenableBuilder<Locale?>(
+              valueListenable: localeNotifier,
+              builder: (context, locale, _) {
+                return LanguagePicker(
+                  selectedLocale: locale,
+                  supportedLocales: supportedLocales,
+                  onChanged: (Locale? newLocale) {
+                    localeNotifier.value = newLocale;
+                  },
+                );
+              },
             ),
+            const Divider(height: 32),
+            Text(AppLocalizations.of(context)!.noAdditionalSettings),
           ],
         ),
       ),

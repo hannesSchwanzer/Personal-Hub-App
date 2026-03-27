@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/cooking_view.dart';
 import 'package:personal_hub_app/ui/gym_tracker/widgets/gym_view.dart';
 import 'package:personal_hub_app/ui/meditation/widgets/meditation_view.dart';
@@ -14,17 +15,17 @@ class HubView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Personal Hub'),
+        title: Text(AppLocalizations.of(context)!.personalHub),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
+            tooltip: AppLocalizations.of(context)!.settings,
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                            builder: (context) => const SettingsView(),
+                  builder: (context) => const SettingsView(),
                 ),
               );
             },
@@ -36,31 +37,33 @@ class HubView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16),
+            // Remove demo helloWorld text unless you want it.
+            // Text(AppLocalizations.of(context)!.helloWorld),
+            // const SizedBox(height: 16),
             HubFeatureCard(
-              title: 'Gym Tracking',
-              description: 'Track your workouts and progress',
+              title: AppLocalizations.of(context)!.hubFeatureGymTracking,
+              description: AppLocalizations.of(context)!.hubFeatureGymTrackingDesc,
               icon: Icons.fitness_center,
               onTap: () => _navigateTo(context, const GymView()),
             ),
             const SizedBox(height: 16),
             HubFeatureCard(
-              title: 'Meditation',
-              description: 'Practice mindfulness and relaxation',
+              title: AppLocalizations.of(context)!.hubFeatureMeditation,
+              description: AppLocalizations.of(context)!.hubFeatureMeditationDesc,
               icon: Icons.self_improvement,
               onTap: () => _navigateTo(context, const MeditationView()),
             ),
             const SizedBox(height: 16),
             HubFeatureCard(
-              title: 'Right in the Feels',
-              description: 'Write and reflect on your feelings',
+              title: AppLocalizations.of(context)!.hubFeatureFeels,
+              description: AppLocalizations.of(context)!.hubFeatureFeelsDesc,
               icon: Icons.book,
               onTap: () => _navigateTo(context, const RightInTheFeelsView()),
             ),
             const SizedBox(height: 16),
             HubFeatureCard(
-              title: 'Cooking',
-              description: 'Discover and save your favorite recipes',
+              title: AppLocalizations.of(context)!.hubFeatureCooking,
+              description: AppLocalizations.of(context)!.hubFeatureCookingDesc,
               icon: Icons.restaurant,
               onTap: () => _navigateTo(context, const CookingView()),
             ),

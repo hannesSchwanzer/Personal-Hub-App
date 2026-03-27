@@ -1,0 +1,15 @@
+{
+  "settings": "Einstellungen",
+  "languagePickerTitle": "Sprachauswahl",
+  "noAdditionalSettings": "Keine weiteren Einstellungen",
+
+  "personalHub": "Persönlicher Hub",
+  "hubFeatureGymTracking": "Trainings-Tracking",
+  "hubFeatureGymTrackingDesc": "Verfolge deine Workouts und Fortschritte",
+  "hubFeatureMeditation": "Meditation",
+  "hubFeatureMeditationDesc": "Achtsamkeit und Entspannung üben",
+  "hubFeatureFeels": "Mitten ins Gefühl",
+  "hubFeatureFeelsDesc": "Schreibe auf und reflektiere deine Gefühle",
+  "hubFeatureCooking": "Kochen",
+  "hubFeatureCookingDesc": "Entdecke und speichere deine Lieblingsrezepte"
+}

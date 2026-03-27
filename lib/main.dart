@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/hub/widgets/hub_view.dart';
+
+final localeNotifier = ValueNotifier<Locale?>(null);
 
 void main() {
   runApp(const AppRoot());
@@ -11,13 +15,29 @@ class AppRoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Personal Hub',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HubView(),
+    return ValueListenableBuilder<Locale?>(
+      valueListenable: localeNotifier,
+      builder: (context, locale, _) {
+        return MaterialApp(
+          locale: locale,
+          title: 'Personal Hub',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            Locale('en'),
+            Locale('de'),
+          ],
+          home: const HubView(),
+        );
+      },
     );
   }
 }

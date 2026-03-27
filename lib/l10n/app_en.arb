@@ -1,0 +1,15 @@
+{
+    "settings": "Settings",
+    "languagePickerTitle": "Language Picker",
+    "noAdditionalSettings": "No Additional Settings",
+
+    "personalHub": "Personal Hub",
+    "hubFeatureGymTracking": "Gym Tracking",
+    "hubFeatureGymTrackingDesc": "Track your workouts and progress",
+    "hubFeatureMeditation": "Meditation",
+    "hubFeatureMeditationDesc": "Practice mindfulness and relaxation",
+    "hubFeatureFeels": "Right in the Feels",
+    "hubFeatureFeelsDesc": "Write and reflect on your feelings",
+    "hubFeatureCooking": "Cooking",
+    "hubFeatureCookingDesc": "Discover and save your favorite recipes"
+}
