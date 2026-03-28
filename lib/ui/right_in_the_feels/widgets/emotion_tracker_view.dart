@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/domain/models/emotion.dart';
 import 'package:personal_hub_app/domain/models/emotion_tree.dart';
+import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_selector.dart';
 
 
@@ -48,7 +49,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Emotion Tracker'),
+        title: Text(AppLocalizations.of(context)!.emotionTrackerTitle),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(
@@ -57,19 +58,19 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section 1: Emotion Selection
-            _buildSectionHeader('How are you feeling?', Icons.mood),
+            _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionFeeling, Icons.mood),
             const SizedBox(height: 12),
             _buildEmotionSelector(),
             const SizedBox(height: 32),
 
             // Section 2: Journal Entry
-            _buildSectionHeader("What's on your mind?", Icons.edit_note),
+            _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionJournal, Icons.edit_note),
             const SizedBox(height: 12),
             TextField(
               controller: _journalController,
               maxLines: 5,
               decoration: InputDecoration(
-                hintText: 'Write about your feelings...',
+                hintText: AppLocalizations.of(context)!.emotionTrackerJournalHint,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -83,7 +84,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
             const SizedBox(height: 32),
 
             // Section 3: Body Map (Coming Soon)
-            _buildSectionHeader('Body Map', Icons.accessibility_new),
+            _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionBodyMap, Icons.accessibility_new),
             const SizedBox(height: 12),
             Container(
               height: 200,
@@ -109,7 +110,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Coming Soon',
+                      AppLocalizations.of(context)!.emotionTrackerComingSoon,
                       style: TextStyle(
                         fontSize: 16,
                         color: Theme.of(context).colorScheme.outline,
@@ -117,7 +118,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Draw where you feel it',
+                      AppLocalizations.of(context)!.emotionTrackerDrawHint,
                       style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context)
@@ -139,7 +140,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
                 onPressed:
                     _selectedLevel1 != null ? () => _saveEntry(context) : null,
                 icon: const Icon(Icons.save),
-                label: const Text('Save Entry'),
+                label: Text(AppLocalizations.of(context)!.emotionTrackerSaveEntry),
               ),
             ),
             const SizedBox(height: 16),
@@ -176,8 +177,8 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
   void _saveEntry(BuildContext context) {
     // For now, just show a snackbar confirmation
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Entry saved'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.emotionTrackerEntrySaved),
         behavior: SnackBarBehavior.floating,
       ),
     );

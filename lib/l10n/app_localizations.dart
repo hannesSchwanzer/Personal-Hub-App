@@ -169,6 +169,906 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discover and save your favorite recipes'**
   String get hubFeatureCookingDesc;
+
+  /// No description provided for @rightInTheFeels.
+  ///
+  /// In en, this message translates to:
+  /// **'Right in the Feels'**
+  String get rightInTheFeels;
+
+  /// No description provided for @emotionTracker.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotion Tracker'**
+  String get emotionTracker;
+
+  /// No description provided for @emotionTrackerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Log and track your daily emotions'**
+  String get emotionTrackerDesc;
+
+  /// No description provided for @emotionExplorer.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotion Explorer'**
+  String get emotionExplorer;
+
+  /// No description provided for @emotionExplorerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover and understand your emotions'**
+  String get emotionExplorerDesc;
+
+  /// No description provided for @commsCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'Comms Check'**
+  String get commsCheck;
+
+  /// No description provided for @commsCheckDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Check in with yourself and others'**
+  String get commsCheckDesc;
+
+  /// No description provided for @emotionsRegulator.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotions Regulator'**
+  String get emotionsRegulator;
+
+  /// No description provided for @emotionsRegulatorDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Tools to help regulate your emotions'**
+  String get emotionsRegulatorDesc;
+
+  /// No description provided for @reflectionCorner.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflection Corner'**
+  String get reflectionCorner;
+
+  /// No description provided for @reflectionCornerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflect on your emotional journey'**
+  String get reflectionCornerDesc;
+
+  /// No description provided for @emotionTrackerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotion Tracker'**
+  String get emotionTrackerTitle;
+
+  /// No description provided for @emotionTrackerSectionFeeling.
+  ///
+  /// In en, this message translates to:
+  /// **'How are you feeling?'**
+  String get emotionTrackerSectionFeeling;
+
+  /// No description provided for @emotionTrackerSectionJournal.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s on your mind?'**
+  String get emotionTrackerSectionJournal;
+
+  /// No description provided for @emotionTrackerJournalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write about your feelings...'**
+  String get emotionTrackerJournalHint;
+
+  /// No description provided for @emotionTrackerSectionBodyMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Map'**
+  String get emotionTrackerSectionBodyMap;
+
+  /// No description provided for @emotionTrackerComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get emotionTrackerComingSoon;
+
+  /// No description provided for @emotionTrackerDrawHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Draw where you feel it'**
+  String get emotionTrackerDrawHint;
+
+  /// No description provided for @emotionTrackerSaveEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Entry'**
+  String get emotionTrackerSaveEntry;
+
+  /// No description provided for @emotionTrackerEntrySaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry saved'**
+  String get emotionTrackerEntrySaved;
+
+  /// No description provided for @emotion_happy.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy'**
+  String get emotion_happy;
+
+  /// No description provided for @emotion_happy_optimistic.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimistic'**
+  String get emotion_happy_optimistic;
+
+  /// No description provided for @emotion_happy_optimistic_inspired.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspired'**
+  String get emotion_happy_optimistic_inspired;
+
+  /// No description provided for @emotion_happy_optimistic_hopeful.
+  ///
+  /// In en, this message translates to:
+  /// **'Hopeful'**
+  String get emotion_happy_optimistic_hopeful;
+
+  /// No description provided for @emotion_happy_trusting.
+  ///
+  /// In en, this message translates to:
+  /// **'Trusting'**
+  String get emotion_happy_trusting;
+
+  /// No description provided for @emotion_happy_trusting_intimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intimate'**
+  String get emotion_happy_trusting_intimate;
+
+  /// No description provided for @emotion_happy_trusting_sensitive.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensitive'**
+  String get emotion_happy_trusting_sensitive;
+
+  /// No description provided for @emotion_happy_peaceful.
+  ///
+  /// In en, this message translates to:
+  /// **'Peaceful'**
+  String get emotion_happy_peaceful;
+
+  /// No description provided for @emotion_happy_peaceful_thankful.
+  ///
+  /// In en, this message translates to:
+  /// **'Thankful'**
+  String get emotion_happy_peaceful_thankful;
+
+  /// No description provided for @emotion_happy_peaceful_loving.
+  ///
+  /// In en, this message translates to:
+  /// **'Loving'**
+  String get emotion_happy_peaceful_loving;
+
+  /// No description provided for @emotion_happy_powerful.
+  ///
+  /// In en, this message translates to:
+  /// **'Powerful'**
+  String get emotion_happy_powerful;
+
+  /// No description provided for @emotion_happy_powerful_creative.
+  ///
+  /// In en, this message translates to:
+  /// **'Creative'**
+  String get emotion_happy_powerful_creative;
+
+  /// No description provided for @emotion_happy_powerful_courageous.
+  ///
+  /// In en, this message translates to:
+  /// **'Courageous'**
+  String get emotion_happy_powerful_courageous;
+
+  /// No description provided for @emotion_happy_accepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get emotion_happy_accepted;
+
+  /// No description provided for @emotion_happy_accepted_valued.
+  ///
+  /// In en, this message translates to:
+  /// **'Valued'**
+  String get emotion_happy_accepted_valued;
+
+  /// No description provided for @emotion_happy_accepted_respected.
+  ///
+  /// In en, this message translates to:
+  /// **'Respected'**
+  String get emotion_happy_accepted_respected;
+
+  /// No description provided for @emotion_happy_proud.
+  ///
+  /// In en, this message translates to:
+  /// **'Proud'**
+  String get emotion_happy_proud;
+
+  /// No description provided for @emotion_happy_proud_confident.
+  ///
+  /// In en, this message translates to:
+  /// **'Confident'**
+  String get emotion_happy_proud_confident;
+
+  /// No description provided for @emotion_happy_proud_successful.
+  ///
+  /// In en, this message translates to:
+  /// **'Successful'**
+  String get emotion_happy_proud_successful;
+
+  /// No description provided for @emotion_happy_interested.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested'**
+  String get emotion_happy_interested;
+
+  /// No description provided for @emotion_happy_interested_inquisitive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inquisitive'**
+  String get emotion_happy_interested_inquisitive;
+
+  /// No description provided for @emotion_happy_interested_curious.
+  ///
+  /// In en, this message translates to:
+  /// **'Curious'**
+  String get emotion_happy_interested_curious;
+
+  /// No description provided for @emotion_happy_content.
+  ///
+  /// In en, this message translates to:
+  /// **'Content'**
+  String get emotion_happy_content;
+
+  /// No description provided for @emotion_happy_content_joyful.
+  ///
+  /// In en, this message translates to:
+  /// **'Joyful'**
+  String get emotion_happy_content_joyful;
+
+  /// No description provided for @emotion_happy_content_free.
+  ///
+  /// In en, this message translates to:
+  /// **'Free'**
+  String get emotion_happy_content_free;
+
+  /// No description provided for @emotion_happy_playful.
+  ///
+  /// In en, this message translates to:
+  /// **'Playful'**
+  String get emotion_happy_playful;
+
+  /// No description provided for @emotion_happy_playful_cheeky.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheeky'**
+  String get emotion_happy_playful_cheeky;
+
+  /// No description provided for @emotion_happy_playful_aroused.
+  ///
+  /// In en, this message translates to:
+  /// **'Aroused'**
+  String get emotion_happy_playful_aroused;
+
+  /// No description provided for @emotion_angry.
+  ///
+  /// In en, this message translates to:
+  /// **'Angry'**
+  String get emotion_angry;
+
+  /// No description provided for @emotion_angry_critical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get emotion_angry_critical;
+
+  /// No description provided for @emotion_angry_critical_dismissive.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismissive'**
+  String get emotion_angry_critical_dismissive;
+
+  /// No description provided for @emotion_angry_critical_skeptical.
+  ///
+  /// In en, this message translates to:
+  /// **'Skeptical'**
+  String get emotion_angry_critical_skeptical;
+
+  /// No description provided for @emotion_angry_distant.
+  ///
+  /// In en, this message translates to:
+  /// **'Distant'**
+  String get emotion_angry_distant;
+
+  /// No description provided for @emotion_angry_distant_numb.
+  ///
+  /// In en, this message translates to:
+  /// **'Numb'**
+  String get emotion_angry_distant_numb;
+
+  /// No description provided for @emotion_angry_distant_withdrawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawn'**
+  String get emotion_angry_distant_withdrawn;
+
+  /// No description provided for @emotion_angry_frustrated.
+  ///
+  /// In en, this message translates to:
+  /// **'Frustrated'**
+  String get emotion_angry_frustrated;
+
+  /// No description provided for @emotion_angry_frustrated_annoyed.
+  ///
+  /// In en, this message translates to:
+  /// **'Annoyed'**
+  String get emotion_angry_frustrated_annoyed;
+
+  /// No description provided for @emotion_angry_frustrated_infuriated.
+  ///
+  /// In en, this message translates to:
+  /// **'Infuriated'**
+  String get emotion_angry_frustrated_infuriated;
+
+  /// No description provided for @emotion_angry_aggressive.
+  ///
+  /// In en, this message translates to:
+  /// **'Aggressive'**
+  String get emotion_angry_aggressive;
+
+  /// No description provided for @emotion_angry_aggressive_hostile.
+  ///
+  /// In en, this message translates to:
+  /// **'Hostile'**
+  String get emotion_angry_aggressive_hostile;
+
+  /// No description provided for @emotion_angry_aggressive_provoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Provoked'**
+  String get emotion_angry_aggressive_provoked;
+
+  /// No description provided for @emotion_angry_mad.
+  ///
+  /// In en, this message translates to:
+  /// **'Mad'**
+  String get emotion_angry_mad;
+
+  /// No description provided for @emotion_angry_mad_jealous.
+  ///
+  /// In en, this message translates to:
+  /// **'Jealous'**
+  String get emotion_angry_mad_jealous;
+
+  /// No description provided for @emotion_angry_mad_furious.
+  ///
+  /// In en, this message translates to:
+  /// **'Furious'**
+  String get emotion_angry_mad_furious;
+
+  /// No description provided for @emotion_angry_bitter.
+  ///
+  /// In en, this message translates to:
+  /// **'Bitter'**
+  String get emotion_angry_bitter;
+
+  /// No description provided for @emotion_angry_bitter_violated.
+  ///
+  /// In en, this message translates to:
+  /// **'Violated'**
+  String get emotion_angry_bitter_violated;
+
+  /// No description provided for @emotion_angry_bitter_indignant.
+  ///
+  /// In en, this message translates to:
+  /// **'Indignant'**
+  String get emotion_angry_bitter_indignant;
+
+  /// No description provided for @emotion_angry_humiliated.
+  ///
+  /// In en, this message translates to:
+  /// **'Humiliated'**
+  String get emotion_angry_humiliated;
+
+  /// No description provided for @emotion_angry_humiliated_disrespected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disrespected'**
+  String get emotion_angry_humiliated_disrespected;
+
+  /// No description provided for @emotion_angry_humiliated_ridiculed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ridiculed'**
+  String get emotion_angry_humiliated_ridiculed;
+
+  /// No description provided for @emotion_angry_let_down.
+  ///
+  /// In en, this message translates to:
+  /// **'Let Down'**
+  String get emotion_angry_let_down;
+
+  /// No description provided for @emotion_angry_let_down_resentful.
+  ///
+  /// In en, this message translates to:
+  /// **'Resentful'**
+  String get emotion_angry_let_down_resentful;
+
+  /// No description provided for @emotion_angry_let_down_betrayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Betrayed'**
+  String get emotion_angry_let_down_betrayed;
+
+  /// No description provided for @emotion_sad.
+  ///
+  /// In en, this message translates to:
+  /// **'Sad'**
+  String get emotion_sad;
+
+  /// No description provided for @emotion_sad_hurt.
+  ///
+  /// In en, this message translates to:
+  /// **'Hurt'**
+  String get emotion_sad_hurt;
+
+  /// No description provided for @emotion_sad_hurt_embarrassed.
+  ///
+  /// In en, this message translates to:
+  /// **'Embarrassed'**
+  String get emotion_sad_hurt_embarrassed;
+
+  /// No description provided for @emotion_sad_hurt_disappointed.
+  ///
+  /// In en, this message translates to:
+  /// **'Disappointed'**
+  String get emotion_sad_hurt_disappointed;
+
+  /// No description provided for @emotion_sad_depressed.
+  ///
+  /// In en, this message translates to:
+  /// **'Depressed'**
+  String get emotion_sad_depressed;
+
+  /// No description provided for @emotion_sad_depressed_inferior.
+  ///
+  /// In en, this message translates to:
+  /// **'Inferior'**
+  String get emotion_sad_depressed_inferior;
+
+  /// No description provided for @emotion_sad_depressed_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty'**
+  String get emotion_sad_depressed_empty;
+
+  /// No description provided for @emotion_sad_guilty.
+  ///
+  /// In en, this message translates to:
+  /// **'Guilty'**
+  String get emotion_sad_guilty;
+
+  /// No description provided for @emotion_sad_guilty_remorseful.
+  ///
+  /// In en, this message translates to:
+  /// **'Remorseful'**
+  String get emotion_sad_guilty_remorseful;
+
+  /// No description provided for @emotion_sad_guilty_ashamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Ashamed'**
+  String get emotion_sad_guilty_ashamed;
+
+  /// No description provided for @emotion_sad_despair.
+  ///
+  /// In en, this message translates to:
+  /// **'Despair'**
+  String get emotion_sad_despair;
+
+  /// No description provided for @emotion_sad_despair_powerless.
+  ///
+  /// In en, this message translates to:
+  /// **'Powerless'**
+  String get emotion_sad_despair_powerless;
+
+  /// No description provided for @emotion_sad_despair_grief.
+  ///
+  /// In en, this message translates to:
+  /// **'Grief'**
+  String get emotion_sad_despair_grief;
+
+  /// No description provided for @emotion_sad_vulnerable.
+  ///
+  /// In en, this message translates to:
+  /// **'Vulnerable'**
+  String get emotion_sad_vulnerable;
+
+  /// No description provided for @emotion_sad_vulnerable_fragile.
+  ///
+  /// In en, this message translates to:
+  /// **'Fragile'**
+  String get emotion_sad_vulnerable_fragile;
+
+  /// No description provided for @emotion_sad_vulnerable_victimized.
+  ///
+  /// In en, this message translates to:
+  /// **'Victimized'**
+  String get emotion_sad_vulnerable_victimized;
+
+  /// No description provided for @emotion_sad_lonely.
+  ///
+  /// In en, this message translates to:
+  /// **'Lonely'**
+  String get emotion_sad_lonely;
+
+  /// No description provided for @emotion_sad_lonely_abandoned.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandoned'**
+  String get emotion_sad_lonely_abandoned;
+
+  /// No description provided for @emotion_sad_lonely_isolated.
+  ///
+  /// In en, this message translates to:
+  /// **'Isolated'**
+  String get emotion_sad_lonely_isolated;
+
+  /// No description provided for @emotion_fearful.
+  ///
+  /// In en, this message translates to:
+  /// **'Fearful'**
+  String get emotion_fearful;
+
+  /// No description provided for @emotion_fearful_scared.
+  ///
+  /// In en, this message translates to:
+  /// **'Scared'**
+  String get emotion_fearful_scared;
+
+  /// No description provided for @emotion_fearful_scared_helpless.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpless'**
+  String get emotion_fearful_scared_helpless;
+
+  /// No description provided for @emotion_fearful_scared_frightened.
+  ///
+  /// In en, this message translates to:
+  /// **'Frightened'**
+  String get emotion_fearful_scared_frightened;
+
+  /// No description provided for @emotion_fearful_anxious.
+  ///
+  /// In en, this message translates to:
+  /// **'Anxious'**
+  String get emotion_fearful_anxious;
+
+  /// No description provided for @emotion_fearful_anxious_overwhelmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwhelmed'**
+  String get emotion_fearful_anxious_overwhelmed;
+
+  /// No description provided for @emotion_fearful_anxious_worried.
+  ///
+  /// In en, this message translates to:
+  /// **'Worried'**
+  String get emotion_fearful_anxious_worried;
+
+  /// No description provided for @emotion_fearful_insecure.
+  ///
+  /// In en, this message translates to:
+  /// **'Insecure'**
+  String get emotion_fearful_insecure;
+
+  /// No description provided for @emotion_fearful_insecure_inadequate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inadequate'**
+  String get emotion_fearful_insecure_inadequate;
+
+  /// No description provided for @emotion_fearful_insecure_inferior.
+  ///
+  /// In en, this message translates to:
+  /// **'Inferior'**
+  String get emotion_fearful_insecure_inferior;
+
+  /// No description provided for @emotion_fearful_weak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get emotion_fearful_weak;
+
+  /// No description provided for @emotion_fearful_weak_worthless.
+  ///
+  /// In en, this message translates to:
+  /// **'Worthless'**
+  String get emotion_fearful_weak_worthless;
+
+  /// No description provided for @emotion_fearful_weak_insignificant.
+  ///
+  /// In en, this message translates to:
+  /// **'Insignificant'**
+  String get emotion_fearful_weak_insignificant;
+
+  /// No description provided for @emotion_fearful_rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get emotion_fearful_rejected;
+
+  /// No description provided for @emotion_fearful_rejected_excluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Excluded'**
+  String get emotion_fearful_rejected_excluded;
+
+  /// No description provided for @emotion_fearful_rejected_persecuted.
+  ///
+  /// In en, this message translates to:
+  /// **'Persecuted'**
+  String get emotion_fearful_rejected_persecuted;
+
+  /// No description provided for @emotion_fearful_threatened.
+  ///
+  /// In en, this message translates to:
+  /// **'Threatened'**
+  String get emotion_fearful_threatened;
+
+  /// No description provided for @emotion_fearful_threatened_nervous.
+  ///
+  /// In en, this message translates to:
+  /// **'Nervous'**
+  String get emotion_fearful_threatened_nervous;
+
+  /// No description provided for @emotion_fearful_threatened_exposed.
+  ///
+  /// In en, this message translates to:
+  /// **'Exposed'**
+  String get emotion_fearful_threatened_exposed;
+
+  /// No description provided for @emotion_surprised.
+  ///
+  /// In en, this message translates to:
+  /// **'Surprised'**
+  String get emotion_surprised;
+
+  /// No description provided for @emotion_surprised_startled.
+  ///
+  /// In en, this message translates to:
+  /// **'Startled'**
+  String get emotion_surprised_startled;
+
+  /// No description provided for @emotion_surprised_startled_shocked.
+  ///
+  /// In en, this message translates to:
+  /// **'Shocked'**
+  String get emotion_surprised_startled_shocked;
+
+  /// No description provided for @emotion_surprised_startled_dismayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismayed'**
+  String get emotion_surprised_startled_dismayed;
+
+  /// No description provided for @emotion_surprised_confused.
+  ///
+  /// In en, this message translates to:
+  /// **'Confused'**
+  String get emotion_surprised_confused;
+
+  /// No description provided for @emotion_surprised_confused_disillusioned.
+  ///
+  /// In en, this message translates to:
+  /// **'Disillusioned'**
+  String get emotion_surprised_confused_disillusioned;
+
+  /// No description provided for @emotion_surprised_confused_perplexed.
+  ///
+  /// In en, this message translates to:
+  /// **'Perplexed'**
+  String get emotion_surprised_confused_perplexed;
+
+  /// No description provided for @emotion_surprised_amazed.
+  ///
+  /// In en, this message translates to:
+  /// **'Amazed'**
+  String get emotion_surprised_amazed;
+
+  /// No description provided for @emotion_surprised_amazed_astonished.
+  ///
+  /// In en, this message translates to:
+  /// **'Astonished'**
+  String get emotion_surprised_amazed_astonished;
+
+  /// No description provided for @emotion_surprised_amazed_awe.
+  ///
+  /// In en, this message translates to:
+  /// **'Awe'**
+  String get emotion_surprised_amazed_awe;
+
+  /// No description provided for @emotion_surprised_excited.
+  ///
+  /// In en, this message translates to:
+  /// **'Excited'**
+  String get emotion_surprised_excited;
+
+  /// No description provided for @emotion_surprised_excited_eager.
+  ///
+  /// In en, this message translates to:
+  /// **'Eager'**
+  String get emotion_surprised_excited_eager;
+
+  /// No description provided for @emotion_surprised_excited_energetic.
+  ///
+  /// In en, this message translates to:
+  /// **'Energetic'**
+  String get emotion_surprised_excited_energetic;
+
+  /// No description provided for @emotion_disgusted.
+  ///
+  /// In en, this message translates to:
+  /// **'Disgusted'**
+  String get emotion_disgusted;
+
+  /// No description provided for @emotion_disgusted_disapproving.
+  ///
+  /// In en, this message translates to:
+  /// **'Disapproving'**
+  String get emotion_disgusted_disapproving;
+
+  /// No description provided for @emotion_disgusted_disapproving_judgmental.
+  ///
+  /// In en, this message translates to:
+  /// **'Judgmental'**
+  String get emotion_disgusted_disapproving_judgmental;
+
+  /// No description provided for @emotion_disgusted_disapproving_embarrassed.
+  ///
+  /// In en, this message translates to:
+  /// **'Embarrassed'**
+  String get emotion_disgusted_disapproving_embarrassed;
+
+  /// No description provided for @emotion_disgusted_disappointed.
+  ///
+  /// In en, this message translates to:
+  /// **'Disappointed'**
+  String get emotion_disgusted_disappointed;
+
+  /// No description provided for @emotion_disgusted_disappointed_appalled.
+  ///
+  /// In en, this message translates to:
+  /// **'Appalled'**
+  String get emotion_disgusted_disappointed_appalled;
+
+  /// No description provided for @emotion_disgusted_disappointed_revolted.
+  ///
+  /// In en, this message translates to:
+  /// **'Revolted'**
+  String get emotion_disgusted_disappointed_revolted;
+
+  /// No description provided for @emotion_disgusted_awful.
+  ///
+  /// In en, this message translates to:
+  /// **'Awful'**
+  String get emotion_disgusted_awful;
+
+  /// No description provided for @emotion_disgusted_awful_nauseated.
+  ///
+  /// In en, this message translates to:
+  /// **'Nauseated'**
+  String get emotion_disgusted_awful_nauseated;
+
+  /// No description provided for @emotion_disgusted_awful_detestable.
+  ///
+  /// In en, this message translates to:
+  /// **'Detestable'**
+  String get emotion_disgusted_awful_detestable;
+
+  /// No description provided for @emotion_disgusted_repelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Repelled'**
+  String get emotion_disgusted_repelled;
+
+  /// No description provided for @emotion_disgusted_repelled_horrified.
+  ///
+  /// In en, this message translates to:
+  /// **'Horrified'**
+  String get emotion_disgusted_repelled_horrified;
+
+  /// No description provided for @emotion_disgusted_repelled_hesitant.
+  ///
+  /// In en, this message translates to:
+  /// **'Hesitant'**
+  String get emotion_disgusted_repelled_hesitant;
+
+  /// No description provided for @emotion_bad.
+  ///
+  /// In en, this message translates to:
+  /// **'Bad'**
+  String get emotion_bad;
+
+  /// No description provided for @emotion_bad_tired.
+  ///
+  /// In en, this message translates to:
+  /// **'Tired'**
+  String get emotion_bad_tired;
+
+  /// No description provided for @emotion_bad_tired_sleepy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleepy'**
+  String get emotion_bad_tired_sleepy;
+
+  /// No description provided for @emotion_bad_tired_unfocused.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfocused'**
+  String get emotion_bad_tired_unfocused;
+
+  /// No description provided for @emotion_bad_stressed.
+  ///
+  /// In en, this message translates to:
+  /// **'Stressed'**
+  String get emotion_bad_stressed;
+
+  /// No description provided for @emotion_bad_stressed_out_of_control.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of control'**
+  String get emotion_bad_stressed_out_of_control;
+
+  /// No description provided for @emotion_bad_stressed_overwhelmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwhelmed'**
+  String get emotion_bad_stressed_overwhelmed;
+
+  /// No description provided for @emotion_bad_busy.
+  ///
+  /// In en, this message translates to:
+  /// **'Busy'**
+  String get emotion_bad_busy;
+
+  /// No description provided for @emotion_bad_busy_pressured.
+  ///
+  /// In en, this message translates to:
+  /// **'Pressured'**
+  String get emotion_bad_busy_pressured;
+
+  /// No description provided for @emotion_bad_busy_rushed.
+  ///
+  /// In en, this message translates to:
+  /// **'Rushed'**
+  String get emotion_bad_busy_rushed;
+
+  /// No description provided for @emotion_bad_bored.
+  ///
+  /// In en, this message translates to:
+  /// **'Bored'**
+  String get emotion_bad_bored;
+
+  /// No description provided for @emotion_bad_bored_indifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'Indifferent'**
+  String get emotion_bad_bored_indifferent;
+
+  /// No description provided for @emotion_bad_bored_apathetic.
+  ///
+  /// In en, this message translates to:
+  /// **'Apathetic'**
+  String get emotion_bad_bored_apathetic;
 }
 
 class _AppLocalizationsDelegate

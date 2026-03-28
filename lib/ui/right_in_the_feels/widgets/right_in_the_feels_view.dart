@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_tracker_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_explorer_view.dart';
@@ -14,7 +15,7 @@ class RightInTheFeelsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Right in the Feels'),
+        title: Text(AppLocalizations.of(context)!.rightInTheFeels),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: SingleChildScrollView(
@@ -25,36 +26,36 @@ class RightInTheFeelsView extends StatelessWidget {
             children: [
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: 'Emotion Tracker',
-                description: 'Log and track your daily emotions',
+                title: AppLocalizations.of(context)!.emotionTracker,
+                description: AppLocalizations.of(context)!.emotionTrackerDesc,
                 icon: Icons.track_changes,
                 onTap: () => _navigateTo(context, const EmotionTrackerView()),
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: 'Emotion Explorer',
-                description: 'Discover and understand your emotions',
+                title: AppLocalizations.of(context)!.emotionExplorer,
+                description: AppLocalizations.of(context)!.emotionExplorerDesc,
                 icon: Icons.explore,
                 onTap: () => _navigateTo(context, const EmotionExplorerView()),
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: 'Comms Check',
-                description: 'Check in with yourself and others',
+                title: AppLocalizations.of(context)!.commsCheck,
+                description: AppLocalizations.of(context)!.commsCheckDesc,
                 icon: Icons.chat_bubble_outline,
                 onTap: () => _navigateTo(context, const CommsCheckView()),
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: 'Emotions Regulator',
-                description: 'Tools to help regulate your emotions',
+                title: AppLocalizations.of(context)!.emotionsRegulator,
+                description: AppLocalizations.of(context)!.emotionsRegulatorDesc,
                 icon: Icons.tune,
                 onTap: () => _navigateTo(context, const EmotionsRegulatorView()),
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: 'Reflection Corner',
-                description: 'Reflect on your emotional journey',
+                title: AppLocalizations.of(context)!.reflectionCorner,
+                description: AppLocalizations.of(context)!.reflectionCornerDesc,
                 icon: Icons.lightbulb_outline,
                 onTap: () => _navigateTo(context, const ReflectionCornerView()),
               ),
