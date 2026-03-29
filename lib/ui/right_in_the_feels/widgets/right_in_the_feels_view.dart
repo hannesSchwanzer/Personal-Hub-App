@@ -6,6 +6,7 @@ import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_explorer_
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/comms_check_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotions_regulator_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/reflection_corner_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/widgets/all_journal_entries_view.dart';
 
 /// Hub view for emotional wellbeing features.
 class RightInTheFeelsView extends StatelessWidget {
@@ -58,6 +59,13 @@ class RightInTheFeelsView extends StatelessWidget {
                 description: AppLocalizations.of(context)!.reflectionCornerDesc,
                 icon: Icons.lightbulb_outline,
                 onTap: () => _navigateTo(context, const ReflectionCornerView()),
+              ),
+              const SizedBox(height: 16),
+              HubFeatureCard(
+                title: "View All Journal Entries",
+                description: "See a list of all your emotion journal entries.",
+                icon: Icons.library_books,
+                onTap: () => _navigateTo(context, const AllJournalEntriesView()),
               ),
             ],
           ),

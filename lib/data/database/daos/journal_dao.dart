@@ -1,11 +1,12 @@
 import 'package:drift/drift.dart';
 import '../app_database.dart';
+import '../tables/journal_entries_table.dart';
 
 part 'journal_dao.g.dart';
 
 @DriftAccessor(tables: [JournalEntries])
 class JournalDao extends DatabaseAccessor<AppDatabase> with _$JournalDaoMixin {
-  JournalDao(AppDatabase db) : super(db);
+  JournalDao(super.attachedDatabase);
 
   /// Insert a new journal entry
   Future<void> insertEntry(JournalEntriesCompanion entry) {
@@ -20,7 +21,7 @@ class JournalDao extends DatabaseAccessor<AppDatabase> with _$JournalDaoMixin {
         emotionLevel1: row.emotionLevel1,
         emotionLevel2: row.emotionLevel2,
         emotionLevel3: row.emotionLevel3,
-        text: row.text,
+        entry: row.entry,
         createdAt: row.createdAt,
         updatedAt: row.updatedAt,
       )).toList(),

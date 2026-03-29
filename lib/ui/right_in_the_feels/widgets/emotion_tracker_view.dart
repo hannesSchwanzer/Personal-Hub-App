@@ -4,6 +4,8 @@ import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_tree.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_ui_model.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_selector.dart';
+import 'package:uuid/uuid.dart';
+import 'package:drift/drift.dart' hide Column;
 
 
 /// View for tracking emotions with hierarchical selection, journaling, and body map.
@@ -170,13 +172,13 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
     final dao = db.journalDao;
 
     // Insert a new entry
-    await dao.insertEntry(
+    dao.insertEntry(
       JournalEntriesCompanion.insert(
         id: const Uuid().v4(),
-        emotionLevel1: _selectedLevel1,
-        emotionLevel2: _selectedLevel2,
-        emotionLevel3: _selectedLevel3,
-        text: _journalController.text,
+        emotionLevel1: Value(_selectedLevel1Id),
+        emotionLevel2: Value(_selectedLevel2Id),
+        emotionLevel3: Value(_selectedLevel3Id),
+        entry: _journalController.text,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       ),
@@ -185,10 +187,10 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
     // Watch entries
     dao.watchAll().listen((entries) {
       for (var e in entries) {
-        print('${e.emotionLevel3} - ${e.text}');
+        print('${e.emotionLevel3} - ${e.entry}');
       }
     });
-    // For now, just show a snackbar confirmation
+    // For now, just show a snackbar confirmation. TODO: Return to previous page and save
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalizations.of(context)!.emotionTrackerEntrySaved),

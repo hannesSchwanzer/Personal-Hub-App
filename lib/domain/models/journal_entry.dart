@@ -3,7 +3,7 @@ class JournalEntry {
   final String? emotionLevel1;
   final String? emotionLevel2;
   final String? emotionLevel3;
-  final String text;
+  final String entry;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -12,7 +12,7 @@ class JournalEntry {
     this.emotionLevel1,
     this.emotionLevel2,
     this.emotionLevel3,
-    required this.text,
+    required this.entry,
     required this.createdAt,
     required this.updatedAt,
   });

@@ -7,7 +7,7 @@ JournalEntry mapToDomain(JournalEntriesData row) {
     emotionLevel1: row.emotionLevel1,
     emotionLevel2: row.emotionLevel2,
     emotionLevel3: row.emotionLevel3,
-    text: row.text,
+    entry: row.text,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   );

@@ -7,7 +7,7 @@ class JournalEntries extends Table {
   TextColumn get emotionLevel2 => text().nullable()();
   TextColumn get emotionLevel3 => text().nullable()();
 
-  TextColumn get text => text()();
+  TextColumn get entry  => text()();
 
   DateTimeColumn get createdAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
