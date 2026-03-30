@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/data/database/app_database.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
+import 'package:personal_hub_app/utils/providers.dart';
 
 /// Displays a list of all saved journal entries.
-class AllJournalEntriesView extends StatelessWidget {
+class AllJournalEntriesView extends ConsumerWidget {
   const AllJournalEntriesView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final journalDao = AppDatabase().journalDao;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final journalRepo = ref.read(journalEntryRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('All Journal Entries'),
       ),
-      body: StreamBuilder<List<JournalEntry>>(
-        stream: journalDao.watchAll(),
+      body: StreamBuilder<List<JournalEntryEntity>>(
+        stream: journalRepo.watchAllEntries(),
         builder: (context, snapshot) {
           final entries = snapshot.data;
           if (snapshot.connectionState == ConnectionState.waiting) {

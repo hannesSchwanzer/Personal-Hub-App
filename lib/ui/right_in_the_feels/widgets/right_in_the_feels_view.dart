@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_tracker_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_explorer_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/comms_check_view.dart';
@@ -67,6 +68,14 @@ class RightInTheFeelsView extends StatelessWidget {
                 icon: Icons.library_books,
                 onTap: () => _navigateTo(context, const AllJournalEntriesView()),
               ),
+              const SizedBox(height: 16),
+              HubFeatureCard(
+                title: "Draw body map",
+                description: "Visualize where you feel emotions in your body. (Coming Soon)",
+                icon: Icons.accessibility_new,
+                onTap: () => _navigateTo(context, const BodyMapView()),
+              ),
+
             ],
           ),
         ),

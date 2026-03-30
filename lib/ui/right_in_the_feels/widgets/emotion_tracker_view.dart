@@ -1,46 +1,34 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_tree.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_ui_model.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_selector.dart';
-import 'package:uuid/uuid.dart';
-import 'package:drift/drift.dart' hide Column;
-
+import 'package:personal_hub_app/ui/right_in_the_feels/viewmodels/emotion_tracker_view_model.dart';
 
 /// View for tracking emotions with hierarchical selection, journaling, and body map.
-class EmotionTrackerView extends StatefulWidget {
+/// Uses EmotionTrackerViewModel for business logic.
+class EmotionTrackerView extends ConsumerWidget {
   const EmotionTrackerView({super.key});
 
   @override
-  State<EmotionTrackerView> createState() => _EmotionTrackerViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = ref.watch(emotionTrackerViewModelProvider);
+    final notifier = ref.read(emotionTrackerViewModelProvider.notifier);
 
-class _EmotionTrackerViewState extends State<EmotionTrackerView> {
-  String? _selectedLevel1Id;
-  String? _selectedLevel2Id;
-  String? _selectedLevel3Id;
-  final TextEditingController _journalController = TextEditingController();
+    // Show snackbar on entrySaved
+    ref.listen<EmotionTrackerState>(emotionTrackerViewModelProvider, (prev, next) {
+      if ((prev == null || !prev.entrySaved) && next.entrySaved) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.emotionTrackerEntrySaved),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
 
-  @override
-  void dispose() {
-    _journalController.dispose();
-    super.dispose();
-  }
-
-  /// Handles when emotion selection changes in the reusable selector.
-  void _onEmotionSelectionChanged(
-    EmotionUiModel? level1, EmotionUiModel? level2, EmotionUiModel? level3,
-  ) {
-    setState(() {
-      _selectedLevel1Id = level1?.id;
-      _selectedLevel2Id = level2?.id;
-      _selectedLevel3Id = level3?.id;
+        Navigator.of(context).pop();
+      }
     });
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.emotionTrackerTitle),
@@ -48,19 +36,25 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column( crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Section 1: Emotion Selection
             _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionFeeling, Icons.mood),
             const SizedBox(height: 12),
-            _buildEmotionSelector(),
+            EmotionSelector(
+              rootEmotions: emotionTree,
+              onSelectionChanged: notifier.updateEmotionSelection,
+            ),
             const SizedBox(height: 32),
-
             // Section 2: Journal Entry
             _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionJournal, Icons.edit_note),
             const SizedBox(height: 12),
             TextField(
-              controller: _journalController,
+              key: const ValueKey('emotionTrackerTextField'),
+              controller: TextEditingController(text: vm.journalText)
+                ..selection = TextSelection.collapsed(offset: vm.journalText.length),
+              onChanged: notifier.updateJournalText,
               maxLines: 5,
               decoration: InputDecoration(
                 hintText: AppLocalizations.of(context)!.emotionTrackerJournalHint,
@@ -75,7 +69,6 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
               ),
             ),
             const SizedBox(height: 32),
-
             // Section 3: Body Map (Coming Soon)
             _buildSectionHeader(AppLocalizations.of(context)!.emotionTrackerSectionBodyMap, Icons.accessibility_new),
             const SizedBox(height: 12),
@@ -88,8 +81,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
                     .withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color:
-                      Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
                 ),
               ),
               child: Center(
@@ -114,10 +106,7 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
                       AppLocalizations.of(context)!.emotionTrackerDrawHint,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .outline
-                            .withValues(alpha: 0.7),
+                        color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -125,13 +114,14 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
               ),
             ),
             const SizedBox(height: 32),
-
             // Save Button
             SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
                 onPressed:
-                    _selectedLevel1Id != null ? () => _saveEntry(context) : null,
+                    vm.selectedLevel1Id != null
+                        ? () => notifier.saveEntry()
+                        : null,
                 icon: const Icon(Icons.save),
                 label: Text(AppLocalizations.of(context)!.emotionTrackerSaveEntry),
               ),
@@ -156,46 +146,6 @@ class _EmotionTrackerViewState extends State<EmotionTrackerView> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildEmotionSelector() {
-    // Use the reusable EmotionSelector widget with business logic and callback wiring
-    return EmotionSelector(
-      rootEmotions: emotionTree,
-      onSelectionChanged: _onEmotionSelectionChanged,
-    );
-  }
-
-  void _saveEntry(BuildContext context) {
-    final db = AppDatabase();
-    final dao = db.journalDao;
-
-    // Insert a new entry
-    dao.insertEntry(
-      JournalEntriesCompanion.insert(
-        id: const Uuid().v4(),
-        emotionLevel1: Value(_selectedLevel1Id),
-        emotionLevel2: Value(_selectedLevel2Id),
-        emotionLevel3: Value(_selectedLevel3Id),
-        entry: _journalController.text,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ),
-    );
-
-    // Watch entries
-    dao.watchAll().listen((entries) {
-      for (var e in entries) {
-        print('${e.emotionLevel3} - ${e.entry}');
-      }
-    });
-    // For now, just show a snackbar confirmation. TODO: Return to previous page and save
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalizations.of(context)!.emotionTrackerEntrySaved),
-        behavior: SnackBarBehavior.floating,
-      ),
     );
   }
 }

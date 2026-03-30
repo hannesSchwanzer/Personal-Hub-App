@@ -1,4 +1,4 @@
-class JournalEntry {
+class JournalEntryEntity {
   final String id;
   final String? emotionLevel1;
   final String? emotionLevel2;
@@ -7,7 +7,7 @@ class JournalEntry {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  JournalEntry({
+  JournalEntryEntity({
     required this.id,
     this.emotionLevel1,
     this.emotionLevel2,

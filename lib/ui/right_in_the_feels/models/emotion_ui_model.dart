@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/models/emotion_ids.dart';
+import 'package:personal_hub_app/domain/entities/emotion_ids.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 
 class EmotionUiModel {
