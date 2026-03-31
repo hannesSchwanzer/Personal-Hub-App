@@ -15,17 +15,7 @@ class JournalDao extends DatabaseAccessor<AppDatabase> with _$JournalDaoMixin {
 
   /// Watch all entries reactively
   Stream<List<JournalEntry>> watchAll() {
-    return select(journalEntries).watch().map(
-      (rows) => rows.map((row) => JournalEntry(
-        id: row.id,
-        emotionLevel1: row.emotionLevel1,
-        emotionLevel2: row.emotionLevel2,
-        emotionLevel3: row.emotionLevel3,
-        entry: row.entry,
-        createdAt: row.createdAt,
-        updatedAt: row.updatedAt,
-      )).toList(),
-    );
+    return select(journalEntries).watch();
   }
 
   /// Delete an entry by ID

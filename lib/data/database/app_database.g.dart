@@ -60,6 +60,17 @@ class $JournalEntriesTable extends JournalEntries
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _bodyMapDrawingMeta = const VerificationMeta(
+    'bodyMapDrawing',
+  );
+  @override
+  late final GeneratedColumn<String> bodyMapDrawing = GeneratedColumn<String>(
+    'body_map_drawing',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -89,6 +100,7 @@ class $JournalEntriesTable extends JournalEntries
     emotionLevel2,
     emotionLevel3,
     entry,
+    bodyMapDrawing,
     createdAt,
     updatedAt,
   ];
@@ -144,6 +156,15 @@ class $JournalEntriesTable extends JournalEntries
     } else if (isInserting) {
       context.missing(_entryMeta);
     }
+    if (data.containsKey('body_map_drawing')) {
+      context.handle(
+        _bodyMapDrawingMeta,
+        bodyMapDrawing.isAcceptableOrUnknown(
+          data['body_map_drawing']!,
+          _bodyMapDrawingMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
@@ -189,6 +210,10 @@ class $JournalEntriesTable extends JournalEntries
         DriftSqlType.string,
         data['${effectivePrefix}entry'],
       )!,
+      bodyMapDrawing: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}body_map_drawing'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -212,6 +237,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
   final String? emotionLevel2;
   final String? emotionLevel3;
   final String entry;
+  final String? bodyMapDrawing;
   final DateTime createdAt;
   final DateTime updatedAt;
   const JournalEntry({
@@ -220,6 +246,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     this.emotionLevel2,
     this.emotionLevel3,
     required this.entry,
+    this.bodyMapDrawing,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -237,6 +264,9 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
       map['emotion_level3'] = Variable<String>(emotionLevel3);
     }
     map['entry'] = Variable<String>(entry);
+    if (!nullToAbsent || bodyMapDrawing != null) {
+      map['body_map_drawing'] = Variable<String>(bodyMapDrawing);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -255,6 +285,9 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
           ? const Value.absent()
           : Value(emotionLevel3),
       entry: Value(entry),
+      bodyMapDrawing: bodyMapDrawing == null && nullToAbsent
+          ? const Value.absent()
+          : Value(bodyMapDrawing),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -271,6 +304,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
       emotionLevel2: serializer.fromJson<String?>(json['emotionLevel2']),
       emotionLevel3: serializer.fromJson<String?>(json['emotionLevel3']),
       entry: serializer.fromJson<String>(json['entry']),
+      bodyMapDrawing: serializer.fromJson<String?>(json['bodyMapDrawing']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -284,6 +318,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
       'emotionLevel2': serializer.toJson<String?>(emotionLevel2),
       'emotionLevel3': serializer.toJson<String?>(emotionLevel3),
       'entry': serializer.toJson<String>(entry),
+      'bodyMapDrawing': serializer.toJson<String?>(bodyMapDrawing),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -295,6 +330,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     Value<String?> emotionLevel2 = const Value.absent(),
     Value<String?> emotionLevel3 = const Value.absent(),
     String? entry,
+    Value<String?> bodyMapDrawing = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => JournalEntry(
@@ -309,6 +345,9 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
         ? emotionLevel3.value
         : this.emotionLevel3,
     entry: entry ?? this.entry,
+    bodyMapDrawing: bodyMapDrawing.present
+        ? bodyMapDrawing.value
+        : this.bodyMapDrawing,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -325,6 +364,9 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
           ? data.emotionLevel3.value
           : this.emotionLevel3,
       entry: data.entry.present ? data.entry.value : this.entry,
+      bodyMapDrawing: data.bodyMapDrawing.present
+          ? data.bodyMapDrawing.value
+          : this.bodyMapDrawing,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -338,6 +380,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
           ..write('emotionLevel2: $emotionLevel2, ')
           ..write('emotionLevel3: $emotionLevel3, ')
           ..write('entry: $entry, ')
+          ..write('bodyMapDrawing: $bodyMapDrawing, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -351,6 +394,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
     emotionLevel2,
     emotionLevel3,
     entry,
+    bodyMapDrawing,
     createdAt,
     updatedAt,
   );
@@ -363,6 +407,7 @@ class JournalEntry extends DataClass implements Insertable<JournalEntry> {
           other.emotionLevel2 == this.emotionLevel2 &&
           other.emotionLevel3 == this.emotionLevel3 &&
           other.entry == this.entry &&
+          other.bodyMapDrawing == this.bodyMapDrawing &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -373,6 +418,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
   final Value<String?> emotionLevel2;
   final Value<String?> emotionLevel3;
   final Value<String> entry;
+  final Value<String?> bodyMapDrawing;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<int> rowid;
@@ -382,6 +428,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
     this.emotionLevel2 = const Value.absent(),
     this.emotionLevel3 = const Value.absent(),
     this.entry = const Value.absent(),
+    this.bodyMapDrawing = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -392,6 +439,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
     this.emotionLevel2 = const Value.absent(),
     this.emotionLevel3 = const Value.absent(),
     required String entry,
+    this.bodyMapDrawing = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
     this.rowid = const Value.absent(),
@@ -405,6 +453,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
     Expression<String>? emotionLevel2,
     Expression<String>? emotionLevel3,
     Expression<String>? entry,
+    Expression<String>? bodyMapDrawing,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<int>? rowid,
@@ -415,6 +464,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
       if (emotionLevel2 != null) 'emotion_level2': emotionLevel2,
       if (emotionLevel3 != null) 'emotion_level3': emotionLevel3,
       if (entry != null) 'entry': entry,
+      if (bodyMapDrawing != null) 'body_map_drawing': bodyMapDrawing,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (rowid != null) 'rowid': rowid,
@@ -427,6 +477,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
     Value<String?>? emotionLevel2,
     Value<String?>? emotionLevel3,
     Value<String>? entry,
+    Value<String?>? bodyMapDrawing,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<int>? rowid,
@@ -437,6 +488,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
       emotionLevel2: emotionLevel2 ?? this.emotionLevel2,
       emotionLevel3: emotionLevel3 ?? this.emotionLevel3,
       entry: entry ?? this.entry,
+      bodyMapDrawing: bodyMapDrawing ?? this.bodyMapDrawing,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       rowid: rowid ?? this.rowid,
@@ -461,6 +513,9 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
     if (entry.present) {
       map['entry'] = Variable<String>(entry.value);
     }
+    if (bodyMapDrawing.present) {
+      map['body_map_drawing'] = Variable<String>(bodyMapDrawing.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -481,6 +536,7 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
           ..write('emotionLevel2: $emotionLevel2, ')
           ..write('emotionLevel3: $emotionLevel3, ')
           ..write('entry: $entry, ')
+          ..write('bodyMapDrawing: $bodyMapDrawing, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('rowid: $rowid')
@@ -508,6 +564,7 @@ typedef $$JournalEntriesTableCreateCompanionBuilder =
       Value<String?> emotionLevel2,
       Value<String?> emotionLevel3,
       required String entry,
+      Value<String?> bodyMapDrawing,
       required DateTime createdAt,
       required DateTime updatedAt,
       Value<int> rowid,
@@ -519,6 +576,7 @@ typedef $$JournalEntriesTableUpdateCompanionBuilder =
       Value<String?> emotionLevel2,
       Value<String?> emotionLevel3,
       Value<String> entry,
+      Value<String?> bodyMapDrawing,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<int> rowid,
@@ -555,6 +613,11 @@ class $$JournalEntriesTableFilterComposer
 
   ColumnFilters<String> get entry => $composableBuilder(
     column: $table.entry,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get bodyMapDrawing => $composableBuilder(
+    column: $table.bodyMapDrawing,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -603,6 +666,11 @@ class $$JournalEntriesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get bodyMapDrawing => $composableBuilder(
+    column: $table.bodyMapDrawing,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -643,6 +711,11 @@ class $$JournalEntriesTableAnnotationComposer
 
   GeneratedColumn<String> get entry =>
       $composableBuilder(column: $table.entry, builder: (column) => column);
+
+  GeneratedColumn<String> get bodyMapDrawing => $composableBuilder(
+    column: $table.bodyMapDrawing,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -689,6 +762,7 @@ class $$JournalEntriesTableTableManager
                 Value<String?> emotionLevel2 = const Value.absent(),
                 Value<String?> emotionLevel3 = const Value.absent(),
                 Value<String> entry = const Value.absent(),
+                Value<String?> bodyMapDrawing = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -698,6 +772,7 @@ class $$JournalEntriesTableTableManager
                 emotionLevel2: emotionLevel2,
                 emotionLevel3: emotionLevel3,
                 entry: entry,
+                bodyMapDrawing: bodyMapDrawing,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
@@ -709,6 +784,7 @@ class $$JournalEntriesTableTableManager
                 Value<String?> emotionLevel2 = const Value.absent(),
                 Value<String?> emotionLevel3 = const Value.absent(),
                 required String entry,
+                Value<String?> bodyMapDrawing = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
@@ -718,6 +794,7 @@ class $$JournalEntriesTableTableManager
                 emotionLevel2: emotionLevel2,
                 emotionLevel3: emotionLevel3,
                 entry: entry,
+                bodyMapDrawing: bodyMapDrawing,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 rowid: rowid,
