@@ -290,6 +290,12 @@ abstract class AppLocalizations {
   /// **'Entry saved'**
   String get emotionTrackerEntrySaved;
 
+  /// No description provided for @emotionTrackerClearEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Entry'**
+  String get emotionTrackerClearEntry;
+
   /// No description provided for @emotion_happy.
   ///
   /// In en, this message translates to:

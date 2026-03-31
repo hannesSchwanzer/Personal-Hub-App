@@ -110,6 +110,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get emotionTrackerEntrySaved => 'Eintrag gespeichert';
 
   @override
+  String get emotionTrackerClearEntry => 'Eintrag löschen';
+
+  @override
   String get emotion_happy => 'Glücklich';
 
   @override

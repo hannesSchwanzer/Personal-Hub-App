@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_viewer.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 
 /// Displays a list of all saved journal entries.
@@ -12,9 +13,7 @@ class AllJournalEntriesView extends ConsumerWidget {
     final journalRepo = ref.read(journalEntryRepositoryProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Journal Entries'),
-      ),
+      appBar: AppBar(title: const Text('All Journal Entries')),
       body: StreamBuilder<List<JournalEntryEntity>>(
         stream: journalRepo.watchAllEntries(),
         builder: (context, snapshot) {
@@ -45,6 +44,13 @@ class AllJournalEntriesView extends ConsumerWidget {
                       'Created: ${entry.createdAt.toLocal().toIso8601String().split("T").first}',
                       style: const TextStyle(fontSize: 12),
                     ),
+                    if (entry.bodyMapDrawing != null)
+                      SizedBox(
+                        height: 200,
+                        child: BodyMapViewer(
+                          strokes: entry.bodyMapDrawing!.strokes,
+                        ),
+                      ),
                   ],
                 ),
                 isThreeLine: true,
@@ -57,4 +63,3 @@ class AllJournalEntriesView extends ConsumerWidget {
     );
   }
 }
-

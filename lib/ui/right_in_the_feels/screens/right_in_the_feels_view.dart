@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_tracker_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotion_explorer_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/comms_check_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/emotions_regulator_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/reflection_corner_view.dart';
-import 'package:personal_hub_app/ui/right_in_the_feels/widgets/all_journal_entries_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotion_tracker_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotion_explorer_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/comms_check_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotions_regulator_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/reflection_corner_view.dart';
+import 'package:personal_hub_app/ui/right_in_the_feels/screens/all_journal_entries_view.dart';
 
 /// Hub view for emotional wellbeing features.
 class RightInTheFeelsView extends StatelessWidget {
@@ -68,14 +67,6 @@ class RightInTheFeelsView extends StatelessWidget {
                 icon: Icons.library_books,
                 onTap: () => _navigateTo(context, const AllJournalEntriesView()),
               ),
-              const SizedBox(height: 16),
-              HubFeatureCard(
-                title: "Draw body map",
-                description: "Visualize where you feel emotions in your body. (Coming Soon)",
-                icon: Icons.accessibility_new,
-                onTap: () => _navigateTo(context, const BodyMapView()),
-              ),
-
             ],
           ),
         ),

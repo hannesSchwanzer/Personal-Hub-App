@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emotionTrackerEntrySaved => 'Entry saved';
 
   @override
+  String get emotionTrackerClearEntry => 'Clear Entry';
+
+  @override
   String get emotion_happy => 'Happy';
 
   @override
