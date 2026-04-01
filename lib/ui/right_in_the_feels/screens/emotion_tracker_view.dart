@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
+import 'package:personal_hub_app/ui/core/widgets/tab_tool_tip.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_tree.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_editor.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_viewer.dart';
@@ -51,6 +52,7 @@ class EmotionTrackerView extends ConsumerWidget {
             _buildSectionHeader(
               AppLocalizations.of(context)!.emotionTrackerSectionFeeling,
               Icons.mood,
+              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionFeelingTooltip,
             ),
             const SizedBox(height: 12),
             EmotionSelector(
@@ -62,6 +64,7 @@ class EmotionTrackerView extends ConsumerWidget {
             _buildSectionHeader(
               AppLocalizations.of(context)!.emotionTrackerSectionJournal,
               Icons.edit_note,
+              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionJournalTooltip,
             ),
             const SizedBox(height: 12),
             TextField(
@@ -90,6 +93,7 @@ class EmotionTrackerView extends ConsumerWidget {
             _buildSectionHeader(
               AppLocalizations.of(context)!.emotionTrackerSectionBodyMap,
               Icons.accessibility_new,
+              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionBodyMapTooltip,
             ),
             const SizedBox(height: 12),
             GestureDetector(
@@ -111,9 +115,7 @@ class EmotionTrackerView extends ConsumerWidget {
                   },
                 );
               },
-              child: _BodyMapPreview(
-                drawing: vm.bodyMapDrawing,
-              ),
+              child: _BodyMapPreview(drawing: vm.bodyMapDrawing),
             ),
             const SizedBox(height: 32),
             // Save Button
@@ -134,9 +136,7 @@ class EmotionTrackerView extends ConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: _canClear(vm)
-                    ? () => notifier.clearEntry()
-                    : null,
+                onPressed: _canClear(vm) ? () => notifier.clearEntry() : null,
                 icon: const Icon(Icons.clear),
                 label: Text(
                   AppLocalizations.of(context)!.emotionTrackerClearEntry,
@@ -150,17 +150,67 @@ class EmotionTrackerView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title, IconData icon) {
-    return Row(
-      children: [
-        Icon(icon, size: 24),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  /// Section header with icon, title, and optional tap-to-open overlay tooltip for mobile.
+  /// Tapping anywhere on the row (icon, title or ? icon) opens the tooltip;
+  /// tapping anywhere else closes it.
+  Widget _buildSectionHeader(String title, IconData icon, {String? tooltip}) {
+    if (tooltip == null) {
+          return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, size: 24),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+            ],
+          );
+        } else {
+          // Use general-purpose TapTooltip widget for tooltip functionality
+          return TapTooltip(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(icon, size: 24),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
+                  ),
+            ),
+            Icon(Icons.help_outline, size: 18, color: Colors.grey[500]),
+          ],
         ),
-      ],
-    );
+        tooltipBuilder: (ctx) => ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 260),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: Theme.of(ctx).cardColor,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Text(tooltip, style: Theme.of(ctx).textTheme.bodyMedium),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   /// Returns true if any of the entry fields are not empty (so Clear makes sense).
@@ -180,9 +230,7 @@ class _BodyMapPreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 300,
-      child: BodyMapViewer(
-        strokes: drawing.strokes,
-      ),
+      child: BodyMapViewer(strokes: drawing.strokes),
     );
   }
 }
