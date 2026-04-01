@@ -239,20 +239,32 @@ abstract class AppLocalizations {
   /// No description provided for @emotionTrackerTitle.
   ///
   /// In en, this message translates to:
-  /// **'Emotion Tracker'**
+  /// **'Track Your Emotions'**
   String get emotionTrackerTitle;
 
   /// No description provided for @emotionTrackerSectionFeeling.
   ///
   /// In en, this message translates to:
-  /// **'How are you feeling?'**
+  /// **'What emotion are you feeling at the moment?'**
   String get emotionTrackerSectionFeeling;
+
+  /// No description provided for @emotionTrackerSectionFeelingTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the emotion that feels the most accurate. If you feel “neutral” or are not sure what you are feeling, try to sit with your body and notice physical sensations. Based on those sensations, try to intellectually guess what you might be feeling. As you guess, notice whether that feels right or wrong. In the beginning, it doesn\'t matter whether you pick the right answer or not. It only matters that you consciously try to access your emotion regularly.'**
+  String get emotionTrackerSectionFeelingTooltip;
 
   /// No description provided for @emotionTrackerSectionJournal.
   ///
   /// In en, this message translates to:
-  /// **'What\'s on your mind?'**
+  /// **'Write a bit about what you are feeling.'**
   String get emotionTrackerSectionJournal;
+
+  /// No description provided for @emotionTrackerSectionJournalTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal your thoughts and try to articulate your feelings to the best of your ability. These entries will be used in the Reflection Corner.'**
+  String get emotionTrackerSectionJournalTooltip;
 
   /// No description provided for @emotionTrackerJournalHint.
   ///
@@ -263,20 +275,14 @@ abstract class AppLocalizations {
   /// No description provided for @emotionTrackerSectionBodyMap.
   ///
   /// In en, this message translates to:
-  /// **'Body Map'**
+  /// **'Draw a body map.'**
   String get emotionTrackerSectionBodyMap;
 
-  /// No description provided for @emotionTrackerComingSoon.
+  /// No description provided for @emotionTrackerSectionBodyMapTooltip.
   ///
   /// In en, this message translates to:
-  /// **'Coming Soon'**
-  String get emotionTrackerComingSoon;
-
-  /// No description provided for @emotionTrackerDrawHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Draw where you feel it'**
-  String get emotionTrackerDrawHint;
+  /// **'Draw the outline of your body and using different colors, shade in the areas where you feel sensations. Shade darker for intense sensations and lighter for light sensations.'**
+  String get emotionTrackerSectionBodyMapTooltip;
 
   /// No description provided for @emotionTrackerSaveEntry.
   ///

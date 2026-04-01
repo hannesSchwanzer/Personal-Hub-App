@@ -78,25 +78,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reflectionCornerDesc => 'Reflect on your emotional journey';
 
   @override
-  String get emotionTrackerTitle => 'Emotion Tracker';
+  String get emotionTrackerTitle => 'Track Your Emotions';
 
   @override
-  String get emotionTrackerSectionFeeling => 'How are you feeling?';
+  String get emotionTrackerSectionFeeling =>
+      'What emotion are you feeling at the moment?';
 
   @override
-  String get emotionTrackerSectionJournal => 'What\'s on your mind?';
+  String get emotionTrackerSectionFeelingTooltip =>
+      'Pick the emotion that feels the most accurate. If you feel “neutral” or are not sure what you are feeling, try to sit with your body and notice physical sensations. Based on those sensations, try to intellectually guess what you might be feeling. As you guess, notice whether that feels right or wrong. In the beginning, it doesn\'t matter whether you pick the right answer or not. It only matters that you consciously try to access your emotion regularly.';
+
+  @override
+  String get emotionTrackerSectionJournal =>
+      'Write a bit about what you are feeling.';
+
+  @override
+  String get emotionTrackerSectionJournalTooltip =>
+      'Journal your thoughts and try to articulate your feelings to the best of your ability. These entries will be used in the Reflection Corner.';
 
   @override
   String get emotionTrackerJournalHint => 'Write about your feelings...';
 
   @override
-  String get emotionTrackerSectionBodyMap => 'Body Map';
+  String get emotionTrackerSectionBodyMap => 'Draw a body map.';
 
   @override
-  String get emotionTrackerComingSoon => 'Coming Soon';
-
-  @override
-  String get emotionTrackerDrawHint => 'Draw where you feel it';
+  String get emotionTrackerSectionBodyMapTooltip =>
+      'Draw the outline of your body and using different colors, shade in the areas where you feel sensations. Shade darker for intense sensations and lighter for light sensations.';
 
   @override
   String get emotionTrackerSaveEntry => 'Save Entry';

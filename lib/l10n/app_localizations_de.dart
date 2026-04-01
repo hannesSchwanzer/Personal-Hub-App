@@ -83,25 +83,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reflectionCornerDesc => 'Reflektiere deine emotionale Reise';
 
   @override
-  String get emotionTrackerTitle => 'Gefühlstracker';
+  String get emotionTrackerTitle => 'Verfolge deine Gefühle';
 
   @override
-  String get emotionTrackerSectionFeeling => 'Wie fühlst du dich?';
+  String get emotionTrackerSectionFeeling =>
+      'Welches Gefühl empfindest du im Moment?';
 
   @override
-  String get emotionTrackerSectionJournal => 'Was beschäftigt dich?';
+  String get emotionTrackerSectionFeelingTooltip =>
+      'Wähle das Gefühl aus, das am ehesten zutrifft. Wenn du dich „neutral“ fühlst oder unsicher bist, versuche, mit deinem Körper in Kontakt zu treten und auf körperliche Empfindungen zu achten. Auf Grundlage dieser Empfindungen versuche, intellektuell zu erraten, was du vielleicht fühlst. Achte beim Raten darauf, ob sich das stimmig oder unstimmig anfühlt. Am Anfang ist es nicht wichtig, ob du die richtige Antwort findest. Es zählt, dass du regelmäßig bewusst versuchst, Zugang zu deinen Gefühlen zu bekommen.';
+
+  @override
+  String get emotionTrackerSectionJournal =>
+      'Schreibe ein wenig darüber, was du fühlst.';
+
+  @override
+  String get emotionTrackerSectionJournalTooltip =>
+      'Halte deine Gedanken schriftlich fest und versuche, deine Gefühle so gut wie möglich zu formulieren. Diese Einträge werden in der Reflexions-Ecke verwendet.';
 
   @override
   String get emotionTrackerJournalHint => 'Schreibe über deine Gefühle...';
 
   @override
-  String get emotionTrackerSectionBodyMap => 'Körperkarte';
+  String get emotionTrackerSectionBodyMap => 'Zeichne eine Körperkarte.';
 
   @override
-  String get emotionTrackerComingSoon => 'Kommt bald';
-
-  @override
-  String get emotionTrackerDrawHint => 'Zeichne, wo du es spürst';
+  String get emotionTrackerSectionBodyMapTooltip =>
+      'Zeichne die Umrisse deines Körpers und schattiere mit verschiedenen Farben die Bereiche ein, in denen du Empfindungen spürst. Schattiere dunkler für intensive Empfindungen und heller für leichte Empfindungen.';
 
   @override
   String get emotionTrackerSaveEntry => 'Eintrag speichern';
