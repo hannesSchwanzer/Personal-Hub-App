@@ -36,6 +36,23 @@ class SettingsView extends ConsumerWidget {
                 notifier.setLocale(newLocale);
               },
             ),
+
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Developer Mode',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Switch(
+                  value: settings.isDeveloperModeEnabled,
+                  onChanged: (bool value) {
+                    notifier.setDeveloperMode(value);
+                  },
+                ),
+              ],
+            ),
             const Divider(height: 32),
             Text(AppLocalizations.of(context)!.noAdditionalSettings),
           ],

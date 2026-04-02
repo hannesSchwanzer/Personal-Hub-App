@@ -31,4 +31,11 @@ class SettingsNotifier extends Notifier<Settings> {
     await _repository.saveSettings(updated);
   }
 
+  /// Update developer mode and persist settings.
+  Future<void> setDeveloperMode(bool enabled) async {
+    final updated = state.copyWith(isDeveloperModeEnabled: enabled);
+    state = updated;
+    await _repository.saveSettings(updated);
+  }
+
 }

@@ -10,4 +10,5 @@ abstract class JournalEntryRepository {
         BodyMapDrawing? bodyMapDrawing,
     });
     Stream<List<JournalEntryEntity>> watchAllEntries();
+    Future<void> deleteEntry(String entryId);
 }
