@@ -38,4 +38,9 @@ class JournalEntryReporsitoryImpl implements JournalEntryRepository {
     );
     return journalDao.insertEntry(newEntry.toCompanion());
   }
+
+  @override
+  Future<void> deleteEntry(String entryId) {
+    return journalDao.deleteEntry(entryId);
+  }
 }

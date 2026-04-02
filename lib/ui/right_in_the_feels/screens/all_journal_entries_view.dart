@@ -54,7 +54,31 @@ class AllJournalEntriesView extends ConsumerWidget {
                   ],
                 ),
                 isThreeLine: true,
-                // Optionally show more info, add trailing actions, etc.
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  onPressed: () async {
+                    final shouldDelete = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Delete Entry'),
+                        content: const Text('Are you sure you want to delete this entry?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (shouldDelete == true) {
+                      await journalRepo.deleteEntry(entry.id);
+                    }
+                  },
+                ),
               );
             },
           );

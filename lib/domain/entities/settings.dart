@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 
 class Settings {
   final Locale? locale;
-  // add more settings here
+  final bool isDeveloperModeEnabled;
 
-  Settings({this.locale});
-  Settings copyWith({Locale? locale}) => Settings(locale: locale ?? this.locale);
+  Settings({
+    this.locale,
+    this.isDeveloperModeEnabled = false,
+  });
+
+  Settings copyWith({
+    Locale? locale,
+    bool? isDeveloperModeEnabled,
+  }) {
+    return Settings(
+      locale: locale ?? this.locale,
+      isDeveloperModeEnabled:
+          isDeveloperModeEnabled ?? this.isDeveloperModeEnabled,
+    );
+  }
 }

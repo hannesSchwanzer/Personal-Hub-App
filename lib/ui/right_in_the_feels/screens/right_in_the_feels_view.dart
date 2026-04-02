@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotion_tracker_view.dart';
@@ -7,13 +9,21 @@ import 'package:personal_hub_app/ui/right_in_the_feels/screens/comms_check_view.
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotions_regulator_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/reflection_corner_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/all_journal_entries_view.dart';
+import 'package:personal_hub_app/utils/providers.dart';
 
 /// Hub view for emotional wellbeing features.
-class RightInTheFeelsView extends StatelessWidget {
+class RightInTheFeelsView extends ConsumerStatefulWidget {
   const RightInTheFeelsView({super.key});
 
   @override
+  ConsumerState<RightInTheFeelsView> createState() => _RightInTheFeelsViewState();
+}
+
+class _RightInTheFeelsViewState extends ConsumerState<RightInTheFeelsView> {
+  @override
   Widget build(BuildContext context) {
+    final settings = ref.watch(settingsNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.rightInTheFeels),
@@ -60,13 +70,15 @@ class RightInTheFeelsView extends StatelessWidget {
                 icon: Icons.lightbulb_outline,
                 onTap: () => _navigateTo(context, const ReflectionCornerView()),
               ),
-              const SizedBox(height: 16),
-              HubFeatureCard(
-                title: "View All Journal Entries",
-                description: "See a list of all your emotion journal entries.",
-                icon: Icons.library_books,
-                onTap: () => _navigateTo(context, const AllJournalEntriesView()),
-              ),
+              if (settings.isDeveloperModeEnabled) ...[
+                const SizedBox(height: 16),
+                HubFeatureCard(
+                  title: "View All Journal Entries",
+                  description: "See a list of all your emotion journal entries.",
+                  icon: Icons.library_books,
+                  onTap: () => _navigateTo(context, const AllJournalEntriesView()),
+                )
+              ],
             ],
           ),
         ),
