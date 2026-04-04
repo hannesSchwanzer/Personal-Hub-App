@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_viewer.dart';
 import 'package:personal_hub_app/utils/providers.dart';
+import 'journal_entry_detail_view.dart';
 
 /// Displays a list of all saved journal entries.
 class AllJournalEntriesView extends ConsumerWidget {
@@ -29,31 +30,22 @@ class AllJournalEntriesView extends ConsumerWidget {
             separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
               final entry = entries[index];
+              final entryDate = entry.createdAt.toLocal().toIso8601String().split("T").first;
+              const maxPreviewChars = 70;
+              String previewText = entry.entry;
+              if (previewText.length > maxPreviewChars) {
+                previewText = '${previewText.substring(0, maxPreviewChars)}...';
+              }
               return ListTile(
-                title: Text(entry.entry),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (entry.emotionLevel1 != null)
-                      Text('Primary emotion: ${entry.emotionLevel1}'),
-                    if (entry.emotionLevel2 != null)
-                      Text('Secondary emotion: ${entry.emotionLevel2}'),
-                    if (entry.emotionLevel3 != null)
-                      Text('Tertiary emotion: ${entry.emotionLevel3}'),
-                    Text(
-                      'Created: ${entry.createdAt.toLocal().toIso8601String().split("T").first}',
-                      style: const TextStyle(fontSize: 12),
+                title: Text(entryDate),
+                subtitle: Text(previewText),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => JournalEntryDetailView(entry: entry),
                     ),
-                    if (entry.bodyMapDrawing != null)
-                      SizedBox(
-                        height: 200,
-                        child: BodyMapViewer(
-                          strokes: entry.bodyMapDrawing!.strokes,
-                        ),
-                      ),
-                  ],
-                ),
-                isThreeLine: true,
+                  );
+                },
                 trailing: IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
                   onPressed: () async {
