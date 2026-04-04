@@ -18,6 +18,30 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noAdditionalSettings => 'Keine weiteren Einstellungen';
 
   @override
+  String get exportData => 'Daten exportieren';
+
+  @override
+  String get exportSuccess => 'Daten erfolgreich exportiert';
+
+  @override
+  String get exportFailed => 'Exportieren der Daten fehlgeschlagen';
+
+  @override
+  String get exportCancelled => 'Export abgebrochen';
+
+  @override
+  String get importData => 'Daten importieren';
+
+  @override
+  String get importSuccess => 'Daten erfolgreich importiert';
+
+  @override
+  String get importFailed => 'Importieren der Daten fehlgeschlagen';
+
+  @override
+  String get importCancelled => 'Import abgebrochen';
+
+  @override
   String get personalHub => 'Persönlicher Hub';
 
   @override

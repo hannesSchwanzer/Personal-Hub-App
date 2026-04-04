@@ -3,6 +3,15 @@
   "languagePickerTitle": "Sprachauswahl",
   "noAdditionalSettings": "Keine weiteren Einstellungen",
 
+  "exportData": "Daten exportieren",
+  "exportSuccess": "Daten erfolgreich exportiert",
+  "exportFailed": "Exportieren der Daten fehlgeschlagen",
+  "exportCancelled": "Export abgebrochen",
+  "importData": "Daten importieren",
+  "importSuccess": "Daten erfolgreich importiert",
+  "importFailed": "Importieren der Daten fehlgeschlagen",
+  "importCancelled": "Import abgebrochen",
+
   "personalHub": "Persönlicher Hub",
   "hubFeatureGymTracking": "Trainings-Tracking",
   "hubFeatureGymTrackingDesc": "Verfolge deine Workouts und Fortschritte",

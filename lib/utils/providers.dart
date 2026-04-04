@@ -5,10 +5,12 @@ import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart'
 import 'package:personal_hub_app/data/repositories/journal_entry_reporsitory_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/settings_repository_impl.dart';
+import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
+import 'package:personal_hub_app/domain/services/backup_service.dart';
 import 'package:personal_hub_app/ui/settings/view_models/settings_notifier.dart';
 
 final settingsNotifierProvider = NotifierProvider<SettingsNotifier, Settings>(
@@ -43,3 +45,9 @@ final journalReflectionRepositoryProvider =
       final dao = ref.watch(journalReflectionDaoProvider);
       return JournalReflectionRepositoryImpl(dao);
     });
+
+final backupServiceProvider = Provider<BackupService>((ref) {
+  final db = ref.watch(databaseProvider);
+  return BackupServiceImpl(db);
+});
+
