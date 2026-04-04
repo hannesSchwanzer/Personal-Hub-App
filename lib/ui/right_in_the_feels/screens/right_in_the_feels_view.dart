@@ -44,6 +44,13 @@ class _RightInTheFeelsViewState extends ConsumerState<RightInTheFeelsView> {
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
+                title: AppLocalizations.of(context)!.reflectionCorner,
+                description: AppLocalizations.of(context)!.reflectionCornerDesc,
+                icon: Icons.lightbulb_outline,
+                onTap: () => _navigateTo(context, const ReflectionCornerView()),
+              ),
+              const SizedBox(height: 16),
+              HubFeatureCard(
                 title: AppLocalizations.of(context)!.emotionExplorer,
                 description: AppLocalizations.of(context)!.emotionExplorerDesc,
                 icon: Icons.explore,
@@ -62,13 +69,6 @@ class _RightInTheFeelsViewState extends ConsumerState<RightInTheFeelsView> {
                 description: AppLocalizations.of(context)!.emotionsRegulatorDesc,
                 icon: Icons.tune,
                 onTap: () => _navigateTo(context, const EmotionsRegulatorView()),
-              ),
-              const SizedBox(height: 16),
-              HubFeatureCard(
-                title: AppLocalizations.of(context)!.reflectionCorner,
-                description: AppLocalizations.of(context)!.reflectionCornerDesc,
-                icon: Icons.lightbulb_outline,
-                onTap: () => _navigateTo(context, const ReflectionCornerView()),
               ),
               if (settings.isDeveloperModeEnabled) ...[
                 const SizedBox(height: 16),

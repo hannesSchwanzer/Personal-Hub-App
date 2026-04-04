@@ -62,4 +62,9 @@ class JournalEntryEntity {
       bodyMapDrawing: bodyMapDrawing,
     );
   }
+
+  @override
+    String toString() {
+      return 'JournalEntryEntity(id: $id, emotionLevel1: $emotionLevel1, emotionLevel2: $emotionLevel2, emotionLevel3: $emotionLevel3, entry: $entry, createdAt: $createdAt, updatedAt: $updatedAt, bodyMapDrawing: ${bodyMapDrawing != null ? "Yes" : "No"})';
+    }
 }
