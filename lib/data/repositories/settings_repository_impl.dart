@@ -6,6 +6,7 @@ import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 /// Implementation of [SettingsRepository] using SharedPreferences for storage.
 class SettingsRepositoryImpl implements SettingsRepository {
   static const String _localeKey = 'locale';
+  static const String _devModeKey = 'developer_mode_enabled';
 
   @override
   Future<Settings> loadSettings() async {
@@ -21,7 +22,13 @@ class SettingsRepositoryImpl implements SettingsRepository {
         locale = Locale(parts[0]);
       }
     }
-    return Settings(locale: locale);
+
+    final isDeveloperModeEnabled = prefs.getBool(_devModeKey) ?? false;
+
+    return Settings(
+      locale: locale,
+      isDeveloperModeEnabled: isDeveloperModeEnabled,
+    );
   }
 
   @override
@@ -36,6 +43,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
     } else {
       await prefs.remove(_localeKey);
     }
+  
+      await prefs.setBool(_devModeKey, settings.isDeveloperModeEnabled);
   }
 }
 

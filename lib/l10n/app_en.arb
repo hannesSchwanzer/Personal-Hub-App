@@ -37,6 +37,16 @@
     "emotionTrackerEntrySaved": "Entry saved",
     "emotionTrackerClearEntry": "Clear Entry",
 
+    "reflectionCornerTitle": "Reflection Corner",
+    "reflectionCornerNoEntries": "No entries yet. Start tracking your emotions to see them here.",
+    "reflectionCornerEntryTitle": "Here is your journal entry you created on {entryDate}",
+    "reflectionCornerEmotionEntry": "What emotion do you think you were feeling at this time?",
+    "reflectionCornerEmotionNow": "Looking back at this entry, how do you feel now?",
+    "reflectionCornerReflectionPrompt": "Take a minute to reflect on your previous entry.\nWhat do you think about your state of mind at the time?",
+    "reflectionCornerReflectionHint": "Write your thoughts...",
+    "reflectionCornerSubmitReflection": "Submit",
+    "reflectionCornerReflectionSaved": "Reflection saved",
+
     "emotion_happy": "Happy",
     "emotion_happy_optimistic": "Optimistic",
     "emotion_happy_optimistic_inspired": "Inspired",

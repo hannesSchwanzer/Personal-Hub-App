@@ -302,6 +302,60 @@ abstract class AppLocalizations {
   /// **'Clear Entry'**
   String get emotionTrackerClearEntry;
 
+  /// No description provided for @reflectionCornerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflection Corner'**
+  String get reflectionCornerTitle;
+
+  /// No description provided for @reflectionCornerNoEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet. Start tracking your emotions to see them here.'**
+  String get reflectionCornerNoEntries;
+
+  /// No description provided for @reflectionCornerEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here is your journal entry you created on {entryDate}'**
+  String reflectionCornerEntryTitle(Object entryDate);
+
+  /// No description provided for @reflectionCornerEmotionEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'What emotion do you think you were feeling at this time?'**
+  String get reflectionCornerEmotionEntry;
+
+  /// No description provided for @reflectionCornerEmotionNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking back at this entry, how do you feel now?'**
+  String get reflectionCornerEmotionNow;
+
+  /// No description provided for @reflectionCornerReflectionPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a minute to reflect on your previous entry.\nWhat do you think about your state of mind at the time?'**
+  String get reflectionCornerReflectionPrompt;
+
+  /// No description provided for @reflectionCornerReflectionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write your thoughts...'**
+  String get reflectionCornerReflectionHint;
+
+  /// No description provided for @reflectionCornerSubmitReflection.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get reflectionCornerSubmitReflection;
+
+  /// No description provided for @reflectionCornerReflectionSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflection saved'**
+  String get reflectionCornerReflectionSaved;
+
   /// No description provided for @emotion_happy.
   ///
   /// In en, this message translates to:

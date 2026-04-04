@@ -22,4 +22,8 @@ class JournalDao extends DatabaseAccessor<AppDatabase> with _$JournalDaoMixin {
   Future<void> deleteEntry(String id) {
     return (delete(journalEntries)..where((t) => t.id.equals(id))).go();
   }
+
+  Future<List<JournalEntry>> getAllEntries() {
+    return select(journalEntries).get();
+  }
 }

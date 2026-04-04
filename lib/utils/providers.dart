@@ -1,10 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/journal_dao.dart';
+import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart';
 import 'package:personal_hub_app/data/repositories/journal_entry_reporsitory_impl.dart';
+import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/settings_repository_impl.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
+import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 import 'package:personal_hub_app/ui/settings/view_models/settings_notifier.dart';
 
@@ -30,3 +33,13 @@ final journalEntryRepositoryProvider = Provider<JournalEntryRepository>((ref) {
   return JournalEntryReporsitoryImpl(dao);
 });
 
+final journalReflectionDaoProvider = Provider<JournalReflectionDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return JournalReflectionDao(db);
+});
+
+final journalReflectionRepositoryProvider =
+    Provider<JournalReflectionRepository>((ref) {
+      final dao = ref.watch(journalReflectionDaoProvider);
+      return JournalReflectionRepositoryImpl(dao);
+    });
