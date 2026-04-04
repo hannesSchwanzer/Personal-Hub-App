@@ -41,6 +41,7 @@ class BackupServiceImpl implements BackupService {
                   emotionLevel1: Value(e['emotionLevel1']),
                   emotionLevel2: Value(e['emotionLevel2']),
                   emotionLevel3: Value(e['emotionLevel3']),
+                  bodyMapDrawing: Value(e['bodyMapDrawing']),
                   createdAt: DateTime.fromMillisecondsSinceEpoch(e['createdAt']),
                   updatedAt: DateTime.fromMillisecondsSinceEpoch(e['updatedAt']),
                 ),
