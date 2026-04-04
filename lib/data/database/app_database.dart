@@ -6,13 +6,15 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'daos/journal_dao.dart';
+import 'daos/journal_reflection_dao.dart';
 import 'tables/journal_entries_table.dart';
+import 'tables/journal_reflection_table.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  tables: [JournalEntries],
-  daos: [JournalDao],
+  tables: [JournalEntries, JournalReflections],
+  daos: [JournalDao, JournalReflectionDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

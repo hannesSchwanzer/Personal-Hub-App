@@ -545,16 +545,719 @@ class JournalEntriesCompanion extends UpdateCompanion<JournalEntry> {
   }
 }
 
+class $JournalReflectionsTable extends JournalReflections
+    with TableInfo<$JournalReflectionsTable, JournalReflection> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $JournalReflectionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _guessedEmotionLevel1Meta =
+      const VerificationMeta('guessedEmotionLevel1');
+  @override
+  late final GeneratedColumn<String> guessedEmotionLevel1 =
+      GeneratedColumn<String>(
+        'guessed_emotion_level1',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _guessedEmotionLevel2Meta =
+      const VerificationMeta('guessedEmotionLevel2');
+  @override
+  late final GeneratedColumn<String> guessedEmotionLevel2 =
+      GeneratedColumn<String>(
+        'guessed_emotion_level2',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _guessedEmotionLevel3Meta =
+      const VerificationMeta('guessedEmotionLevel3');
+  @override
+  late final GeneratedColumn<String> guessedEmotionLevel3 =
+      GeneratedColumn<String>(
+        'guessed_emotion_level3',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _currentEmotionLevel1Meta =
+      const VerificationMeta('currentEmotionLevel1');
+  @override
+  late final GeneratedColumn<String> currentEmotionLevel1 =
+      GeneratedColumn<String>(
+        'current_emotion_level1',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _currentEmotionLevel2Meta =
+      const VerificationMeta('currentEmotionLevel2');
+  @override
+  late final GeneratedColumn<String> currentEmotionLevel2 =
+      GeneratedColumn<String>(
+        'current_emotion_level2',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _currentEmotionLevel3Meta =
+      const VerificationMeta('currentEmotionLevel3');
+  @override
+  late final GeneratedColumn<String> currentEmotionLevel3 =
+      GeneratedColumn<String>(
+        'current_emotion_level3',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _reflectionMeta = const VerificationMeta(
+    'reflection',
+  );
+  @override
+  late final GeneratedColumn<String> reflection = GeneratedColumn<String>(
+    'reflection',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _journalEntryIdMeta = const VerificationMeta(
+    'journalEntryId',
+  );
+  @override
+  late final GeneratedColumn<String> journalEntryId = GeneratedColumn<String>(
+    'journal_entry_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'REFERENCES journal_entries(id) NOT NULL',
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    guessedEmotionLevel1,
+    guessedEmotionLevel2,
+    guessedEmotionLevel3,
+    currentEmotionLevel1,
+    currentEmotionLevel2,
+    currentEmotionLevel3,
+    reflection,
+    journalEntryId,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'journal_reflections';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<JournalReflection> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('guessed_emotion_level1')) {
+      context.handle(
+        _guessedEmotionLevel1Meta,
+        guessedEmotionLevel1.isAcceptableOrUnknown(
+          data['guessed_emotion_level1']!,
+          _guessedEmotionLevel1Meta,
+        ),
+      );
+    }
+    if (data.containsKey('guessed_emotion_level2')) {
+      context.handle(
+        _guessedEmotionLevel2Meta,
+        guessedEmotionLevel2.isAcceptableOrUnknown(
+          data['guessed_emotion_level2']!,
+          _guessedEmotionLevel2Meta,
+        ),
+      );
+    }
+    if (data.containsKey('guessed_emotion_level3')) {
+      context.handle(
+        _guessedEmotionLevel3Meta,
+        guessedEmotionLevel3.isAcceptableOrUnknown(
+          data['guessed_emotion_level3']!,
+          _guessedEmotionLevel3Meta,
+        ),
+      );
+    }
+    if (data.containsKey('current_emotion_level1')) {
+      context.handle(
+        _currentEmotionLevel1Meta,
+        currentEmotionLevel1.isAcceptableOrUnknown(
+          data['current_emotion_level1']!,
+          _currentEmotionLevel1Meta,
+        ),
+      );
+    }
+    if (data.containsKey('current_emotion_level2')) {
+      context.handle(
+        _currentEmotionLevel2Meta,
+        currentEmotionLevel2.isAcceptableOrUnknown(
+          data['current_emotion_level2']!,
+          _currentEmotionLevel2Meta,
+        ),
+      );
+    }
+    if (data.containsKey('current_emotion_level3')) {
+      context.handle(
+        _currentEmotionLevel3Meta,
+        currentEmotionLevel3.isAcceptableOrUnknown(
+          data['current_emotion_level3']!,
+          _currentEmotionLevel3Meta,
+        ),
+      );
+    }
+    if (data.containsKey('reflection')) {
+      context.handle(
+        _reflectionMeta,
+        reflection.isAcceptableOrUnknown(data['reflection']!, _reflectionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reflectionMeta);
+    }
+    if (data.containsKey('journal_entry_id')) {
+      context.handle(
+        _journalEntryIdMeta,
+        journalEntryId.isAcceptableOrUnknown(
+          data['journal_entry_id']!,
+          _journalEntryIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_journalEntryIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  JournalReflection map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return JournalReflection(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      guessedEmotionLevel1: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}guessed_emotion_level1'],
+      ),
+      guessedEmotionLevel2: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}guessed_emotion_level2'],
+      ),
+      guessedEmotionLevel3: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}guessed_emotion_level3'],
+      ),
+      currentEmotionLevel1: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_emotion_level1'],
+      ),
+      currentEmotionLevel2: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_emotion_level2'],
+      ),
+      currentEmotionLevel3: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}current_emotion_level3'],
+      ),
+      reflection: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reflection'],
+      )!,
+      journalEntryId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}journal_entry_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $JournalReflectionsTable createAlias(String alias) {
+    return $JournalReflectionsTable(attachedDatabase, alias);
+  }
+}
+
+class JournalReflection extends DataClass
+    implements Insertable<JournalReflection> {
+  final String id;
+  final String? guessedEmotionLevel1;
+  final String? guessedEmotionLevel2;
+  final String? guessedEmotionLevel3;
+  final String? currentEmotionLevel1;
+  final String? currentEmotionLevel2;
+  final String? currentEmotionLevel3;
+  final String reflection;
+  final String journalEntryId;
+  final DateTime createdAt;
+  const JournalReflection({
+    required this.id,
+    this.guessedEmotionLevel1,
+    this.guessedEmotionLevel2,
+    this.guessedEmotionLevel3,
+    this.currentEmotionLevel1,
+    this.currentEmotionLevel2,
+    this.currentEmotionLevel3,
+    required this.reflection,
+    required this.journalEntryId,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    if (!nullToAbsent || guessedEmotionLevel1 != null) {
+      map['guessed_emotion_level1'] = Variable<String>(guessedEmotionLevel1);
+    }
+    if (!nullToAbsent || guessedEmotionLevel2 != null) {
+      map['guessed_emotion_level2'] = Variable<String>(guessedEmotionLevel2);
+    }
+    if (!nullToAbsent || guessedEmotionLevel3 != null) {
+      map['guessed_emotion_level3'] = Variable<String>(guessedEmotionLevel3);
+    }
+    if (!nullToAbsent || currentEmotionLevel1 != null) {
+      map['current_emotion_level1'] = Variable<String>(currentEmotionLevel1);
+    }
+    if (!nullToAbsent || currentEmotionLevel2 != null) {
+      map['current_emotion_level2'] = Variable<String>(currentEmotionLevel2);
+    }
+    if (!nullToAbsent || currentEmotionLevel3 != null) {
+      map['current_emotion_level3'] = Variable<String>(currentEmotionLevel3);
+    }
+    map['reflection'] = Variable<String>(reflection);
+    map['journal_entry_id'] = Variable<String>(journalEntryId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  JournalReflectionsCompanion toCompanion(bool nullToAbsent) {
+    return JournalReflectionsCompanion(
+      id: Value(id),
+      guessedEmotionLevel1: guessedEmotionLevel1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(guessedEmotionLevel1),
+      guessedEmotionLevel2: guessedEmotionLevel2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(guessedEmotionLevel2),
+      guessedEmotionLevel3: guessedEmotionLevel3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(guessedEmotionLevel3),
+      currentEmotionLevel1: currentEmotionLevel1 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentEmotionLevel1),
+      currentEmotionLevel2: currentEmotionLevel2 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentEmotionLevel2),
+      currentEmotionLevel3: currentEmotionLevel3 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentEmotionLevel3),
+      reflection: Value(reflection),
+      journalEntryId: Value(journalEntryId),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory JournalReflection.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return JournalReflection(
+      id: serializer.fromJson<String>(json['id']),
+      guessedEmotionLevel1: serializer.fromJson<String?>(
+        json['guessedEmotionLevel1'],
+      ),
+      guessedEmotionLevel2: serializer.fromJson<String?>(
+        json['guessedEmotionLevel2'],
+      ),
+      guessedEmotionLevel3: serializer.fromJson<String?>(
+        json['guessedEmotionLevel3'],
+      ),
+      currentEmotionLevel1: serializer.fromJson<String?>(
+        json['currentEmotionLevel1'],
+      ),
+      currentEmotionLevel2: serializer.fromJson<String?>(
+        json['currentEmotionLevel2'],
+      ),
+      currentEmotionLevel3: serializer.fromJson<String?>(
+        json['currentEmotionLevel3'],
+      ),
+      reflection: serializer.fromJson<String>(json['reflection']),
+      journalEntryId: serializer.fromJson<String>(json['journalEntryId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'guessedEmotionLevel1': serializer.toJson<String?>(guessedEmotionLevel1),
+      'guessedEmotionLevel2': serializer.toJson<String?>(guessedEmotionLevel2),
+      'guessedEmotionLevel3': serializer.toJson<String?>(guessedEmotionLevel3),
+      'currentEmotionLevel1': serializer.toJson<String?>(currentEmotionLevel1),
+      'currentEmotionLevel2': serializer.toJson<String?>(currentEmotionLevel2),
+      'currentEmotionLevel3': serializer.toJson<String?>(currentEmotionLevel3),
+      'reflection': serializer.toJson<String>(reflection),
+      'journalEntryId': serializer.toJson<String>(journalEntryId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  JournalReflection copyWith({
+    String? id,
+    Value<String?> guessedEmotionLevel1 = const Value.absent(),
+    Value<String?> guessedEmotionLevel2 = const Value.absent(),
+    Value<String?> guessedEmotionLevel3 = const Value.absent(),
+    Value<String?> currentEmotionLevel1 = const Value.absent(),
+    Value<String?> currentEmotionLevel2 = const Value.absent(),
+    Value<String?> currentEmotionLevel3 = const Value.absent(),
+    String? reflection,
+    String? journalEntryId,
+    DateTime? createdAt,
+  }) => JournalReflection(
+    id: id ?? this.id,
+    guessedEmotionLevel1: guessedEmotionLevel1.present
+        ? guessedEmotionLevel1.value
+        : this.guessedEmotionLevel1,
+    guessedEmotionLevel2: guessedEmotionLevel2.present
+        ? guessedEmotionLevel2.value
+        : this.guessedEmotionLevel2,
+    guessedEmotionLevel3: guessedEmotionLevel3.present
+        ? guessedEmotionLevel3.value
+        : this.guessedEmotionLevel3,
+    currentEmotionLevel1: currentEmotionLevel1.present
+        ? currentEmotionLevel1.value
+        : this.currentEmotionLevel1,
+    currentEmotionLevel2: currentEmotionLevel2.present
+        ? currentEmotionLevel2.value
+        : this.currentEmotionLevel2,
+    currentEmotionLevel3: currentEmotionLevel3.present
+        ? currentEmotionLevel3.value
+        : this.currentEmotionLevel3,
+    reflection: reflection ?? this.reflection,
+    journalEntryId: journalEntryId ?? this.journalEntryId,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  JournalReflection copyWithCompanion(JournalReflectionsCompanion data) {
+    return JournalReflection(
+      id: data.id.present ? data.id.value : this.id,
+      guessedEmotionLevel1: data.guessedEmotionLevel1.present
+          ? data.guessedEmotionLevel1.value
+          : this.guessedEmotionLevel1,
+      guessedEmotionLevel2: data.guessedEmotionLevel2.present
+          ? data.guessedEmotionLevel2.value
+          : this.guessedEmotionLevel2,
+      guessedEmotionLevel3: data.guessedEmotionLevel3.present
+          ? data.guessedEmotionLevel3.value
+          : this.guessedEmotionLevel3,
+      currentEmotionLevel1: data.currentEmotionLevel1.present
+          ? data.currentEmotionLevel1.value
+          : this.currentEmotionLevel1,
+      currentEmotionLevel2: data.currentEmotionLevel2.present
+          ? data.currentEmotionLevel2.value
+          : this.currentEmotionLevel2,
+      currentEmotionLevel3: data.currentEmotionLevel3.present
+          ? data.currentEmotionLevel3.value
+          : this.currentEmotionLevel3,
+      reflection: data.reflection.present
+          ? data.reflection.value
+          : this.reflection,
+      journalEntryId: data.journalEntryId.present
+          ? data.journalEntryId.value
+          : this.journalEntryId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('JournalReflection(')
+          ..write('id: $id, ')
+          ..write('guessedEmotionLevel1: $guessedEmotionLevel1, ')
+          ..write('guessedEmotionLevel2: $guessedEmotionLevel2, ')
+          ..write('guessedEmotionLevel3: $guessedEmotionLevel3, ')
+          ..write('currentEmotionLevel1: $currentEmotionLevel1, ')
+          ..write('currentEmotionLevel2: $currentEmotionLevel2, ')
+          ..write('currentEmotionLevel3: $currentEmotionLevel3, ')
+          ..write('reflection: $reflection, ')
+          ..write('journalEntryId: $journalEntryId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    guessedEmotionLevel1,
+    guessedEmotionLevel2,
+    guessedEmotionLevel3,
+    currentEmotionLevel1,
+    currentEmotionLevel2,
+    currentEmotionLevel3,
+    reflection,
+    journalEntryId,
+    createdAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is JournalReflection &&
+          other.id == this.id &&
+          other.guessedEmotionLevel1 == this.guessedEmotionLevel1 &&
+          other.guessedEmotionLevel2 == this.guessedEmotionLevel2 &&
+          other.guessedEmotionLevel3 == this.guessedEmotionLevel3 &&
+          other.currentEmotionLevel1 == this.currentEmotionLevel1 &&
+          other.currentEmotionLevel2 == this.currentEmotionLevel2 &&
+          other.currentEmotionLevel3 == this.currentEmotionLevel3 &&
+          other.reflection == this.reflection &&
+          other.journalEntryId == this.journalEntryId &&
+          other.createdAt == this.createdAt);
+}
+
+class JournalReflectionsCompanion extends UpdateCompanion<JournalReflection> {
+  final Value<String> id;
+  final Value<String?> guessedEmotionLevel1;
+  final Value<String?> guessedEmotionLevel2;
+  final Value<String?> guessedEmotionLevel3;
+  final Value<String?> currentEmotionLevel1;
+  final Value<String?> currentEmotionLevel2;
+  final Value<String?> currentEmotionLevel3;
+  final Value<String> reflection;
+  final Value<String> journalEntryId;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const JournalReflectionsCompanion({
+    this.id = const Value.absent(),
+    this.guessedEmotionLevel1 = const Value.absent(),
+    this.guessedEmotionLevel2 = const Value.absent(),
+    this.guessedEmotionLevel3 = const Value.absent(),
+    this.currentEmotionLevel1 = const Value.absent(),
+    this.currentEmotionLevel2 = const Value.absent(),
+    this.currentEmotionLevel3 = const Value.absent(),
+    this.reflection = const Value.absent(),
+    this.journalEntryId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  JournalReflectionsCompanion.insert({
+    required String id,
+    this.guessedEmotionLevel1 = const Value.absent(),
+    this.guessedEmotionLevel2 = const Value.absent(),
+    this.guessedEmotionLevel3 = const Value.absent(),
+    this.currentEmotionLevel1 = const Value.absent(),
+    this.currentEmotionLevel2 = const Value.absent(),
+    this.currentEmotionLevel3 = const Value.absent(),
+    required String reflection,
+    required String journalEntryId,
+    required DateTime createdAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       reflection = Value(reflection),
+       journalEntryId = Value(journalEntryId),
+       createdAt = Value(createdAt);
+  static Insertable<JournalReflection> custom({
+    Expression<String>? id,
+    Expression<String>? guessedEmotionLevel1,
+    Expression<String>? guessedEmotionLevel2,
+    Expression<String>? guessedEmotionLevel3,
+    Expression<String>? currentEmotionLevel1,
+    Expression<String>? currentEmotionLevel2,
+    Expression<String>? currentEmotionLevel3,
+    Expression<String>? reflection,
+    Expression<String>? journalEntryId,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (guessedEmotionLevel1 != null)
+        'guessed_emotion_level1': guessedEmotionLevel1,
+      if (guessedEmotionLevel2 != null)
+        'guessed_emotion_level2': guessedEmotionLevel2,
+      if (guessedEmotionLevel3 != null)
+        'guessed_emotion_level3': guessedEmotionLevel3,
+      if (currentEmotionLevel1 != null)
+        'current_emotion_level1': currentEmotionLevel1,
+      if (currentEmotionLevel2 != null)
+        'current_emotion_level2': currentEmotionLevel2,
+      if (currentEmotionLevel3 != null)
+        'current_emotion_level3': currentEmotionLevel3,
+      if (reflection != null) 'reflection': reflection,
+      if (journalEntryId != null) 'journal_entry_id': journalEntryId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  JournalReflectionsCompanion copyWith({
+    Value<String>? id,
+    Value<String?>? guessedEmotionLevel1,
+    Value<String?>? guessedEmotionLevel2,
+    Value<String?>? guessedEmotionLevel3,
+    Value<String?>? currentEmotionLevel1,
+    Value<String?>? currentEmotionLevel2,
+    Value<String?>? currentEmotionLevel3,
+    Value<String>? reflection,
+    Value<String>? journalEntryId,
+    Value<DateTime>? createdAt,
+    Value<int>? rowid,
+  }) {
+    return JournalReflectionsCompanion(
+      id: id ?? this.id,
+      guessedEmotionLevel1: guessedEmotionLevel1 ?? this.guessedEmotionLevel1,
+      guessedEmotionLevel2: guessedEmotionLevel2 ?? this.guessedEmotionLevel2,
+      guessedEmotionLevel3: guessedEmotionLevel3 ?? this.guessedEmotionLevel3,
+      currentEmotionLevel1: currentEmotionLevel1 ?? this.currentEmotionLevel1,
+      currentEmotionLevel2: currentEmotionLevel2 ?? this.currentEmotionLevel2,
+      currentEmotionLevel3: currentEmotionLevel3 ?? this.currentEmotionLevel3,
+      reflection: reflection ?? this.reflection,
+      journalEntryId: journalEntryId ?? this.journalEntryId,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (guessedEmotionLevel1.present) {
+      map['guessed_emotion_level1'] = Variable<String>(
+        guessedEmotionLevel1.value,
+      );
+    }
+    if (guessedEmotionLevel2.present) {
+      map['guessed_emotion_level2'] = Variable<String>(
+        guessedEmotionLevel2.value,
+      );
+    }
+    if (guessedEmotionLevel3.present) {
+      map['guessed_emotion_level3'] = Variable<String>(
+        guessedEmotionLevel3.value,
+      );
+    }
+    if (currentEmotionLevel1.present) {
+      map['current_emotion_level1'] = Variable<String>(
+        currentEmotionLevel1.value,
+      );
+    }
+    if (currentEmotionLevel2.present) {
+      map['current_emotion_level2'] = Variable<String>(
+        currentEmotionLevel2.value,
+      );
+    }
+    if (currentEmotionLevel3.present) {
+      map['current_emotion_level3'] = Variable<String>(
+        currentEmotionLevel3.value,
+      );
+    }
+    if (reflection.present) {
+      map['reflection'] = Variable<String>(reflection.value);
+    }
+    if (journalEntryId.present) {
+      map['journal_entry_id'] = Variable<String>(journalEntryId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('JournalReflectionsCompanion(')
+          ..write('id: $id, ')
+          ..write('guessedEmotionLevel1: $guessedEmotionLevel1, ')
+          ..write('guessedEmotionLevel2: $guessedEmotionLevel2, ')
+          ..write('guessedEmotionLevel3: $guessedEmotionLevel3, ')
+          ..write('currentEmotionLevel1: $currentEmotionLevel1, ')
+          ..write('currentEmotionLevel2: $currentEmotionLevel2, ')
+          ..write('currentEmotionLevel3: $currentEmotionLevel3, ')
+          ..write('reflection: $reflection, ')
+          ..write('journalEntryId: $journalEntryId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $JournalEntriesTable journalEntries = $JournalEntriesTable(this);
+  late final $JournalReflectionsTable journalReflections =
+      $JournalReflectionsTable(this);
   late final JournalDao journalDao = JournalDao(this as AppDatabase);
+  late final JournalReflectionDao journalReflectionDao = JournalReflectionDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [journalEntries];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    journalEntries,
+    journalReflections,
+  ];
 }
 
 typedef $$JournalEntriesTableCreateCompanionBuilder =
@@ -581,6 +1284,39 @@ typedef $$JournalEntriesTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<int> rowid,
     });
+
+final class $$JournalEntriesTableReferences
+    extends BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntry> {
+  $$JournalEntriesTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$JournalReflectionsTable, List<JournalReflection>>
+  _journalReflectionsRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.journalReflections,
+        aliasName: $_aliasNameGenerator(
+          db.journalEntries.id,
+          db.journalReflections.journalEntryId,
+        ),
+      );
+
+  $$JournalReflectionsTableProcessedTableManager get journalReflectionsRefs {
+    final manager = $$JournalReflectionsTableTableManager(
+      $_db,
+      $_db.journalReflections,
+    ).filter((f) => f.journalEntryId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _journalReflectionsRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$JournalEntriesTableFilterComposer
     extends Composer<_$AppDatabase, $JournalEntriesTable> {
@@ -630,6 +1366,31 @@ class $$JournalEntriesTableFilterComposer
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> journalReflectionsRefs(
+    Expression<bool> Function($$JournalReflectionsTableFilterComposer f) f,
+  ) {
+    final $$JournalReflectionsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.journalReflections,
+      getReferencedColumn: (t) => t.journalEntryId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalReflectionsTableFilterComposer(
+            $db: $db,
+            $table: $db.journalReflections,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$JournalEntriesTableOrderingComposer
@@ -722,6 +1483,32 @@ class $$JournalEntriesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  Expression<T> journalReflectionsRefs<T extends Object>(
+    Expression<T> Function($$JournalReflectionsTableAnnotationComposer a) f,
+  ) {
+    final $$JournalReflectionsTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.journalReflections,
+          getReferencedColumn: (t) => t.journalEntryId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$JournalReflectionsTableAnnotationComposer(
+                $db: $db,
+                $table: $db.journalReflections,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
 }
 
 class $$JournalEntriesTableTableManager
@@ -735,12 +1522,9 @@ class $$JournalEntriesTableTableManager
           $$JournalEntriesTableAnnotationComposer,
           $$JournalEntriesTableCreateCompanionBuilder,
           $$JournalEntriesTableUpdateCompanionBuilder,
-          (
-            JournalEntry,
-            BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntry>,
-          ),
+          (JournalEntry, $$JournalEntriesTableReferences),
           JournalEntry,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool journalReflectionsRefs})
         > {
   $$JournalEntriesTableTableManager(
     _$AppDatabase db,
@@ -800,9 +1584,47 @@ class $$JournalEntriesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$JournalEntriesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({journalReflectionsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (journalReflectionsRefs) db.journalReflections,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (journalReflectionsRefs)
+                    await $_getPrefetchedData<
+                      JournalEntry,
+                      $JournalEntriesTable,
+                      JournalReflection
+                    >(
+                      currentTable: table,
+                      referencedTable: $$JournalEntriesTableReferences
+                          ._journalReflectionsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$JournalEntriesTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).journalReflectionsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.journalEntryId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -817,12 +1639,456 @@ typedef $$JournalEntriesTableProcessedTableManager =
       $$JournalEntriesTableAnnotationComposer,
       $$JournalEntriesTableCreateCompanionBuilder,
       $$JournalEntriesTableUpdateCompanionBuilder,
-      (
-        JournalEntry,
-        BaseReferences<_$AppDatabase, $JournalEntriesTable, JournalEntry>,
-      ),
+      (JournalEntry, $$JournalEntriesTableReferences),
       JournalEntry,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool journalReflectionsRefs})
+    >;
+typedef $$JournalReflectionsTableCreateCompanionBuilder =
+    JournalReflectionsCompanion Function({
+      required String id,
+      Value<String?> guessedEmotionLevel1,
+      Value<String?> guessedEmotionLevel2,
+      Value<String?> guessedEmotionLevel3,
+      Value<String?> currentEmotionLevel1,
+      Value<String?> currentEmotionLevel2,
+      Value<String?> currentEmotionLevel3,
+      required String reflection,
+      required String journalEntryId,
+      required DateTime createdAt,
+      Value<int> rowid,
+    });
+typedef $$JournalReflectionsTableUpdateCompanionBuilder =
+    JournalReflectionsCompanion Function({
+      Value<String> id,
+      Value<String?> guessedEmotionLevel1,
+      Value<String?> guessedEmotionLevel2,
+      Value<String?> guessedEmotionLevel3,
+      Value<String?> currentEmotionLevel1,
+      Value<String?> currentEmotionLevel2,
+      Value<String?> currentEmotionLevel3,
+      Value<String> reflection,
+      Value<String> journalEntryId,
+      Value<DateTime> createdAt,
+      Value<int> rowid,
+    });
+
+final class $$JournalReflectionsTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $JournalReflectionsTable,
+          JournalReflection
+        > {
+  $$JournalReflectionsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $JournalEntriesTable _journalEntryIdTable(_$AppDatabase db) =>
+      db.journalEntries.createAlias(
+        $_aliasNameGenerator(
+          db.journalReflections.journalEntryId,
+          db.journalEntries.id,
+        ),
+      );
+
+  $$JournalEntriesTableProcessedTableManager get journalEntryId {
+    final $_column = $_itemColumn<String>('journal_entry_id')!;
+
+    final manager = $$JournalEntriesTableTableManager(
+      $_db,
+      $_db.journalEntries,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_journalEntryIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$JournalReflectionsTableFilterComposer
+    extends Composer<_$AppDatabase, $JournalReflectionsTable> {
+  $$JournalReflectionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get guessedEmotionLevel1 => $composableBuilder(
+    column: $table.guessedEmotionLevel1,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get guessedEmotionLevel2 => $composableBuilder(
+    column: $table.guessedEmotionLevel2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get guessedEmotionLevel3 => $composableBuilder(
+    column: $table.guessedEmotionLevel3,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currentEmotionLevel1 => $composableBuilder(
+    column: $table.currentEmotionLevel1,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currentEmotionLevel2 => $composableBuilder(
+    column: $table.currentEmotionLevel2,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currentEmotionLevel3 => $composableBuilder(
+    column: $table.currentEmotionLevel3,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$JournalEntriesTableFilterComposer get journalEntryId {
+    final $$JournalEntriesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.journalEntryId,
+      referencedTable: $db.journalEntries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalEntriesTableFilterComposer(
+            $db: $db,
+            $table: $db.journalEntries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$JournalReflectionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $JournalReflectionsTable> {
+  $$JournalReflectionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get guessedEmotionLevel1 => $composableBuilder(
+    column: $table.guessedEmotionLevel1,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get guessedEmotionLevel2 => $composableBuilder(
+    column: $table.guessedEmotionLevel2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get guessedEmotionLevel3 => $composableBuilder(
+    column: $table.guessedEmotionLevel3,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currentEmotionLevel1 => $composableBuilder(
+    column: $table.currentEmotionLevel1,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currentEmotionLevel2 => $composableBuilder(
+    column: $table.currentEmotionLevel2,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currentEmotionLevel3 => $composableBuilder(
+    column: $table.currentEmotionLevel3,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$JournalEntriesTableOrderingComposer get journalEntryId {
+    final $$JournalEntriesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.journalEntryId,
+      referencedTable: $db.journalEntries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalEntriesTableOrderingComposer(
+            $db: $db,
+            $table: $db.journalEntries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$JournalReflectionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $JournalReflectionsTable> {
+  $$JournalReflectionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get guessedEmotionLevel1 => $composableBuilder(
+    column: $table.guessedEmotionLevel1,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get guessedEmotionLevel2 => $composableBuilder(
+    column: $table.guessedEmotionLevel2,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get guessedEmotionLevel3 => $composableBuilder(
+    column: $table.guessedEmotionLevel3,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currentEmotionLevel1 => $composableBuilder(
+    column: $table.currentEmotionLevel1,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currentEmotionLevel2 => $composableBuilder(
+    column: $table.currentEmotionLevel2,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get currentEmotionLevel3 => $composableBuilder(
+    column: $table.currentEmotionLevel3,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$JournalEntriesTableAnnotationComposer get journalEntryId {
+    final $$JournalEntriesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.journalEntryId,
+      referencedTable: $db.journalEntries,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$JournalEntriesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.journalEntries,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$JournalReflectionsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $JournalReflectionsTable,
+          JournalReflection,
+          $$JournalReflectionsTableFilterComposer,
+          $$JournalReflectionsTableOrderingComposer,
+          $$JournalReflectionsTableAnnotationComposer,
+          $$JournalReflectionsTableCreateCompanionBuilder,
+          $$JournalReflectionsTableUpdateCompanionBuilder,
+          (JournalReflection, $$JournalReflectionsTableReferences),
+          JournalReflection,
+          PrefetchHooks Function({bool journalEntryId})
+        > {
+  $$JournalReflectionsTableTableManager(
+    _$AppDatabase db,
+    $JournalReflectionsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$JournalReflectionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$JournalReflectionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$JournalReflectionsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String?> guessedEmotionLevel1 = const Value.absent(),
+                Value<String?> guessedEmotionLevel2 = const Value.absent(),
+                Value<String?> guessedEmotionLevel3 = const Value.absent(),
+                Value<String?> currentEmotionLevel1 = const Value.absent(),
+                Value<String?> currentEmotionLevel2 = const Value.absent(),
+                Value<String?> currentEmotionLevel3 = const Value.absent(),
+                Value<String> reflection = const Value.absent(),
+                Value<String> journalEntryId = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => JournalReflectionsCompanion(
+                id: id,
+                guessedEmotionLevel1: guessedEmotionLevel1,
+                guessedEmotionLevel2: guessedEmotionLevel2,
+                guessedEmotionLevel3: guessedEmotionLevel3,
+                currentEmotionLevel1: currentEmotionLevel1,
+                currentEmotionLevel2: currentEmotionLevel2,
+                currentEmotionLevel3: currentEmotionLevel3,
+                reflection: reflection,
+                journalEntryId: journalEntryId,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                Value<String?> guessedEmotionLevel1 = const Value.absent(),
+                Value<String?> guessedEmotionLevel2 = const Value.absent(),
+                Value<String?> guessedEmotionLevel3 = const Value.absent(),
+                Value<String?> currentEmotionLevel1 = const Value.absent(),
+                Value<String?> currentEmotionLevel2 = const Value.absent(),
+                Value<String?> currentEmotionLevel3 = const Value.absent(),
+                required String reflection,
+                required String journalEntryId,
+                required DateTime createdAt,
+                Value<int> rowid = const Value.absent(),
+              }) => JournalReflectionsCompanion.insert(
+                id: id,
+                guessedEmotionLevel1: guessedEmotionLevel1,
+                guessedEmotionLevel2: guessedEmotionLevel2,
+                guessedEmotionLevel3: guessedEmotionLevel3,
+                currentEmotionLevel1: currentEmotionLevel1,
+                currentEmotionLevel2: currentEmotionLevel2,
+                currentEmotionLevel3: currentEmotionLevel3,
+                reflection: reflection,
+                journalEntryId: journalEntryId,
+                createdAt: createdAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$JournalReflectionsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({journalEntryId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (journalEntryId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.journalEntryId,
+                                referencedTable:
+                                    $$JournalReflectionsTableReferences
+                                        ._journalEntryIdTable(db),
+                                referencedColumn:
+                                    $$JournalReflectionsTableReferences
+                                        ._journalEntryIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$JournalReflectionsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $JournalReflectionsTable,
+      JournalReflection,
+      $$JournalReflectionsTableFilterComposer,
+      $$JournalReflectionsTableOrderingComposer,
+      $$JournalReflectionsTableAnnotationComposer,
+      $$JournalReflectionsTableCreateCompanionBuilder,
+      $$JournalReflectionsTableUpdateCompanionBuilder,
+      (JournalReflection, $$JournalReflectionsTableReferences),
+      JournalReflection,
+      PrefetchHooks Function({bool journalEntryId})
     >;
 
 class $AppDatabaseManager {
@@ -830,4 +2096,6 @@ class $AppDatabaseManager {
   $AppDatabaseManager(this._db);
   $$JournalEntriesTableTableManager get journalEntries =>
       $$JournalEntriesTableTableManager(_db, _db.journalEntries);
+  $$JournalReflectionsTableTableManager get journalReflections =>
+      $$JournalReflectionsTableTableManager(_db, _db.journalReflections);
 }

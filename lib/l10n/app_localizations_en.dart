@@ -116,6 +116,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emotionTrackerClearEntry => 'Clear Entry';
 
   @override
+  String get reflectionCornerTitle => 'Reflection Corner';
+
+  @override
+  String get reflectionCornerNoEntries =>
+      'No entries yet. Start tracking your emotions to see them here.';
+
+  @override
+  String reflectionCornerEntryTitle(Object entryDate) {
+    return 'Here is your journal entry you created on $entryDate';
+  }
+
+  @override
+  String get reflectionCornerEmotionEntry =>
+      'What emotion do you think you were feeling at this time?';
+
+  @override
+  String get reflectionCornerEmotionNow =>
+      'Looking back at this entry, how do you feel now?';
+
+  @override
+  String get reflectionCornerReflectionPrompt =>
+      'Take a minute to reflect on your previous entry.\nWhat do you think about your state of mind at the time?';
+
+  @override
+  String get reflectionCornerReflectionHint => 'Write your thoughts...';
+
+  @override
+  String get reflectionCornerSubmitReflection => 'Submit';
+
+  @override
+  String get reflectionCornerReflectionSaved => 'Reflection saved';
+
+  @override
   String get emotion_happy => 'Happy';
 
   @override

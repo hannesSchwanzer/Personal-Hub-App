@@ -43,4 +43,11 @@ class JournalEntryReporsitoryImpl implements JournalEntryRepository {
   Future<void> deleteEntry(String entryId) {
     return journalDao.deleteEntry(entryId);
   }
+
+  @override
+  Future<List<JournalEntryEntity>> getAllEntries() {
+    return journalDao.getAllEntries().then(
+          (entries) => entries.map((entry) => entry.toEntity()).toList(),
+        );
+  }
 }
