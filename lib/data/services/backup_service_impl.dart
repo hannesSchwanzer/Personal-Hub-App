@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/domain/services/backup_service.dart';
+import 'package:personal_hub_app/data/mappers/comms_check_mapper.dart';
 
 class BackupServiceImpl implements BackupService {
   final AppDatabase _database;
@@ -28,6 +29,12 @@ class BackupServiceImpl implements BackupService {
             .map((row) => row.toJson())
             .toList();
 
+    // emotionExplorerMap (singleton!)
+    data['emotion_explorer_map'] =
+        (await _database.select(_database.emotionExplorerMaps).get())
+            .map((row) => row.toJson())
+            .toList();
+
     return data;
   }
 
@@ -47,8 +54,12 @@ class BackupServiceImpl implements BackupService {
                   emotionLevel2: Value(e['emotionLevel2']),
                   emotionLevel3: Value(e['emotionLevel3']),
                   bodyMapDrawing: Value(e['bodyMapDrawing']),
-                  createdAt: DateTime.fromMillisecondsSinceEpoch(e['createdAt']),
-                  updatedAt: DateTime.fromMillisecondsSinceEpoch(e['updatedAt']),
+                  createdAt: DateTime.fromMillisecondsSinceEpoch(
+                    e['createdAt'],
+                  ),
+                  updatedAt: DateTime.fromMillisecondsSinceEpoch(
+                    e['updatedAt'],
+                  ),
                 ),
               )
               .toList();
@@ -59,8 +70,7 @@ class BackupServiceImpl implements BackupService {
               mode: InsertMode.insertOrReplace,
             );
           });
-        } else {
-        }
+        } else {}
       }
 
       // JOURNAL REFLECTIONS
@@ -80,7 +90,9 @@ class BackupServiceImpl implements BackupService {
                   currentEmotionLevel3: Value(e['currentEmotionLevel3']),
                   reflection: e['reflection'],
                   journalEntryId: e['journalEntryId'],
-                  createdAt: DateTime.fromMillisecondsSinceEpoch(e['createdAt']),
+                  createdAt: DateTime.fromMillisecondsSinceEpoch(
+                    e['createdAt'],
+                  ),
                 ),
               )
               .toList();
@@ -91,44 +103,60 @@ class BackupServiceImpl implements BackupService {
               mode: InsertMode.insertOrReplace,
             );
           });
-        } else {
+        } else {}
+      }
+
+      // COMMS CHECK ENTRIES
+      if (json['comms_check_entries'] == null) {
+        // No data
+      } else {
+        final commsList = json['comms_check_entries'] as List;
+        if (commsList.isNotEmpty) {
+          final commsCheckEntries = commsList
+              .map(
+                (e) => CommsCheckEntriesCompanion.insert(
+                  id: e['id'],
+                  targetInfos: e['targetInfos'],
+                  message: e['message'],
+                  feelingLevel1Id: Value(e['feelingLevel1Id']),
+                  feelingLevel2Id: Value(e['feelingLevel2Id']),
+                  feelingLevel3Id: Value(e['feelingLevel3Id']),
+                  expectedReaction: e['expectedReaction'],
+                  wantedReaction: e['wantedReaction'],
+                  responseAfterReaction: e['responseAfterReaction'],
+                  reflection: e['reflection'],
+                  createdAt: DateTime.fromMillisecondsSinceEpoch(
+                    e['createdAt'],
+                  ),
+                  updatedAt: DateTime.fromMillisecondsSinceEpoch(
+                    e['updatedAt'],
+                  ),
+                ),
+              )
+              .toList();
+
+          await _database.batch((batch) {
+            batch.insertAll(
+              _database.commsCheckEntries,
+              commsCheckEntries,
+              mode: InsertMode.insertOrReplace,
+            );
+          });
         }
       }
-    
-          // COMMS CHECK ENTRIES
-          if (json['comms_check_entries'] == null) {
-            // No data
-          } else {
-            final commsList = json['comms_check_entries'] as List;
-            if (commsList.isNotEmpty) {
-              final commsCheckEntries = commsList
-                  .map(
-                    (e) => CommsCheckEntriesCompanion.insert(
-                      id: e['id'],
-                      targetInfos: e['targetInfos'],
-                      message: e['message'],
-                      feelingLevel1Id: Value(e['feelingLevel1Id']),
-                      feelingLevel2Id: Value(e['feelingLevel2Id']),
-                      feelingLevel3Id: Value(e['feelingLevel3Id']),
-                      expectedReaction: e['expectedReaction'],
-                      wantedReaction: e['wantedReaction'],
-                      responseAfterReaction: e['responseAfterReaction'],
-                      reflection: e['reflection'],
-                      createdAt: DateTime.fromMillisecondsSinceEpoch(e['createdAt']),
-                      updatedAt: DateTime.fromMillisecondsSinceEpoch(e['updatedAt']),
-                    ),
-                  )
-                  .toList();
-    
-              await _database.batch((batch) {
-                batch.insertAll(
-                  _database.commsCheckEntries,
-                  commsCheckEntries,
-                  mode: InsertMode.insertOrReplace,
-                );
-              });
-            }
-          }
+
+      if (json['emotion_explorer_map'] != null) {
+        final list = json['emotion_explorer_map'] as List;
+        if (list.isNotEmpty) {
+          assert(list.length == 1);
+          final row = list.first;
+          await _database
+              .into(_database.emotionExplorerMaps)
+              .insertOnConflictUpdate(
+                EmotionExplorerMapsCompanion.insert(id: Value(row["id"]), data: row["data"]),
+              );
+        }
+      }
     });
   }
 

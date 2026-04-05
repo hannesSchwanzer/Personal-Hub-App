@@ -17,6 +17,10 @@ import 'package:personal_hub_app/domain/repositories/comms_check_entry_repositor
 import 'package:personal_hub_app/data/repositories/comms_check_entry_repository_impl.dart';
 import 'package:personal_hub_app/data/database/daos/comms_check_dao.dart';
 
+import 'package:personal_hub_app/domain/repositories/emotion_explorer_map_repository.dart';
+import 'package:personal_hub_app/data/repositories/emotion_explorer_map_repository_impl.dart';
+import 'package:personal_hub_app/data/database/daos/emotion_explorer_map_dao.dart';
+
 final settingsNotifierProvider = NotifierProvider<SettingsNotifier, Settings>(
   SettingsNotifier.new,
 );
@@ -63,5 +67,15 @@ final commsCheckEntryRepositoryProvider = Provider<CommsCheckEntryRepository>((r
 final backupServiceProvider = Provider<BackupService>((ref) {
   final db = ref.watch(databaseProvider);
   return BackupServiceImpl(db);
+});
+
+final emotionExplorerMapDaoProvider = Provider<EmotionExplorerMapDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return EmotionExplorerMapDao(db);
+});
+
+final emotionExplorerMapRepositoryProvider = Provider<EmotionExplorerMapRepository>((ref) {
+  final dao = ref.watch(emotionExplorerMapDaoProvider);
+  return EmotionExplorerMapRepositoryImpl(dao);
 });
 

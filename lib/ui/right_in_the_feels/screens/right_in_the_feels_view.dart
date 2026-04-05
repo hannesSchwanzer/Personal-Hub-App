@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/emotion_tracker_view.dart';
@@ -51,17 +50,17 @@ class _RightInTheFeelsViewState extends ConsumerState<RightInTheFeelsView> {
               ),
               const SizedBox(height: 16),
               HubFeatureCard(
-                title: AppLocalizations.of(context)!.emotionExplorer,
-                description: AppLocalizations.of(context)!.emotionExplorerDesc,
-                icon: Icons.explore,
-                onTap: () => _navigateTo(context, const EmotionExplorerView()),
-              ),
-              const SizedBox(height: 16),
-              HubFeatureCard(
                 title: AppLocalizations.of(context)!.commsCheck,
                 description: AppLocalizations.of(context)!.commsCheckDesc,
                 icon: Icons.chat_bubble_outline,
                 onTap: () => _navigateTo(context, const CommsCheckView()),
+              ),
+              const SizedBox(height: 16),
+              HubFeatureCard(
+                title: AppLocalizations.of(context)!.emotionExplorer,
+                description: AppLocalizations.of(context)!.emotionExplorerDesc,
+                icon: Icons.explore,
+                onTap: () => _navigateTo(context, const EmotionExplorerView()),
               ),
               const SizedBox(height: 16),
               HubFeatureCard(

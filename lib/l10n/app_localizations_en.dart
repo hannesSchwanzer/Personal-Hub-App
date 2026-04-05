@@ -615,4 +615,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emotion_bad_bored_apathetic => 'Apathetic';
+
+  @override
+  String get emotionExplorerTitle => 'Emotion Explorer';
+
+  @override
+  String get emotionExplorerNoEmotions => 'No emotions available';
+
+  @override
+  String get emotionExplorerTooltip =>
+      'For each emotion on this page, write about times when you most commonly feel this emotion.\nFor example, for the emotion \"Angry\", you could write \"I tend to get angry when I cannot meet deadlines that I have set for myself.\"';
+
+  @override
+  String get emotionExplorerQuestion => 'When do you feel this Emotion?';
+
+  @override
+  String get emotionExplorerJournalHint => 'When do you feel this emotion?';
 }
