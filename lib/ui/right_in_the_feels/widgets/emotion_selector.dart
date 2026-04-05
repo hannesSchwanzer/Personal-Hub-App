@@ -25,11 +25,19 @@ class EmotionSelector extends StatefulWidget {
   )? onSelectionChanged;
   final String? emotionPathLabel; // Optional label for selected path
 
+  /// Controlled selection by id (optional): if provided, overrides internal state.
+  final String? selectedLevel1Id;
+  final String? selectedLevel2Id;
+  final String? selectedLevel3Id;
+
   const EmotionSelector({
     super.key,
     required this.rootEmotions,
     this.onSelectionChanged,
     this.emotionPathLabel,
+    this.selectedLevel1Id,
+    this.selectedLevel2Id,
+    this.selectedLevel3Id,
   });
 
   @override
@@ -40,6 +48,43 @@ class _EmotionSelectorState extends State<EmotionSelector> {
   EmotionUiModel? _selectedLevel1;
   EmotionUiModel? _selectedLevel2;
   EmotionUiModel? _selectedLevel3;
+
+  @override
+  void initState() {
+    super.initState();
+    // Use the controlled selection if provided
+    _applyControlledSelection();
+  }
+
+  @override
+  void didUpdateWidget(covariant EmotionSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Update state if controlled values have changed
+    _applyControlledSelection();
+  }
+
+  EmotionUiModel? _findEmotionById(String id, List<EmotionUiModel> source) {
+    for (final emotion in source) {
+      if (emotion.id == id) return emotion;
+      final found = _findEmotionById(id, emotion.children);
+      if (found != null) return found;
+    }
+    return null;
+  }
+
+  void _applyControlledSelection() {
+    setState(() {
+      if (widget.selectedLevel1Id != null) {
+        _selectedLevel1 = _findEmotionById(widget.selectedLevel1Id!, widget.rootEmotions);
+      }
+      if (widget.selectedLevel2Id != null && _selectedLevel1 != null) {
+        _selectedLevel2 = _findEmotionById(widget.selectedLevel2Id!, _selectedLevel1!.children);
+      }
+      if (widget.selectedLevel3Id != null && _selectedLevel2 != null) {
+        _selectedLevel3 = _findEmotionById(widget.selectedLevel3Id!, _selectedLevel2!.children);
+      }
+    });
+  }
 
   void _selectLevel1(EmotionUiModel emotion) {
     setState(() {
