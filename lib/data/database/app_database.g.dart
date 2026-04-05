@@ -1240,16 +1240,775 @@ class JournalReflectionsCompanion extends UpdateCompanion<JournalReflection> {
   }
 }
 
+class $CommsCheckEntriesTable extends CommsCheckEntries
+    with TableInfo<$CommsCheckEntriesTable, CommsCheckEntry> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CommsCheckEntriesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetInfosMeta = const VerificationMeta(
+    'targetInfos',
+  );
+  @override
+  late final GeneratedColumn<String> targetInfos = GeneratedColumn<String>(
+    'target_infos',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _messageMeta = const VerificationMeta(
+    'message',
+  );
+  @override
+  late final GeneratedColumn<String> message = GeneratedColumn<String>(
+    'message',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _feelingLevel1IdMeta = const VerificationMeta(
+    'feelingLevel1Id',
+  );
+  @override
+  late final GeneratedColumn<String> feelingLevel1Id = GeneratedColumn<String>(
+    'feeling_level1_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _feelingLevel2IdMeta = const VerificationMeta(
+    'feelingLevel2Id',
+  );
+  @override
+  late final GeneratedColumn<String> feelingLevel2Id = GeneratedColumn<String>(
+    'feeling_level2_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _feelingLevel3IdMeta = const VerificationMeta(
+    'feelingLevel3Id',
+  );
+  @override
+  late final GeneratedColumn<String> feelingLevel3Id = GeneratedColumn<String>(
+    'feeling_level3_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _expectedReactionMeta = const VerificationMeta(
+    'expectedReaction',
+  );
+  @override
+  late final GeneratedColumn<String> expectedReaction = GeneratedColumn<String>(
+    'expected_reaction',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wantedReactionMeta = const VerificationMeta(
+    'wantedReaction',
+  );
+  @override
+  late final GeneratedColumn<String> wantedReaction = GeneratedColumn<String>(
+    'wanted_reaction',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _responseAfterReactionMeta =
+      const VerificationMeta('responseAfterReaction');
+  @override
+  late final GeneratedColumn<String> responseAfterReaction =
+      GeneratedColumn<String>(
+        'response_after_reaction',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _reflectionMeta = const VerificationMeta(
+    'reflection',
+  );
+  @override
+  late final GeneratedColumn<String> reflection = GeneratedColumn<String>(
+    'reflection',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    targetInfos,
+    message,
+    feelingLevel1Id,
+    feelingLevel2Id,
+    feelingLevel3Id,
+    expectedReaction,
+    wantedReaction,
+    responseAfterReaction,
+    reflection,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'comms_check_entries';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CommsCheckEntry> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('target_infos')) {
+      context.handle(
+        _targetInfosMeta,
+        targetInfos.isAcceptableOrUnknown(
+          data['target_infos']!,
+          _targetInfosMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetInfosMeta);
+    }
+    if (data.containsKey('message')) {
+      context.handle(
+        _messageMeta,
+        message.isAcceptableOrUnknown(data['message']!, _messageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_messageMeta);
+    }
+    if (data.containsKey('feeling_level1_id')) {
+      context.handle(
+        _feelingLevel1IdMeta,
+        feelingLevel1Id.isAcceptableOrUnknown(
+          data['feeling_level1_id']!,
+          _feelingLevel1IdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('feeling_level2_id')) {
+      context.handle(
+        _feelingLevel2IdMeta,
+        feelingLevel2Id.isAcceptableOrUnknown(
+          data['feeling_level2_id']!,
+          _feelingLevel2IdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('feeling_level3_id')) {
+      context.handle(
+        _feelingLevel3IdMeta,
+        feelingLevel3Id.isAcceptableOrUnknown(
+          data['feeling_level3_id']!,
+          _feelingLevel3IdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('expected_reaction')) {
+      context.handle(
+        _expectedReactionMeta,
+        expectedReaction.isAcceptableOrUnknown(
+          data['expected_reaction']!,
+          _expectedReactionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_expectedReactionMeta);
+    }
+    if (data.containsKey('wanted_reaction')) {
+      context.handle(
+        _wantedReactionMeta,
+        wantedReaction.isAcceptableOrUnknown(
+          data['wanted_reaction']!,
+          _wantedReactionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_wantedReactionMeta);
+    }
+    if (data.containsKey('response_after_reaction')) {
+      context.handle(
+        _responseAfterReactionMeta,
+        responseAfterReaction.isAcceptableOrUnknown(
+          data['response_after_reaction']!,
+          _responseAfterReactionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_responseAfterReactionMeta);
+    }
+    if (data.containsKey('reflection')) {
+      context.handle(
+        _reflectionMeta,
+        reflection.isAcceptableOrUnknown(data['reflection']!, _reflectionMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reflectionMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CommsCheckEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CommsCheckEntry(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      targetInfos: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}target_infos'],
+      )!,
+      message: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}message'],
+      )!,
+      feelingLevel1Id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feeling_level1_id'],
+      ),
+      feelingLevel2Id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feeling_level2_id'],
+      ),
+      feelingLevel3Id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}feeling_level3_id'],
+      ),
+      expectedReaction: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}expected_reaction'],
+      )!,
+      wantedReaction: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}wanted_reaction'],
+      )!,
+      responseAfterReaction: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}response_after_reaction'],
+      )!,
+      reflection: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reflection'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $CommsCheckEntriesTable createAlias(String alias) {
+    return $CommsCheckEntriesTable(attachedDatabase, alias);
+  }
+}
+
+class CommsCheckEntry extends DataClass implements Insertable<CommsCheckEntry> {
+  final String id;
+  final String targetInfos;
+  final String message;
+  final String? feelingLevel1Id;
+  final String? feelingLevel2Id;
+  final String? feelingLevel3Id;
+  final String expectedReaction;
+  final String wantedReaction;
+  final String responseAfterReaction;
+  final String reflection;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const CommsCheckEntry({
+    required this.id,
+    required this.targetInfos,
+    required this.message,
+    this.feelingLevel1Id,
+    this.feelingLevel2Id,
+    this.feelingLevel3Id,
+    required this.expectedReaction,
+    required this.wantedReaction,
+    required this.responseAfterReaction,
+    required this.reflection,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['target_infos'] = Variable<String>(targetInfos);
+    map['message'] = Variable<String>(message);
+    if (!nullToAbsent || feelingLevel1Id != null) {
+      map['feeling_level1_id'] = Variable<String>(feelingLevel1Id);
+    }
+    if (!nullToAbsent || feelingLevel2Id != null) {
+      map['feeling_level2_id'] = Variable<String>(feelingLevel2Id);
+    }
+    if (!nullToAbsent || feelingLevel3Id != null) {
+      map['feeling_level3_id'] = Variable<String>(feelingLevel3Id);
+    }
+    map['expected_reaction'] = Variable<String>(expectedReaction);
+    map['wanted_reaction'] = Variable<String>(wantedReaction);
+    map['response_after_reaction'] = Variable<String>(responseAfterReaction);
+    map['reflection'] = Variable<String>(reflection);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  CommsCheckEntriesCompanion toCompanion(bool nullToAbsent) {
+    return CommsCheckEntriesCompanion(
+      id: Value(id),
+      targetInfos: Value(targetInfos),
+      message: Value(message),
+      feelingLevel1Id: feelingLevel1Id == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feelingLevel1Id),
+      feelingLevel2Id: feelingLevel2Id == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feelingLevel2Id),
+      feelingLevel3Id: feelingLevel3Id == null && nullToAbsent
+          ? const Value.absent()
+          : Value(feelingLevel3Id),
+      expectedReaction: Value(expectedReaction),
+      wantedReaction: Value(wantedReaction),
+      responseAfterReaction: Value(responseAfterReaction),
+      reflection: Value(reflection),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory CommsCheckEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CommsCheckEntry(
+      id: serializer.fromJson<String>(json['id']),
+      targetInfos: serializer.fromJson<String>(json['targetInfos']),
+      message: serializer.fromJson<String>(json['message']),
+      feelingLevel1Id: serializer.fromJson<String?>(json['feelingLevel1Id']),
+      feelingLevel2Id: serializer.fromJson<String?>(json['feelingLevel2Id']),
+      feelingLevel3Id: serializer.fromJson<String?>(json['feelingLevel3Id']),
+      expectedReaction: serializer.fromJson<String>(json['expectedReaction']),
+      wantedReaction: serializer.fromJson<String>(json['wantedReaction']),
+      responseAfterReaction: serializer.fromJson<String>(
+        json['responseAfterReaction'],
+      ),
+      reflection: serializer.fromJson<String>(json['reflection']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'targetInfos': serializer.toJson<String>(targetInfos),
+      'message': serializer.toJson<String>(message),
+      'feelingLevel1Id': serializer.toJson<String?>(feelingLevel1Id),
+      'feelingLevel2Id': serializer.toJson<String?>(feelingLevel2Id),
+      'feelingLevel3Id': serializer.toJson<String?>(feelingLevel3Id),
+      'expectedReaction': serializer.toJson<String>(expectedReaction),
+      'wantedReaction': serializer.toJson<String>(wantedReaction),
+      'responseAfterReaction': serializer.toJson<String>(responseAfterReaction),
+      'reflection': serializer.toJson<String>(reflection),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  CommsCheckEntry copyWith({
+    String? id,
+    String? targetInfos,
+    String? message,
+    Value<String?> feelingLevel1Id = const Value.absent(),
+    Value<String?> feelingLevel2Id = const Value.absent(),
+    Value<String?> feelingLevel3Id = const Value.absent(),
+    String? expectedReaction,
+    String? wantedReaction,
+    String? responseAfterReaction,
+    String? reflection,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => CommsCheckEntry(
+    id: id ?? this.id,
+    targetInfos: targetInfos ?? this.targetInfos,
+    message: message ?? this.message,
+    feelingLevel1Id: feelingLevel1Id.present
+        ? feelingLevel1Id.value
+        : this.feelingLevel1Id,
+    feelingLevel2Id: feelingLevel2Id.present
+        ? feelingLevel2Id.value
+        : this.feelingLevel2Id,
+    feelingLevel3Id: feelingLevel3Id.present
+        ? feelingLevel3Id.value
+        : this.feelingLevel3Id,
+    expectedReaction: expectedReaction ?? this.expectedReaction,
+    wantedReaction: wantedReaction ?? this.wantedReaction,
+    responseAfterReaction: responseAfterReaction ?? this.responseAfterReaction,
+    reflection: reflection ?? this.reflection,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  CommsCheckEntry copyWithCompanion(CommsCheckEntriesCompanion data) {
+    return CommsCheckEntry(
+      id: data.id.present ? data.id.value : this.id,
+      targetInfos: data.targetInfos.present
+          ? data.targetInfos.value
+          : this.targetInfos,
+      message: data.message.present ? data.message.value : this.message,
+      feelingLevel1Id: data.feelingLevel1Id.present
+          ? data.feelingLevel1Id.value
+          : this.feelingLevel1Id,
+      feelingLevel2Id: data.feelingLevel2Id.present
+          ? data.feelingLevel2Id.value
+          : this.feelingLevel2Id,
+      feelingLevel3Id: data.feelingLevel3Id.present
+          ? data.feelingLevel3Id.value
+          : this.feelingLevel3Id,
+      expectedReaction: data.expectedReaction.present
+          ? data.expectedReaction.value
+          : this.expectedReaction,
+      wantedReaction: data.wantedReaction.present
+          ? data.wantedReaction.value
+          : this.wantedReaction,
+      responseAfterReaction: data.responseAfterReaction.present
+          ? data.responseAfterReaction.value
+          : this.responseAfterReaction,
+      reflection: data.reflection.present
+          ? data.reflection.value
+          : this.reflection,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CommsCheckEntry(')
+          ..write('id: $id, ')
+          ..write('targetInfos: $targetInfos, ')
+          ..write('message: $message, ')
+          ..write('feelingLevel1Id: $feelingLevel1Id, ')
+          ..write('feelingLevel2Id: $feelingLevel2Id, ')
+          ..write('feelingLevel3Id: $feelingLevel3Id, ')
+          ..write('expectedReaction: $expectedReaction, ')
+          ..write('wantedReaction: $wantedReaction, ')
+          ..write('responseAfterReaction: $responseAfterReaction, ')
+          ..write('reflection: $reflection, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    targetInfos,
+    message,
+    feelingLevel1Id,
+    feelingLevel2Id,
+    feelingLevel3Id,
+    expectedReaction,
+    wantedReaction,
+    responseAfterReaction,
+    reflection,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CommsCheckEntry &&
+          other.id == this.id &&
+          other.targetInfos == this.targetInfos &&
+          other.message == this.message &&
+          other.feelingLevel1Id == this.feelingLevel1Id &&
+          other.feelingLevel2Id == this.feelingLevel2Id &&
+          other.feelingLevel3Id == this.feelingLevel3Id &&
+          other.expectedReaction == this.expectedReaction &&
+          other.wantedReaction == this.wantedReaction &&
+          other.responseAfterReaction == this.responseAfterReaction &&
+          other.reflection == this.reflection &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class CommsCheckEntriesCompanion extends UpdateCompanion<CommsCheckEntry> {
+  final Value<String> id;
+  final Value<String> targetInfos;
+  final Value<String> message;
+  final Value<String?> feelingLevel1Id;
+  final Value<String?> feelingLevel2Id;
+  final Value<String?> feelingLevel3Id;
+  final Value<String> expectedReaction;
+  final Value<String> wantedReaction;
+  final Value<String> responseAfterReaction;
+  final Value<String> reflection;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<int> rowid;
+  const CommsCheckEntriesCompanion({
+    this.id = const Value.absent(),
+    this.targetInfos = const Value.absent(),
+    this.message = const Value.absent(),
+    this.feelingLevel1Id = const Value.absent(),
+    this.feelingLevel2Id = const Value.absent(),
+    this.feelingLevel3Id = const Value.absent(),
+    this.expectedReaction = const Value.absent(),
+    this.wantedReaction = const Value.absent(),
+    this.responseAfterReaction = const Value.absent(),
+    this.reflection = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CommsCheckEntriesCompanion.insert({
+    required String id,
+    required String targetInfos,
+    required String message,
+    this.feelingLevel1Id = const Value.absent(),
+    this.feelingLevel2Id = const Value.absent(),
+    this.feelingLevel3Id = const Value.absent(),
+    required String expectedReaction,
+    required String wantedReaction,
+    required String responseAfterReaction,
+    required String reflection,
+    required DateTime createdAt,
+    required DateTime updatedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       targetInfos = Value(targetInfos),
+       message = Value(message),
+       expectedReaction = Value(expectedReaction),
+       wantedReaction = Value(wantedReaction),
+       responseAfterReaction = Value(responseAfterReaction),
+       reflection = Value(reflection),
+       createdAt = Value(createdAt),
+       updatedAt = Value(updatedAt);
+  static Insertable<CommsCheckEntry> custom({
+    Expression<String>? id,
+    Expression<String>? targetInfos,
+    Expression<String>? message,
+    Expression<String>? feelingLevel1Id,
+    Expression<String>? feelingLevel2Id,
+    Expression<String>? feelingLevel3Id,
+    Expression<String>? expectedReaction,
+    Expression<String>? wantedReaction,
+    Expression<String>? responseAfterReaction,
+    Expression<String>? reflection,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (targetInfos != null) 'target_infos': targetInfos,
+      if (message != null) 'message': message,
+      if (feelingLevel1Id != null) 'feeling_level1_id': feelingLevel1Id,
+      if (feelingLevel2Id != null) 'feeling_level2_id': feelingLevel2Id,
+      if (feelingLevel3Id != null) 'feeling_level3_id': feelingLevel3Id,
+      if (expectedReaction != null) 'expected_reaction': expectedReaction,
+      if (wantedReaction != null) 'wanted_reaction': wantedReaction,
+      if (responseAfterReaction != null)
+        'response_after_reaction': responseAfterReaction,
+      if (reflection != null) 'reflection': reflection,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CommsCheckEntriesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? targetInfos,
+    Value<String>? message,
+    Value<String?>? feelingLevel1Id,
+    Value<String?>? feelingLevel2Id,
+    Value<String?>? feelingLevel3Id,
+    Value<String>? expectedReaction,
+    Value<String>? wantedReaction,
+    Value<String>? responseAfterReaction,
+    Value<String>? reflection,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<int>? rowid,
+  }) {
+    return CommsCheckEntriesCompanion(
+      id: id ?? this.id,
+      targetInfos: targetInfos ?? this.targetInfos,
+      message: message ?? this.message,
+      feelingLevel1Id: feelingLevel1Id ?? this.feelingLevel1Id,
+      feelingLevel2Id: feelingLevel2Id ?? this.feelingLevel2Id,
+      feelingLevel3Id: feelingLevel3Id ?? this.feelingLevel3Id,
+      expectedReaction: expectedReaction ?? this.expectedReaction,
+      wantedReaction: wantedReaction ?? this.wantedReaction,
+      responseAfterReaction:
+          responseAfterReaction ?? this.responseAfterReaction,
+      reflection: reflection ?? this.reflection,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (targetInfos.present) {
+      map['target_infos'] = Variable<String>(targetInfos.value);
+    }
+    if (message.present) {
+      map['message'] = Variable<String>(message.value);
+    }
+    if (feelingLevel1Id.present) {
+      map['feeling_level1_id'] = Variable<String>(feelingLevel1Id.value);
+    }
+    if (feelingLevel2Id.present) {
+      map['feeling_level2_id'] = Variable<String>(feelingLevel2Id.value);
+    }
+    if (feelingLevel3Id.present) {
+      map['feeling_level3_id'] = Variable<String>(feelingLevel3Id.value);
+    }
+    if (expectedReaction.present) {
+      map['expected_reaction'] = Variable<String>(expectedReaction.value);
+    }
+    if (wantedReaction.present) {
+      map['wanted_reaction'] = Variable<String>(wantedReaction.value);
+    }
+    if (responseAfterReaction.present) {
+      map['response_after_reaction'] = Variable<String>(
+        responseAfterReaction.value,
+      );
+    }
+    if (reflection.present) {
+      map['reflection'] = Variable<String>(reflection.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CommsCheckEntriesCompanion(')
+          ..write('id: $id, ')
+          ..write('targetInfos: $targetInfos, ')
+          ..write('message: $message, ')
+          ..write('feelingLevel1Id: $feelingLevel1Id, ')
+          ..write('feelingLevel2Id: $feelingLevel2Id, ')
+          ..write('feelingLevel3Id: $feelingLevel3Id, ')
+          ..write('expectedReaction: $expectedReaction, ')
+          ..write('wantedReaction: $wantedReaction, ')
+          ..write('responseAfterReaction: $responseAfterReaction, ')
+          ..write('reflection: $reflection, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $JournalEntriesTable journalEntries = $JournalEntriesTable(this);
   late final $JournalReflectionsTable journalReflections =
       $JournalReflectionsTable(this);
+  late final $CommsCheckEntriesTable commsCheckEntries =
+      $CommsCheckEntriesTable(this);
   late final JournalDao journalDao = JournalDao(this as AppDatabase);
   late final JournalReflectionDao journalReflectionDao = JournalReflectionDao(
     this as AppDatabase,
   );
+  late final CommsCheckDao commsCheckDao = CommsCheckDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -1257,6 +2016,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     journalEntries,
     journalReflections,
+    commsCheckEntries,
   ];
 }
 
@@ -2090,6 +2850,364 @@ typedef $$JournalReflectionsTableProcessedTableManager =
       JournalReflection,
       PrefetchHooks Function({bool journalEntryId})
     >;
+typedef $$CommsCheckEntriesTableCreateCompanionBuilder =
+    CommsCheckEntriesCompanion Function({
+      required String id,
+      required String targetInfos,
+      required String message,
+      Value<String?> feelingLevel1Id,
+      Value<String?> feelingLevel2Id,
+      Value<String?> feelingLevel3Id,
+      required String expectedReaction,
+      required String wantedReaction,
+      required String responseAfterReaction,
+      required String reflection,
+      required DateTime createdAt,
+      required DateTime updatedAt,
+      Value<int> rowid,
+    });
+typedef $$CommsCheckEntriesTableUpdateCompanionBuilder =
+    CommsCheckEntriesCompanion Function({
+      Value<String> id,
+      Value<String> targetInfos,
+      Value<String> message,
+      Value<String?> feelingLevel1Id,
+      Value<String?> feelingLevel2Id,
+      Value<String?> feelingLevel3Id,
+      Value<String> expectedReaction,
+      Value<String> wantedReaction,
+      Value<String> responseAfterReaction,
+      Value<String> reflection,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<int> rowid,
+    });
+
+class $$CommsCheckEntriesTableFilterComposer
+    extends Composer<_$AppDatabase, $CommsCheckEntriesTable> {
+  $$CommsCheckEntriesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get targetInfos => $composableBuilder(
+    column: $table.targetInfos,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get message => $composableBuilder(
+    column: $table.message,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get feelingLevel1Id => $composableBuilder(
+    column: $table.feelingLevel1Id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get feelingLevel2Id => $composableBuilder(
+    column: $table.feelingLevel2Id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get feelingLevel3Id => $composableBuilder(
+    column: $table.feelingLevel3Id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get expectedReaction => $composableBuilder(
+    column: $table.expectedReaction,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get wantedReaction => $composableBuilder(
+    column: $table.wantedReaction,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get responseAfterReaction => $composableBuilder(
+    column: $table.responseAfterReaction,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CommsCheckEntriesTableOrderingComposer
+    extends Composer<_$AppDatabase, $CommsCheckEntriesTable> {
+  $$CommsCheckEntriesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get targetInfos => $composableBuilder(
+    column: $table.targetInfos,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get message => $composableBuilder(
+    column: $table.message,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get feelingLevel1Id => $composableBuilder(
+    column: $table.feelingLevel1Id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get feelingLevel2Id => $composableBuilder(
+    column: $table.feelingLevel2Id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get feelingLevel3Id => $composableBuilder(
+    column: $table.feelingLevel3Id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get expectedReaction => $composableBuilder(
+    column: $table.expectedReaction,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get wantedReaction => $composableBuilder(
+    column: $table.wantedReaction,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get responseAfterReaction => $composableBuilder(
+    column: $table.responseAfterReaction,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CommsCheckEntriesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CommsCheckEntriesTable> {
+  $$CommsCheckEntriesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get targetInfos => $composableBuilder(
+    column: $table.targetInfos,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get message =>
+      $composableBuilder(column: $table.message, builder: (column) => column);
+
+  GeneratedColumn<String> get feelingLevel1Id => $composableBuilder(
+    column: $table.feelingLevel1Id,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get feelingLevel2Id => $composableBuilder(
+    column: $table.feelingLevel2Id,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get feelingLevel3Id => $composableBuilder(
+    column: $table.feelingLevel3Id,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get expectedReaction => $composableBuilder(
+    column: $table.expectedReaction,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get wantedReaction => $composableBuilder(
+    column: $table.wantedReaction,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get responseAfterReaction => $composableBuilder(
+    column: $table.responseAfterReaction,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get reflection => $composableBuilder(
+    column: $table.reflection,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$CommsCheckEntriesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CommsCheckEntriesTable,
+          CommsCheckEntry,
+          $$CommsCheckEntriesTableFilterComposer,
+          $$CommsCheckEntriesTableOrderingComposer,
+          $$CommsCheckEntriesTableAnnotationComposer,
+          $$CommsCheckEntriesTableCreateCompanionBuilder,
+          $$CommsCheckEntriesTableUpdateCompanionBuilder,
+          (
+            CommsCheckEntry,
+            BaseReferences<
+              _$AppDatabase,
+              $CommsCheckEntriesTable,
+              CommsCheckEntry
+            >,
+          ),
+          CommsCheckEntry,
+          PrefetchHooks Function()
+        > {
+  $$CommsCheckEntriesTableTableManager(
+    _$AppDatabase db,
+    $CommsCheckEntriesTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CommsCheckEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CommsCheckEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CommsCheckEntriesTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> targetInfos = const Value.absent(),
+                Value<String> message = const Value.absent(),
+                Value<String?> feelingLevel1Id = const Value.absent(),
+                Value<String?> feelingLevel2Id = const Value.absent(),
+                Value<String?> feelingLevel3Id = const Value.absent(),
+                Value<String> expectedReaction = const Value.absent(),
+                Value<String> wantedReaction = const Value.absent(),
+                Value<String> responseAfterReaction = const Value.absent(),
+                Value<String> reflection = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CommsCheckEntriesCompanion(
+                id: id,
+                targetInfos: targetInfos,
+                message: message,
+                feelingLevel1Id: feelingLevel1Id,
+                feelingLevel2Id: feelingLevel2Id,
+                feelingLevel3Id: feelingLevel3Id,
+                expectedReaction: expectedReaction,
+                wantedReaction: wantedReaction,
+                responseAfterReaction: responseAfterReaction,
+                reflection: reflection,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String targetInfos,
+                required String message,
+                Value<String?> feelingLevel1Id = const Value.absent(),
+                Value<String?> feelingLevel2Id = const Value.absent(),
+                Value<String?> feelingLevel3Id = const Value.absent(),
+                required String expectedReaction,
+                required String wantedReaction,
+                required String responseAfterReaction,
+                required String reflection,
+                required DateTime createdAt,
+                required DateTime updatedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => CommsCheckEntriesCompanion.insert(
+                id: id,
+                targetInfos: targetInfos,
+                message: message,
+                feelingLevel1Id: feelingLevel1Id,
+                feelingLevel2Id: feelingLevel2Id,
+                feelingLevel3Id: feelingLevel3Id,
+                expectedReaction: expectedReaction,
+                wantedReaction: wantedReaction,
+                responseAfterReaction: responseAfterReaction,
+                reflection: reflection,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CommsCheckEntriesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CommsCheckEntriesTable,
+      CommsCheckEntry,
+      $$CommsCheckEntriesTableFilterComposer,
+      $$CommsCheckEntriesTableOrderingComposer,
+      $$CommsCheckEntriesTableAnnotationComposer,
+      $$CommsCheckEntriesTableCreateCompanionBuilder,
+      $$CommsCheckEntriesTableUpdateCompanionBuilder,
+      (
+        CommsCheckEntry,
+        BaseReferences<_$AppDatabase, $CommsCheckEntriesTable, CommsCheckEntry>,
+      ),
+      CommsCheckEntry,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -2098,4 +3216,6 @@ class $AppDatabaseManager {
       $$JournalEntriesTableTableManager(_db, _db.journalEntries);
   $$JournalReflectionsTableTableManager get journalReflections =>
       $$JournalReflectionsTableTableManager(_db, _db.journalReflections);
+  $$CommsCheckEntriesTableTableManager get commsCheckEntries =>
+      $$CommsCheckEntriesTableTableManager(_db, _db.commsCheckEntries);
 }

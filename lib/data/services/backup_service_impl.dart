@@ -23,6 +23,11 @@ class BackupServiceImpl implements BackupService {
             .map((row) => row.toJson())
             .toList();
 
+    data['comms_check_entries'] =
+        (await _database.select(_database.commsCheckEntries).get())
+            .map((row) => row.toJson())
+            .toList();
+
     return data;
   }
 
@@ -89,6 +94,41 @@ class BackupServiceImpl implements BackupService {
         } else {
         }
       }
+    
+          // COMMS CHECK ENTRIES
+          if (json['comms_check_entries'] == null) {
+            // No data
+          } else {
+            final commsList = json['comms_check_entries'] as List;
+            if (commsList.isNotEmpty) {
+              final commsCheckEntries = commsList
+                  .map(
+                    (e) => CommsCheckEntriesCompanion.insert(
+                      id: e['id'],
+                      targetInfos: e['targetInfos'],
+                      message: e['message'],
+                      feelingLevel1Id: Value(e['feelingLevel1Id']),
+                      feelingLevel2Id: Value(e['feelingLevel2Id']),
+                      feelingLevel3Id: Value(e['feelingLevel3Id']),
+                      expectedReaction: e['expectedReaction'],
+                      wantedReaction: e['wantedReaction'],
+                      responseAfterReaction: e['responseAfterReaction'],
+                      reflection: e['reflection'],
+                      createdAt: DateTime.fromMillisecondsSinceEpoch(e['createdAt']),
+                      updatedAt: DateTime.fromMillisecondsSinceEpoch(e['updatedAt']),
+                    ),
+                  )
+                  .toList();
+    
+              await _database.batch((batch) {
+                batch.insertAll(
+                  _database.commsCheckEntries,
+                  commsCheckEntries,
+                  mode: InsertMode.insertOrReplace,
+                );
+              });
+            }
+          }
     });
   }
 
