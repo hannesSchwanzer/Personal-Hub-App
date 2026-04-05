@@ -173,6 +173,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reflectionCornerReflectionSaved => 'Reflection saved';
 
   @override
+  String get commsCheckStepWho =>
+      'Who do you want to communicate with? How is your relationship with them?';
+
+  @override
+  String get commsCheckHintWho => 'Name, relationship, context...';
+
+  @override
+  String get commsCheckStepWhatToTell => 'What do you want to tell them?';
+
+  @override
+  String get commsCheckHintMessage => 'Your message';
+
+  @override
+  String get commsCheckStepFeeling =>
+      'How do you feel about saying that to them?';
+
+  @override
+  String get commsCheckStepExpectedReaction =>
+      'What do you expect their reaction to be?';
+
+  @override
+  String get commsCheckHintExpectedReaction => 'Expected reaction';
+
+  @override
+  String get commsCheckStepWantedReaction =>
+      'How do you actually want them to react?';
+
+  @override
+  String get commsCheckHintWantedReaction => 'Desired reaction';
+
+  @override
+  String get commsCheckStepResponseAfterReaction =>
+      'What would you say to them after they react that way?';
+
+  @override
+  String get commsCheckHintResponseAfterReaction => 'Your response';
+
+  @override
+  String get commsCheckStepReflection =>
+      'Reflect on what you\'ve written. How do you feel about the whole situation?';
+
+  @override
+  String get commsCheckHintReflection => 'Reflection';
+
+  @override
+  String get commsCheckSubmit => 'Submit';
+
+  @override
+  String get commsCheckSaved => 'Comms Check saved!';
+
+  @override
+  String get back => 'Back';
+
+  @override
   String get emotion_happy => 'Happy';
 
   @override

@@ -404,6 +404,102 @@ abstract class AppLocalizations {
   /// **'Reflection saved'**
   String get reflectionCornerReflectionSaved;
 
+  /// No description provided for @commsCheckStepWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Who do you want to communicate with? How is your relationship with them?'**
+  String get commsCheckStepWho;
+
+  /// No description provided for @commsCheckHintWho.
+  ///
+  /// In en, this message translates to:
+  /// **'Name, relationship, context...'**
+  String get commsCheckHintWho;
+
+  /// No description provided for @commsCheckStepWhatToTell.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you want to tell them?'**
+  String get commsCheckStepWhatToTell;
+
+  /// No description provided for @commsCheckHintMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message'**
+  String get commsCheckHintMessage;
+
+  /// No description provided for @commsCheckStepFeeling.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you feel about saying that to them?'**
+  String get commsCheckStepFeeling;
+
+  /// No description provided for @commsCheckStepExpectedReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you expect their reaction to be?'**
+  String get commsCheckStepExpectedReaction;
+
+  /// No description provided for @commsCheckHintExpectedReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected reaction'**
+  String get commsCheckHintExpectedReaction;
+
+  /// No description provided for @commsCheckStepWantedReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you actually want them to react?'**
+  String get commsCheckStepWantedReaction;
+
+  /// No description provided for @commsCheckHintWantedReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Desired reaction'**
+  String get commsCheckHintWantedReaction;
+
+  /// No description provided for @commsCheckStepResponseAfterReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you say to them after they react that way?'**
+  String get commsCheckStepResponseAfterReaction;
+
+  /// No description provided for @commsCheckHintResponseAfterReaction.
+  ///
+  /// In en, this message translates to:
+  /// **'Your response'**
+  String get commsCheckHintResponseAfterReaction;
+
+  /// No description provided for @commsCheckStepReflection.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflect on what you\'ve written. How do you feel about the whole situation?'**
+  String get commsCheckStepReflection;
+
+  /// No description provided for @commsCheckHintReflection.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflection'**
+  String get commsCheckHintReflection;
+
+  /// No description provided for @commsCheckSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get commsCheckSubmit;
+
+  /// No description provided for @commsCheckSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Comms Check saved!'**
+  String get commsCheckSaved;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
   /// No description provided for @emotion_happy.
   ///
   /// In en, this message translates to:

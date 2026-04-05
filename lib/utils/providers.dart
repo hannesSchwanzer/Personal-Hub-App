@@ -13,6 +13,10 @@ import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 import 'package:personal_hub_app/domain/services/backup_service.dart';
 import 'package:personal_hub_app/ui/settings/view_models/settings_notifier.dart';
 
+import 'package:personal_hub_app/domain/repositories/comms_check_entry_repository.dart';
+import 'package:personal_hub_app/data/repositories/comms_check_entry_repository_impl.dart';
+import 'package:personal_hub_app/data/database/daos/comms_check_dao.dart';
+
 final settingsNotifierProvider = NotifierProvider<SettingsNotifier, Settings>(
   SettingsNotifier.new,
 );
@@ -45,6 +49,16 @@ final journalReflectionRepositoryProvider =
       final dao = ref.watch(journalReflectionDaoProvider);
       return JournalReflectionRepositoryImpl(dao);
     });
+
+final commsCheckDaoProvider = Provider<CommsCheckDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return CommsCheckDao(db);
+});
+
+final commsCheckEntryRepositoryProvider = Provider<CommsCheckEntryRepository>((ref) {
+  final dao = ref.watch(commsCheckDaoProvider);
+  return CommsCheckEntryRepositoryImpl(dao);
+});
 
 final backupServiceProvider = Provider<BackupService>((ref) {
   final db = ref.watch(databaseProvider);
