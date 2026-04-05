@@ -43,108 +43,123 @@ class EmotionTrackerView extends ConsumerWidget {
         title: Text(AppLocalizations.of(context)!.emotionTrackerTitle),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Section 1: Emotion Selection
-            _buildSectionHeader(
-              AppLocalizations.of(context)!.emotionTrackerSectionFeeling,
-              Icons.mood,
-              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionFeelingTooltip,
-            ),
-            const SizedBox(height: 12),
-            EmotionSelector(
-              rootEmotions: emotionTree,
-              onSelectionChanged: notifier.updateEmotionSelection,
-            ),
-            const SizedBox(height: 32),
-            // Section 2: Journal Entry
-            _buildSectionHeader(
-              AppLocalizations.of(context)!.emotionTrackerSectionJournal,
-              Icons.edit_note,
-              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionJournalTooltip,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              key: const ValueKey('emotionTrackerTextField'),
-              controller: TextEditingController(text: vm.journalText)
-                ..selection = TextSelection.collapsed(
-                  offset: vm.journalText.length,
-                ),
-              onChanged: notifier.updateJournalText,
-              maxLines: 5,
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Section 1: Emotion Selection
+              _buildSectionHeader(
+                AppLocalizations.of(context)!.emotionTrackerSectionFeeling,
+                Icons.mood,
+                tooltip: AppLocalizations.of(
                   context,
-                )!.emotionTrackerJournalHint,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                filled: true,
-                fillColor: Theme.of(
+                )!.emotionTrackerSectionFeelingTooltip,
+              ),
+              const SizedBox(height: 12),
+              EmotionSelector(
+                rootEmotions: emotionTree,
+                onSelectionChanged: notifier.updateEmotionSelection,
+                selectedLevel1Id: vm.selectedLevel1Id,
+                selectedLevel2Id: vm.selectedLevel2Id,
+                selectedLevel3Id: vm.selectedLevel3Id,
+              ),
+              const SizedBox(height: 32),
+              // Section 2: Journal Entry
+              _buildSectionHeader(
+                AppLocalizations.of(context)!.emotionTrackerSectionJournal,
+                Icons.edit_note,
+                tooltip: AppLocalizations.of(
                   context,
-                ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                )!.emotionTrackerSectionJournalTooltip,
               ),
-            ),
-            const SizedBox(height: 32),
-            // Section 3: Body Map
-            _buildSectionHeader(
-              AppLocalizations.of(context)!.emotionTrackerSectionBodyMap,
-              Icons.accessibility_new,
-              tooltip: AppLocalizations.of(context)!.emotionTrackerSectionBodyMapTooltip,
-            ),
-            const SizedBox(height: 12),
-            GestureDetector(
-              onTap: () async {
-                await showModalBottomSheet<void>(
-                  context: context,
-                  useSafeArea: true,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: BodyMapEditor(
-                        initialDrawing: vm.bodyMapDrawing,
-                        onChanged: (drawing) {
-                          notifier.updateBodyMap(drawing);
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-              child: _BodyMapPreview(drawing: vm.bodyMapDrawing),
-            ),
-            const SizedBox(height: 32),
-            // Save Button
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton.icon(
-                onPressed: vm.selectedLevel1Id != null
-                    ? () => notifier.saveEntry()
-                    : null,
-                icon: const Icon(Icons.save),
-                label: Text(
-                  AppLocalizations.of(context)!.emotionTrackerSaveEntry,
+              const SizedBox(height: 12),
+              TextField(
+                key: const ValueKey('emotionTrackerTextField'),
+                controller: TextEditingController(text: vm.journalText)
+                  ..selection = TextSelection.collapsed(
+                    offset: vm.journalText.length,
+                  ),
+                onChanged: notifier.updateJournalText,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(
+                    context,
+                  )!.emotionTrackerJournalHint,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
-            // Clear Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: _canClear(vm) ? () => notifier.clearEntry() : null,
-                icon: const Icon(Icons.clear),
-                label: Text(
-                  AppLocalizations.of(context)!.emotionTrackerClearEntry,
+              const SizedBox(height: 32),
+              // Section 3: Body Map
+              _buildSectionHeader(
+                AppLocalizations.of(context)!.emotionTrackerSectionBodyMap,
+                Icons.accessibility_new,
+                tooltip: AppLocalizations.of(
+                  context,
+                )!.emotionTrackerSectionBodyMapTooltip,
+              ),
+              const SizedBox(height: 12),
+              GestureDetector(
+                onTap: () async {
+                  await showModalBottomSheet<void>(
+                    context: context,
+                    useSafeArea: true,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: BodyMapEditor(
+                          initialDrawing: vm.bodyMapDrawing,
+                          onChanged: (drawing) {
+                            notifier.updateBodyMap(drawing);
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: _BodyMapPreview(drawing: vm.bodyMapDrawing),
+              ),
+              const SizedBox(height: 32),
+              // Save Button
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: vm.selectedLevel1Id != null
+                      ? () => notifier.saveEntry()
+                      : null,
+                  icon: const Icon(Icons.save),
+                  label: Text(
+                    AppLocalizations.of(context)!.emotionTrackerSaveEntry,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-          ],
+              const SizedBox(height: 12),
+              // Clear Button
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _canClear(vm) ? () => notifier.clearEntry() : null,
+                  icon: const Icon(Icons.clear),
+                  label: Text(
+                    AppLocalizations.of(context)!.emotionTrackerClearEntry,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );
@@ -155,36 +170,39 @@ class EmotionTrackerView extends ConsumerWidget {
   /// tapping anywhere else closes it.
   Widget _buildSectionHeader(String title, IconData icon, {String? tooltip}) {
     if (tooltip == null) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(icon, size: 24),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  softWrap: true,
-                  overflow: TextOverflow.visible,
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(icon, size: 24),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      );
+    } else {
+      // Use general-purpose TapTooltip widget for tooltip functionality
+      return TapTooltip(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
+                softWrap: true,
+                overflow: TextOverflow.visible,
               ),
-            ],
-          );
-        } else {
-          // Use general-purpose TapTooltip widget for tooltip functionality
-          return TapTooltip(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(icon, size: 24),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                  ),
             ),
             Icon(Icons.help_outline, size: 18, color: Colors.grey[500]),
           ],

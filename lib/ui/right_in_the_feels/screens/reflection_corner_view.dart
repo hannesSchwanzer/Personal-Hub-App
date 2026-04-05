@@ -37,137 +37,147 @@ class ReflectionCornerView extends ConsumerWidget {
     });
 
     final entry = state.journalEntry;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.reflectionCornerTitle),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: entry == null
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.sentiment_satisfied_alt,
-                    size: 48,
-                    color: Colors.grey,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)!.reflectionCornerNoEntries,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 1. Entry info
-                  Text(
-                    DateFormat.yMMMMd(
-                      AppLocalizations.of(context)!.localeName,
-                    ).format(entry.createdAt),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Card(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      behavior: HitTestBehavior.opaque,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.reflectionCornerTitle),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        body: entry == null
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.sentiment_satisfied_alt,
+                      size: 48,
+                      color: Colors.grey,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(14.0),
-                      child: Text(
-                        entry.entry,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                    SizedBox(height: 16),
+                    Text(
+                      AppLocalizations.of(context)!.reflectionCornerNoEntries,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-                  ),
-                  const SizedBox(height: 28),
-
-                  // 2. Past Emotion
-                  Text(
-                    AppLocalizations.of(context)!.reflectionCornerEmotionEntry,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  EmotionSelector(
-                    rootEmotions: emotionTree,
-                    onSelectionChanged: notifier.setGuessedEmotion,
-                  ),
-                  const SizedBox(height: 28),
-
-                  // 3. Now Emotion
-                  Text(
-                    AppLocalizations.of(context)!.reflectionCornerEmotionNow,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  EmotionSelector(
-                    rootEmotions: emotionTree,
-                    onSelectionChanged: notifier.setCurrentEmotion,
-                  ),
-                  const SizedBox(height: 28),
-
-                  // 4. Reflection Input
-                  Text(
-                    AppLocalizations.of(
-                      context,
-                    )!.reflectionCornerReflectionPrompt,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: 8),
-                  TextField(
-                    key: const ValueKey('reflectionTextField'),
-                    controller:
-                        TextEditingController(text: state.reflectionText)
-                          ..selection = TextSelection.collapsed(
-                            offset: state.reflectionText.length,
-                          ),
-                    onChanged: notifier.setReflectionText,
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(
-                        context,
-                      )!.reflectionCornerReflectionHint,
-                      border: OutlineInputBorder(
+                  ],
+                ),
+              )
+            : SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // 1. Entry info
+                    Text(
+                      DateFormat.yMMMMd(
+                        AppLocalizations.of(context)!.localeName,
+                      ).format(entry.createdAt),
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Card(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      filled: true,
-                      fillColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerHighest.withAlpha(50),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      icon: const Icon(Icons.check_circle),
-                      onPressed: _canSubmit(state)
-                          ? () => notifier.submitReflection()
-                          : null,
-                      label: Text(
-                        AppLocalizations.of(
-                          context,
-                        )!.reflectionCornerSubmitReflection,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Text(
+                          entry.entry,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 28),
+
+                    // 2. Past Emotion
+                    Text(
+                      AppLocalizations.of(context)!.reflectionCornerEmotionEntry,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    EmotionSelector(
+                      rootEmotions: emotionTree,
+                      selectedLevel1Id: state.guessedEmotionLevel1Id,
+                      selectedLevel2Id: state.guessedEmotionLevel2Id,
+                      selectedLevel3Id: state.guessedEmotionLevel3Id,
+                      onSelectionChanged: notifier.setGuessedEmotion,
+                    ),
+                    const SizedBox(height: 28),
+
+                    // 3. Now Emotion
+                    Text(
+                      AppLocalizations.of(context)!.reflectionCornerEmotionNow,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    EmotionSelector(
+                      rootEmotions: emotionTree,
+                      selectedLevel1Id: state.currentEmotionLevel1Id,
+                      selectedLevel2Id: state.currentEmotionLevel2Id,
+                      selectedLevel3Id: state.currentEmotionLevel3Id,
+                      onSelectionChanged: notifier.setCurrentEmotion,
+                    ),
+                    const SizedBox(height: 28),
+
+                    // 4. Reflection Input
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      )!.reflectionCornerReflectionPrompt,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    TextField(
+                      key: const ValueKey('reflectionTextField'),
+                      controller:
+                          TextEditingController(text: state.reflectionText)
+                            ..selection = TextSelection.collapsed(
+                              offset: state.reflectionText.length,
+                            ),
+                      onChanged: notifier.setReflectionText,
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(
+                          context,
+                        )!.reflectionCornerReflectionHint,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        filled: true,
+                        fillColor: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest.withAlpha(50),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        icon: const Icon(Icons.check_circle),
+                        onPressed: _canSubmit(state)
+                            ? () => notifier.submitReflection()
+                            : null,
+                        label: Text(
+                          AppLocalizations.of(
+                            context,
+                          )!.reflectionCornerSubmitReflection,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 
   bool _canSubmit(ReflectionCornerState state) {
-    return state.guessedEmotionId != null &&
-        state.currentEmotionId != null &&
+    return state.guessedEmotionLevel1Id != null &&
+        state.currentEmotionLevel1Id != null &&
         state.reflectionText.trim().isNotEmpty;
   }
 }

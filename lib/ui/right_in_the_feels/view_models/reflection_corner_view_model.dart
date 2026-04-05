@@ -7,30 +7,46 @@ import 'package:personal_hub_app/utils/providers.dart';
 
 class ReflectionCornerState {
   final JournalEntryEntity? journalEntry; // entry to reflect on
-  final String? guessedEmotionId; // what user thinks they felt then
-  final String? currentEmotionId; // how they feel about it now
+  final String? guessedEmotionLevel1Id;
+  final String? guessedEmotionLevel2Id;
+  final String? guessedEmotionLevel3Id;
+  final String? currentEmotionLevel1Id;
+  final String? currentEmotionLevel2Id;
+  final String? currentEmotionLevel3Id;
   final String reflectionText;
   final bool submitted;
 
   ReflectionCornerState({
     this.journalEntry,
-    this.guessedEmotionId,
-    this.currentEmotionId,
+    this.guessedEmotionLevel1Id,
+    this.guessedEmotionLevel2Id,
+    this.guessedEmotionLevel3Id,
+    this.currentEmotionLevel1Id,
+    this.currentEmotionLevel2Id,
+    this.currentEmotionLevel3Id,
     this.reflectionText = '',
     this.submitted = false,
   });
 
   ReflectionCornerState copyWith({
     JournalEntryEntity? journalEntry,
-    String? guessedEmotionId,
-    String? currentEmotionId,
+    String? guessedEmotionLevel1Id,
+    String? guessedEmotionLevel2Id,
+    String? guessedEmotionLevel3Id,
+    String? currentEmotionLevel1Id,
+    String? currentEmotionLevel2Id,
+    String? currentEmotionLevel3Id,
     String? reflectionText,
     bool? submitted,
   }) {
     return ReflectionCornerState(
       journalEntry: journalEntry ?? this.journalEntry,
-      guessedEmotionId: guessedEmotionId ?? this.guessedEmotionId,
-      currentEmotionId: currentEmotionId ?? this.currentEmotionId,
+      guessedEmotionLevel1Id: guessedEmotionLevel1Id ?? this.guessedEmotionLevel1Id,
+      guessedEmotionLevel2Id: guessedEmotionLevel2Id ?? this.guessedEmotionLevel2Id,
+      guessedEmotionLevel3Id: guessedEmotionLevel3Id ?? this.guessedEmotionLevel3Id,
+      currentEmotionLevel1Id: currentEmotionLevel1Id ?? this.currentEmotionLevel1Id,
+      currentEmotionLevel2Id: currentEmotionLevel2Id ?? this.currentEmotionLevel2Id,
+      currentEmotionLevel3Id: currentEmotionLevel3Id ?? this.currentEmotionLevel3Id,
       reflectionText: reflectionText ?? this.reflectionText,
       submitted: submitted ?? this.submitted,
     );
@@ -75,11 +91,21 @@ class ReflectionCornerViewModel extends Notifier<ReflectionCornerState> {
   }
 
   void setGuessedEmotion(EmotionUiModel? level1, EmotionUiModel? level2, EmotionUiModel? level3) {
-    state = state.copyWith(guessedEmotionId: level3?.id ?? level2?.id ?? level1?.id, submitted: false);
+    state = state.copyWith(
+      guessedEmotionLevel1Id: level1?.id,
+      guessedEmotionLevel2Id: level2?.id,
+      guessedEmotionLevel3Id: level3?.id,
+      submitted: false,
+    );
   }
 
   void setCurrentEmotion(EmotionUiModel? level1, EmotionUiModel? level2, EmotionUiModel? level3) {
-    state = state.copyWith(currentEmotionId: level3?.id ?? level2?.id ?? level1?.id, submitted: false);
+    state = state.copyWith(
+      currentEmotionLevel1Id: level1?.id,
+      currentEmotionLevel2Id: level2?.id,
+      currentEmotionLevel3Id: level3?.id,
+      submitted: false,
+    );
   }
 
   void setReflectionText(String text) {
@@ -91,8 +117,12 @@ class ReflectionCornerViewModel extends Notifier<ReflectionCornerState> {
     if (entry == null) return;
     await _reflectionRepo.createReflection(
       entry: entry.entry,
-      guessedEmotionLevel1: state.guessedEmotionId,
-      currentEmotionLevel1: state.currentEmotionId,
+      guessedEmotionLevel1: state.guessedEmotionLevel1Id,
+      guessedEmotionLevel2: state.guessedEmotionLevel2Id,
+      guessedEmotionLevel3: state.guessedEmotionLevel3Id,
+      currentEmotionLevel1: state.currentEmotionLevel1Id,
+      currentEmotionLevel2: state.currentEmotionLevel2Id,
+      currentEmotionLevel3: state.currentEmotionLevel3Id,
       reflection: state.reflectionText,
       journalEntryId: entry.id,
     );
