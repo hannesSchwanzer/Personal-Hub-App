@@ -208,5 +208,11 @@
     "emotion_bad_busy_rushed": "Gehetzt",
     "emotion_bad_bored": "Gelangweilt",
     "emotion_bad_bored_indifferent": "Gleichgültig",
-    "emotion_bad_bored_apathetic": "Apathisch"
+    "emotion_bad_bored_apathetic": "Apathisch",
+
+    "emotionExplorerTitle": "Gefühls-Explorer",
+    "emotionExplorerNoEmotions": "Keine Gefühle verfügbar",
+    "emotionExplorerTooltip": "Schreibe für jedes Gefühl auf dieser Seite darüber, wann du dieses Gefühl am häufigsten empfindest.\nZum Beispiel könntest du zu „Wütend“ schreiben: „Ich werde oft wütend, wenn ich eigene Deadlines nicht einhalten kann.“",
+    "emotionExplorerQuestion": "Wann fühlst du dieses Gefühl?",
+    "emotionExplorerJournalHint": "Wann empfindest du dieses Gefühl?"
 }

@@ -208,5 +208,11 @@
     "emotion_bad_busy_rushed": "Rushed",
     "emotion_bad_bored": "Bored",
     "emotion_bad_bored_indifferent": "Indifferent",
-    "emotion_bad_bored_apathetic": "Apathetic"
+    "emotion_bad_bored_apathetic": "Apathetic",
+
+    "emotionExplorerTitle": "Emotion Explorer",
+    "emotionExplorerNoEmotions": "No emotions available",
+    "emotionExplorerTooltip": "For each emotion on this page, write about times when you most commonly feel this emotion.\nFor example, for the emotion \"Angry\", you could write \"I tend to get angry when I cannot meet deadlines that I have set for myself.\"",
+    "emotionExplorerQuestion": "When do you feel this Emotion?",
+    "emotionExplorerJournalHint": "When do you feel this emotion?"
 }

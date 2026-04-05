@@ -1279,6 +1279,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Apathetic'**
   String get emotion_bad_bored_apathetic;
+
+  /// No description provided for @emotionExplorerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emotion Explorer'**
+  String get emotionExplorerTitle;
+
+  /// No description provided for @emotionExplorerNoEmotions.
+  ///
+  /// In en, this message translates to:
+  /// **'No emotions available'**
+  String get emotionExplorerNoEmotions;
+
+  /// No description provided for @emotionExplorerTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'For each emotion on this page, write about times when you most commonly feel this emotion.\nFor example, for the emotion \"Angry\", you could write \"I tend to get angry when I cannot meet deadlines that I have set for myself.\"'**
+  String get emotionExplorerTooltip;
+
+  /// No description provided for @emotionExplorerQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'When do you feel this Emotion?'**
+  String get emotionExplorerQuestion;
+
+  /// No description provided for @emotionExplorerJournalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When do you feel this emotion?'**
+  String get emotionExplorerJournalHint;
 }
 
 class _AppLocalizationsDelegate
