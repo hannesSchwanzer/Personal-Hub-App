@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/cooking_view.dart';
 import 'package:personal_hub_app/ui/gym_tracker/widgets/gym_view.dart';
+import 'package:personal_hub_app/ui/meditation/screens/audio_test.dart';
 import 'package:personal_hub_app/ui/meditation/widgets/meditation_view.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/right_in_the_feels_view.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
@@ -74,7 +75,7 @@ class HubView extends ConsumerWidget {
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(l10n.exportFailed + ": $e")),
+                      SnackBar(content: Text("${l10n.exportFailed}: $e")),
                     );
                   }
                 }
@@ -102,7 +103,7 @@ class HubView extends ConsumerWidget {
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(l10n.importFailed + ": $e")),
+                        SnackBar(content: Text("${l10n.importFailed}: $e")),
                       );
                     }
                     rethrow;
@@ -147,7 +148,7 @@ class HubView extends ConsumerWidget {
               title: l10n.hubFeatureMeditation,
               description: l10n.hubFeatureMeditationDesc,
               icon: Icons.self_improvement,
-              onTap: () => _navigateTo(context, const MeditationView()),
+              onTap: () => _navigateTo(context, const AudioTestPage()),
             ),
             const SizedBox(height: 16),
             HubFeatureCard(
