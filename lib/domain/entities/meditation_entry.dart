@@ -1,3 +1,5 @@
+import 'package:personal_hub_app/domain/entities/audio_file.dart';
+
 class MeditationEntry {
   final String id;
 
@@ -9,11 +11,11 @@ class MeditationEntry {
   final String? cognitiveType;
   final String level;
 
-  final String? audioCompletePath;
+  final AudioFile? audioComplete;
 
-  final String? audioBeginningPath;
-  final String? audioRepeatingPath;
-  final String? audioEndPath;
+  final AudioFile? audioBeginning;
+  final AudioFile? audioRepeating;
+  final AudioFile? audioEnd;
 
   final String? tutorialVideoPath;
 
@@ -25,10 +27,10 @@ class MeditationEntry {
     this.chakraType,
     this.cognitiveType,
     required this.level,
-    this.audioCompletePath,
-    this.audioBeginningPath,
-    this.audioRepeatingPath,
-    this.audioEndPath,
+    this.audioComplete,
+    this.audioBeginning,
+    this.audioRepeating,
+    this.audioEnd,
     this.tutorialVideoPath,
   });
 
@@ -40,10 +42,10 @@ class MeditationEntry {
     String? chakraType,
     String? cognitiveType,
     String? level,
-    String? audioCompletePath,
-    String? audioBeginningPath,
-    String? audioRepeatingPath,
-    String? audioEndPath,
+    AudioFile? audioCompletePath,
+    AudioFile? audioBeginningPath,
+    AudioFile? audioRepeatingPath,
+    AudioFile? audioEndPath,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -54,10 +56,10 @@ class MeditationEntry {
       chakraType: chakraType ?? this.chakraType,
       cognitiveType: cognitiveType ?? this.cognitiveType,
       level: level ?? this.level,
-      audioCompletePath: audioCompletePath ?? this.audioCompletePath,
-      audioBeginningPath: audioBeginningPath ?? this.audioBeginningPath,
-      audioRepeatingPath: audioRepeatingPath ?? this.audioRepeatingPath,
-      audioEndPath: audioEndPath ?? this.audioEndPath,
+      audioComplete: audioCompletePath ?? this.audioComplete,
+      audioBeginning: audioBeginningPath ?? this.audioBeginning,
+      audioRepeating: audioRepeatingPath ?? this.audioRepeating,
+      audioEnd: audioEndPath ?? this.audioEnd,
       tutorialVideoPath: tutorialVideoPath ?? this.tutorialVideoPath,
     );
   }
@@ -70,10 +72,10 @@ class MeditationEntry {
     String? chakraType,
     String? cognitiveType,
     required String level,
-    String? audioCompletePath,
-    String? audioBeginningPath,
-    String? audioRepeatingPath,
-    String? audioEndPath,
+    AudioFile? audioCompletePath,
+    AudioFile? audioBeginningPath,
+    AudioFile? audioRepeatingPath,
+    AudioFile? audioEndPath,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -84,10 +86,10 @@ class MeditationEntry {
       chakraType: chakraType,
       cognitiveType: cognitiveType,
       level: level,
-      audioCompletePath: audioCompletePath,
-      audioBeginningPath: audioBeginningPath,
-      audioRepeatingPath: audioRepeatingPath,
-      audioEndPath: audioEndPath,
+      audioComplete: audioCompletePath,
+      audioBeginning: audioBeginningPath,
+      audioRepeating: audioRepeatingPath,
+      audioEnd: audioEndPath,
       tutorialVideoPath: tutorialVideoPath,
     );
   }

@@ -5,6 +5,7 @@ import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart'
 import 'package:personal_hub_app/data/repositories/journal_entry_reporsitory_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/settings_repository_impl.dart';
+import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
@@ -78,4 +79,12 @@ final emotionExplorerMapRepositoryProvider = Provider<EmotionExplorerMapReposito
   final dao = ref.watch(emotionExplorerMapDaoProvider);
   return EmotionExplorerMapRepositoryImpl(dao);
 });
+
+final audioPlayerServiceProvider = Provider<AudioPlayerService>(
+  (ref) {
+    final service = AudioPlayerService();
+    ref.onDispose(service.dispose);
+    return service;
+  },
+);
 
