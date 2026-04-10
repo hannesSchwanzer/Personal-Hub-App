@@ -1,67 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:personal_hub_app/utils/providers.dart';
 
-class AudioPlayerControls extends StatefulWidget {
-  final AudioPlayer player;
+/// AudioPlayerControls displays playback controls and a seekable timeline
+/// for multiple audio sources treated as a single continuous stream.
+/// 
+/// Accesses [AudioPlayerService] via Riverpod and does not depend on
+/// any library-internal `just_audio` types.
+///
+/// - Shows Play/Pause, global time slider, and progress.
+/// - Automatically calculates total and current global duration.
+/// - Seeks and updates position using the service.
+/// 
+/// Usage: Place inside a ConsumerWidget or use Consumer in a build method.
+class AudioPlayerControls extends ConsumerWidget {
+  /// If false, the user cannot interactively seek with the slider.
+  final bool sliderEnabled;
 
-  const AudioPlayerControls({super.key, required this.player});
+  const AudioPlayerControls({
+    super.key,
+    this.sliderEnabled = true,
+  });
 
-  @override
-  State<AudioPlayerControls> createState() => _AudioPlayerControlsState();
-}
-
-class _AudioPlayerControlsState extends State<AudioPlayerControls> {
-  late List<Duration> _durations;
-
-  @override
-  void initState() {
-    super.initState();
-    _durations = _getDurations();
-  }
-
-  List<Duration> _getDurations() {
-    final sequence = widget.player.sequence;
-
-    return sequence.map((s) => s.duration ?? Duration.zero).toList();
-  }
-
-  Duration _totalDuration(List<Duration> durations) {
-    return durations.fold(Duration.zero, (a, b) => a + b);
-  }
-
-  Duration _globalPosition(
-    int? index,
-    Duration position,
-    List<Duration> durations,
-  ) {
-    if (index == null) return position;
-
-    Duration offset = Duration.zero;
-
-    for (int i = 0; i < index; i++) {
-      offset += durations[i];
-    }
-
-    return offset + position;
-  }
-
-  Future<void> _seekGlobal(Duration target, List<Duration> durations) async {
-    Duration accumulated = Duration.zero;
-
-    for (int i = 0; i < durations.length; i++) {
-      final next = accumulated + durations[i];
-
-      if (target < next) {
-        final local = target - accumulated;
-        await widget.player.seek(local, index: i);
-        return;
-      }
-
-      accumulated = next;
-    }
-  }
-
+  /// Format a [Duration] as mm:ss.
   String _format(Duration d) {
     final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
     final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
@@ -69,9 +31,11 @@ class _AudioPlayerControlsState extends State<AudioPlayerControls> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final playerService = ref.watch(audioPlayerServiceProvider);
+
     return StreamBuilder<PlayerState>(
-      stream: widget.player.playerStateStream,
+      stream: playerService.playerStateStream,
       builder: (context, playerSnapshot) {
         final isPlaying = playerSnapshot.data?.playing ?? false;
 
@@ -83,33 +47,18 @@ class _AudioPlayerControlsState extends State<AudioPlayerControls> {
               iconSize: 48,
               icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
               onPressed: () {
-                isPlaying ? widget.player.pause() : widget.player.play();
+                isPlaying
+                    ? playerService.pause()
+                    : playerService.play();
               },
             ),
 
             /// SLIDER + TIME
-            StreamBuilder<Map<String, Duration>>(
-              stream: Rx.combineLatest2<int?, Duration, Map<String, Duration>>(
-                widget.player.currentIndexStream,
-                widget.player.positionStream,
-                (index, position) {
-                  final globalPos = _globalPosition(
-                    index,
-                    position,
-                    _durations,
-                  );
-                  final total = _totalDuration(_durations);
-
-                  return {'position': globalPos, 'total': total};
-                },
-              ),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const SizedBox();
-                }
-
-                final position = snapshot.data!['position']!;
-                final total = snapshot.data!['total']!;
+            StreamBuilder<Duration>(
+              stream: playerService.positionStream,
+              builder: (context, positionSnapshot) {
+                final position = positionSnapshot.data ?? Duration.zero;
+                final total = playerService.duration;
 
                 return Column(
                   children: [
@@ -119,14 +68,12 @@ class _AudioPlayerControlsState extends State<AudioPlayerControls> {
                       value: position.inMilliseconds
                           .clamp(0, total.inMilliseconds)
                           .toDouble(),
-                      onChanged: (value) {
-                        _seekGlobal(
-                          Duration(milliseconds: value.toInt()),
-                          _durations,
-                        );
-                      },
+                      onChanged: sliderEnabled
+                          ? (value) {
+                              playerService.seek(Duration(milliseconds: value.toInt()));
+                            }
+                          : null, // disables interactive seek if false
                     ),
-
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Row(

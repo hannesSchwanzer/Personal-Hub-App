@@ -1,20 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/data/services/audio_duration_service.dart';
+import 'package:personal_hub_app/data/services/playlist_preparer.dart';
 import 'package:personal_hub_app/ui/core/widgets/audio_player_controls.dart';
+import 'package:personal_hub_app/utils/providers.dart';
 
-class AudioTestPage extends StatefulWidget {
+/// Test page for audio player. Demonstrates loading and playback of
+/// multiple audio sources as one.
+///
+/// Loads the playlist on init, shows loading spinner until ready,
+/// and renders global controls.
+class AudioTestPage extends ConsumerStatefulWidget {
   const AudioTestPage({super.key});
 
   @override
-  State<AudioTestPage> createState() => _AudioTestPageState();
+  ConsumerState<AudioTestPage> createState() => _AudioTestPageState();
 }
 
-class _AudioTestPageState extends State<AudioTestPage> {
-  final AudioPlayer _player = AudioPlayer();
-
-  final int repeatCount = 3;
-
+class _AudioTestPageState extends ConsumerState<AudioTestPage> {
   bool _isInitialized = false;
+
+  // You can configure your playlist and repetitions here:
+  static const int repeatCount = 3;
+  static const String startAsset = 'assets/audio/prana-shuddhi-start.mp3';
+  static const String middleAsset = 'assets/audio/prana-shuddhi-middle.mp3';
+  static const String endAsset = 'assets/audio/prana-shuddhi-end.mp3';
 
   @override
   void initState() {
@@ -22,33 +32,25 @@ class _AudioTestPageState extends State<AudioTestPage> {
     _initAudio();
   }
 
+  /// Initializes the audio source using the [AudioPlayerService] Riverpod provider.
   Future<void> _initAudio() async {
-    final playlist = ConcatenatingAudioSource(
-      children: [
-        AudioSource.asset('assets/audio/prana-shuddhi-start.mp3'),
+    final audioPlayerService = ref.read(audioPlayerServiceProvider);
 
-        // Repeat middle part
-        LoopingAudioSource(
-          count: repeatCount,
-          child: AudioSource.asset('assets/audio/prana-shuddhi-middle.mp3'),
-        ),
+    // Concatenate: start, middle x repeatCount, end
+    final preparer = PlaylistPreparer(AudioDurationService());
+    final playlist = await preparer.preparePlaylist([
+      ('assets/audio/prana-shuddhi-start.mp3', 1),
+      ('assets/audio/prana-shuddhi-middle.mp3', 3),
+      ('assets/audio/prana-shuddhi-end.mp3', 1),
+    ]);
 
-        AudioSource.asset('assets/audio/prana-shuddhi-end.mp3'),
-      ],
-    );
 
-    await _player.setAudioSource(playlist, preload: true);
-    await _player.load();
+    // Flatten into list of (filepath, repetitions)
+    await audioPlayerService.setAudioSources(playlist);
 
     setState(() {
       _isInitialized = true;
     });
-  }
-
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
   }
 
   @override
@@ -57,9 +59,9 @@ class _AudioTestPageState extends State<AudioTestPage> {
       appBar: AppBar(title: const Text('Audio Test')),
       body: Center(
         child: _isInitialized
-            ? Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: AudioPlayerControls(player: _player),
+            ? const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: AudioPlayerControls(sliderEnabled: true,),
               )
             : const CircularProgressIndicator(),
       ),
