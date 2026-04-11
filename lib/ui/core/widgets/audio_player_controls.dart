@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 
 /// AudioPlayerControls displays playback controls and a seekable timeline
@@ -14,7 +15,7 @@ import 'package:personal_hub_app/utils/providers.dart';
 /// - Seeks and updates position using the service.
 /// 
 /// Usage: Place inside a ConsumerWidget or use Consumer in a build method.
-class AudioPlayerControls extends ConsumerWidget {
+class AudioPlayerControls extends ConsumerStatefulWidget {
   /// If false, the user cannot interactively seek with the slider.
   final bool sliderEnabled;
 
@@ -22,6 +23,13 @@ class AudioPlayerControls extends ConsumerWidget {
     super.key,
     this.sliderEnabled = true,
   });
+
+  @override
+  ConsumerState<AudioPlayerControls> createState() => _AudioPlayerControlsState();
+}
+
+class _AudioPlayerControlsState extends ConsumerState<AudioPlayerControls> {
+  late final AudioPlayerService _playerService;
 
   /// Format a [Duration] as mm:ss.
   String _format(Duration d) {
@@ -31,7 +39,20 @@ class AudioPlayerControls extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    _playerService = ref.read(audioPlayerServiceProvider);
+  }
+
+  @override
+  void dispose() {
+    // Safely pause audio.
+    _playerService.pause();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final playerService = ref.watch(audioPlayerServiceProvider);
 
     return StreamBuilder<PlayerState>(
@@ -45,12 +66,22 @@ class AudioPlayerControls extends ConsumerWidget {
             /// PLAY / PAUSE
             IconButton(
               iconSize: 48,
-              icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-              onPressed: () {
-                isPlaying
-                    ? playerService.pause()
-                    : playerService.play();
-              },
+              icon: playerSnapshot.data?.processingState == ProcessingState.loading ||
+                      playerSnapshot.data?.processingState == ProcessingState.buffering
+                  ? SizedBox(
+                      width: 36,
+                      height: 36,
+                      child: CircularProgressIndicator(strokeWidth: 3),
+                    )
+                  : Icon(isPlaying ? Icons.pause : Icons.play_arrow),
+              onPressed: playerSnapshot.data?.processingState == ProcessingState.loading ||
+                         playerSnapshot.data?.processingState == ProcessingState.buffering
+                  ? null
+                  : () {
+                      isPlaying
+                          ? playerService.pause()
+                          : playerService.play();
+                    },
             ),
 
             /// SLIDER + TIME
@@ -68,7 +99,7 @@ class AudioPlayerControls extends ConsumerWidget {
                       value: position.inMilliseconds
                           .clamp(0, total.inMilliseconds)
                           .toDouble(),
-                      onChanged: sliderEnabled
+                      onChanged: widget.sliderEnabled
                           ? (value) {
                               playerService.seek(Duration(milliseconds: value.toInt()));
                             }

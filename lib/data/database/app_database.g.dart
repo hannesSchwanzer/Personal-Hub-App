@@ -2185,6 +2185,770 @@ class EmotionExplorerMapsCompanion extends UpdateCompanion<EmotionExplorerMap> {
   }
 }
 
+class $MeditationsTable extends Meditations
+    with TableInfo<$MeditationsTable, Meditation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MeditationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _chakraTypeMeta = const VerificationMeta(
+    'chakraType',
+  );
+  @override
+  late final GeneratedColumn<String> chakraType = GeneratedColumn<String>(
+    'chakra_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cognitiveTypeMeta = const VerificationMeta(
+    'cognitiveType',
+  );
+  @override
+  late final GeneratedColumn<String> cognitiveType = GeneratedColumn<String>(
+    'cognitive_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _levelMeta = const VerificationMeta('level');
+  @override
+  late final GeneratedColumn<String> level = GeneratedColumn<String>(
+    'level',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _audioCompletePathMeta = const VerificationMeta(
+    'audioCompletePath',
+  );
+  @override
+  late final GeneratedColumn<String> audioCompletePath =
+      GeneratedColumn<String>(
+        'audio_complete_path',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _audioBeginningPathMeta =
+      const VerificationMeta('audioBeginningPath');
+  @override
+  late final GeneratedColumn<String> audioBeginningPath =
+      GeneratedColumn<String>(
+        'audio_beginning_path',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _audioRepeatingPathMeta =
+      const VerificationMeta('audioRepeatingPath');
+  @override
+  late final GeneratedColumn<String> audioRepeatingPath =
+      GeneratedColumn<String>(
+        'audio_repeating_path',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _audioEndPathMeta = const VerificationMeta(
+    'audioEndPath',
+  );
+  @override
+  late final GeneratedColumn<String> audioEndPath = GeneratedColumn<String>(
+    'audio_end_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _tutorialVideoPathMeta = const VerificationMeta(
+    'tutorialVideoPath',
+  );
+  @override
+  late final GeneratedColumn<String> tutorialVideoPath =
+      GeneratedColumn<String>(
+        'tutorial_video_path',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    description,
+    type,
+    chakraType,
+    cognitiveType,
+    level,
+    audioCompletePath,
+    audioBeginningPath,
+    audioRepeatingPath,
+    audioEndPath,
+    tutorialVideoPath,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'meditations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Meditation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('chakra_type')) {
+      context.handle(
+        _chakraTypeMeta,
+        chakraType.isAcceptableOrUnknown(data['chakra_type']!, _chakraTypeMeta),
+      );
+    }
+    if (data.containsKey('cognitive_type')) {
+      context.handle(
+        _cognitiveTypeMeta,
+        cognitiveType.isAcceptableOrUnknown(
+          data['cognitive_type']!,
+          _cognitiveTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('level')) {
+      context.handle(
+        _levelMeta,
+        level.isAcceptableOrUnknown(data['level']!, _levelMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_levelMeta);
+    }
+    if (data.containsKey('audio_complete_path')) {
+      context.handle(
+        _audioCompletePathMeta,
+        audioCompletePath.isAcceptableOrUnknown(
+          data['audio_complete_path']!,
+          _audioCompletePathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('audio_beginning_path')) {
+      context.handle(
+        _audioBeginningPathMeta,
+        audioBeginningPath.isAcceptableOrUnknown(
+          data['audio_beginning_path']!,
+          _audioBeginningPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('audio_repeating_path')) {
+      context.handle(
+        _audioRepeatingPathMeta,
+        audioRepeatingPath.isAcceptableOrUnknown(
+          data['audio_repeating_path']!,
+          _audioRepeatingPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('audio_end_path')) {
+      context.handle(
+        _audioEndPathMeta,
+        audioEndPath.isAcceptableOrUnknown(
+          data['audio_end_path']!,
+          _audioEndPathMeta,
+        ),
+      );
+    }
+    if (data.containsKey('tutorial_video_path')) {
+      context.handle(
+        _tutorialVideoPathMeta,
+        tutorialVideoPath.isAcceptableOrUnknown(
+          data['tutorial_video_path']!,
+          _tutorialVideoPathMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Meditation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Meditation(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      chakraType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}chakra_type'],
+      ),
+      cognitiveType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cognitive_type'],
+      ),
+      level: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}level'],
+      )!,
+      audioCompletePath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_complete_path'],
+      ),
+      audioBeginningPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_beginning_path'],
+      ),
+      audioRepeatingPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_repeating_path'],
+      ),
+      audioEndPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}audio_end_path'],
+      ),
+      tutorialVideoPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}tutorial_video_path'],
+      ),
+    );
+  }
+
+  @override
+  $MeditationsTable createAlias(String alias) {
+    return $MeditationsTable(attachedDatabase, alias);
+  }
+}
+
+class Meditation extends DataClass implements Insertable<Meditation> {
+  final String id;
+  final String title;
+  final String description;
+  final String type;
+  final String? chakraType;
+  final String? cognitiveType;
+  final String level;
+  final String? audioCompletePath;
+  final String? audioBeginningPath;
+  final String? audioRepeatingPath;
+  final String? audioEndPath;
+  final String? tutorialVideoPath;
+  const Meditation({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.type,
+    this.chakraType,
+    this.cognitiveType,
+    required this.level,
+    this.audioCompletePath,
+    this.audioBeginningPath,
+    this.audioRepeatingPath,
+    this.audioEndPath,
+    this.tutorialVideoPath,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['title'] = Variable<String>(title);
+    map['description'] = Variable<String>(description);
+    map['type'] = Variable<String>(type);
+    if (!nullToAbsent || chakraType != null) {
+      map['chakra_type'] = Variable<String>(chakraType);
+    }
+    if (!nullToAbsent || cognitiveType != null) {
+      map['cognitive_type'] = Variable<String>(cognitiveType);
+    }
+    map['level'] = Variable<String>(level);
+    if (!nullToAbsent || audioCompletePath != null) {
+      map['audio_complete_path'] = Variable<String>(audioCompletePath);
+    }
+    if (!nullToAbsent || audioBeginningPath != null) {
+      map['audio_beginning_path'] = Variable<String>(audioBeginningPath);
+    }
+    if (!nullToAbsent || audioRepeatingPath != null) {
+      map['audio_repeating_path'] = Variable<String>(audioRepeatingPath);
+    }
+    if (!nullToAbsent || audioEndPath != null) {
+      map['audio_end_path'] = Variable<String>(audioEndPath);
+    }
+    if (!nullToAbsent || tutorialVideoPath != null) {
+      map['tutorial_video_path'] = Variable<String>(tutorialVideoPath);
+    }
+    return map;
+  }
+
+  MeditationsCompanion toCompanion(bool nullToAbsent) {
+    return MeditationsCompanion(
+      id: Value(id),
+      title: Value(title),
+      description: Value(description),
+      type: Value(type),
+      chakraType: chakraType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(chakraType),
+      cognitiveType: cognitiveType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(cognitiveType),
+      level: Value(level),
+      audioCompletePath: audioCompletePath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(audioCompletePath),
+      audioBeginningPath: audioBeginningPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(audioBeginningPath),
+      audioRepeatingPath: audioRepeatingPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(audioRepeatingPath),
+      audioEndPath: audioEndPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(audioEndPath),
+      tutorialVideoPath: tutorialVideoPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tutorialVideoPath),
+    );
+  }
+
+  factory Meditation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Meditation(
+      id: serializer.fromJson<String>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      description: serializer.fromJson<String>(json['description']),
+      type: serializer.fromJson<String>(json['type']),
+      chakraType: serializer.fromJson<String?>(json['chakraType']),
+      cognitiveType: serializer.fromJson<String?>(json['cognitiveType']),
+      level: serializer.fromJson<String>(json['level']),
+      audioCompletePath: serializer.fromJson<String?>(
+        json['audioCompletePath'],
+      ),
+      audioBeginningPath: serializer.fromJson<String?>(
+        json['audioBeginningPath'],
+      ),
+      audioRepeatingPath: serializer.fromJson<String?>(
+        json['audioRepeatingPath'],
+      ),
+      audioEndPath: serializer.fromJson<String?>(json['audioEndPath']),
+      tutorialVideoPath: serializer.fromJson<String?>(
+        json['tutorialVideoPath'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'title': serializer.toJson<String>(title),
+      'description': serializer.toJson<String>(description),
+      'type': serializer.toJson<String>(type),
+      'chakraType': serializer.toJson<String?>(chakraType),
+      'cognitiveType': serializer.toJson<String?>(cognitiveType),
+      'level': serializer.toJson<String>(level),
+      'audioCompletePath': serializer.toJson<String?>(audioCompletePath),
+      'audioBeginningPath': serializer.toJson<String?>(audioBeginningPath),
+      'audioRepeatingPath': serializer.toJson<String?>(audioRepeatingPath),
+      'audioEndPath': serializer.toJson<String?>(audioEndPath),
+      'tutorialVideoPath': serializer.toJson<String?>(tutorialVideoPath),
+    };
+  }
+
+  Meditation copyWith({
+    String? id,
+    String? title,
+    String? description,
+    String? type,
+    Value<String?> chakraType = const Value.absent(),
+    Value<String?> cognitiveType = const Value.absent(),
+    String? level,
+    Value<String?> audioCompletePath = const Value.absent(),
+    Value<String?> audioBeginningPath = const Value.absent(),
+    Value<String?> audioRepeatingPath = const Value.absent(),
+    Value<String?> audioEndPath = const Value.absent(),
+    Value<String?> tutorialVideoPath = const Value.absent(),
+  }) => Meditation(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    type: type ?? this.type,
+    chakraType: chakraType.present ? chakraType.value : this.chakraType,
+    cognitiveType: cognitiveType.present
+        ? cognitiveType.value
+        : this.cognitiveType,
+    level: level ?? this.level,
+    audioCompletePath: audioCompletePath.present
+        ? audioCompletePath.value
+        : this.audioCompletePath,
+    audioBeginningPath: audioBeginningPath.present
+        ? audioBeginningPath.value
+        : this.audioBeginningPath,
+    audioRepeatingPath: audioRepeatingPath.present
+        ? audioRepeatingPath.value
+        : this.audioRepeatingPath,
+    audioEndPath: audioEndPath.present ? audioEndPath.value : this.audioEndPath,
+    tutorialVideoPath: tutorialVideoPath.present
+        ? tutorialVideoPath.value
+        : this.tutorialVideoPath,
+  );
+  Meditation copyWithCompanion(MeditationsCompanion data) {
+    return Meditation(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      type: data.type.present ? data.type.value : this.type,
+      chakraType: data.chakraType.present
+          ? data.chakraType.value
+          : this.chakraType,
+      cognitiveType: data.cognitiveType.present
+          ? data.cognitiveType.value
+          : this.cognitiveType,
+      level: data.level.present ? data.level.value : this.level,
+      audioCompletePath: data.audioCompletePath.present
+          ? data.audioCompletePath.value
+          : this.audioCompletePath,
+      audioBeginningPath: data.audioBeginningPath.present
+          ? data.audioBeginningPath.value
+          : this.audioBeginningPath,
+      audioRepeatingPath: data.audioRepeatingPath.present
+          ? data.audioRepeatingPath.value
+          : this.audioRepeatingPath,
+      audioEndPath: data.audioEndPath.present
+          ? data.audioEndPath.value
+          : this.audioEndPath,
+      tutorialVideoPath: data.tutorialVideoPath.present
+          ? data.tutorialVideoPath.value
+          : this.tutorialVideoPath,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Meditation(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('type: $type, ')
+          ..write('chakraType: $chakraType, ')
+          ..write('cognitiveType: $cognitiveType, ')
+          ..write('level: $level, ')
+          ..write('audioCompletePath: $audioCompletePath, ')
+          ..write('audioBeginningPath: $audioBeginningPath, ')
+          ..write('audioRepeatingPath: $audioRepeatingPath, ')
+          ..write('audioEndPath: $audioEndPath, ')
+          ..write('tutorialVideoPath: $tutorialVideoPath')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    title,
+    description,
+    type,
+    chakraType,
+    cognitiveType,
+    level,
+    audioCompletePath,
+    audioBeginningPath,
+    audioRepeatingPath,
+    audioEndPath,
+    tutorialVideoPath,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Meditation &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.description == this.description &&
+          other.type == this.type &&
+          other.chakraType == this.chakraType &&
+          other.cognitiveType == this.cognitiveType &&
+          other.level == this.level &&
+          other.audioCompletePath == this.audioCompletePath &&
+          other.audioBeginningPath == this.audioBeginningPath &&
+          other.audioRepeatingPath == this.audioRepeatingPath &&
+          other.audioEndPath == this.audioEndPath &&
+          other.tutorialVideoPath == this.tutorialVideoPath);
+}
+
+class MeditationsCompanion extends UpdateCompanion<Meditation> {
+  final Value<String> id;
+  final Value<String> title;
+  final Value<String> description;
+  final Value<String> type;
+  final Value<String?> chakraType;
+  final Value<String?> cognitiveType;
+  final Value<String> level;
+  final Value<String?> audioCompletePath;
+  final Value<String?> audioBeginningPath;
+  final Value<String?> audioRepeatingPath;
+  final Value<String?> audioEndPath;
+  final Value<String?> tutorialVideoPath;
+  final Value<int> rowid;
+  const MeditationsCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.description = const Value.absent(),
+    this.type = const Value.absent(),
+    this.chakraType = const Value.absent(),
+    this.cognitiveType = const Value.absent(),
+    this.level = const Value.absent(),
+    this.audioCompletePath = const Value.absent(),
+    this.audioBeginningPath = const Value.absent(),
+    this.audioRepeatingPath = const Value.absent(),
+    this.audioEndPath = const Value.absent(),
+    this.tutorialVideoPath = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  MeditationsCompanion.insert({
+    required String id,
+    required String title,
+    required String description,
+    required String type,
+    this.chakraType = const Value.absent(),
+    this.cognitiveType = const Value.absent(),
+    required String level,
+    this.audioCompletePath = const Value.absent(),
+    this.audioBeginningPath = const Value.absent(),
+    this.audioRepeatingPath = const Value.absent(),
+    this.audioEndPath = const Value.absent(),
+    this.tutorialVideoPath = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       title = Value(title),
+       description = Value(description),
+       type = Value(type),
+       level = Value(level);
+  static Insertable<Meditation> custom({
+    Expression<String>? id,
+    Expression<String>? title,
+    Expression<String>? description,
+    Expression<String>? type,
+    Expression<String>? chakraType,
+    Expression<String>? cognitiveType,
+    Expression<String>? level,
+    Expression<String>? audioCompletePath,
+    Expression<String>? audioBeginningPath,
+    Expression<String>? audioRepeatingPath,
+    Expression<String>? audioEndPath,
+    Expression<String>? tutorialVideoPath,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (type != null) 'type': type,
+      if (chakraType != null) 'chakra_type': chakraType,
+      if (cognitiveType != null) 'cognitive_type': cognitiveType,
+      if (level != null) 'level': level,
+      if (audioCompletePath != null) 'audio_complete_path': audioCompletePath,
+      if (audioBeginningPath != null)
+        'audio_beginning_path': audioBeginningPath,
+      if (audioRepeatingPath != null)
+        'audio_repeating_path': audioRepeatingPath,
+      if (audioEndPath != null) 'audio_end_path': audioEndPath,
+      if (tutorialVideoPath != null) 'tutorial_video_path': tutorialVideoPath,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  MeditationsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? title,
+    Value<String>? description,
+    Value<String>? type,
+    Value<String?>? chakraType,
+    Value<String?>? cognitiveType,
+    Value<String>? level,
+    Value<String?>? audioCompletePath,
+    Value<String?>? audioBeginningPath,
+    Value<String?>? audioRepeatingPath,
+    Value<String?>? audioEndPath,
+    Value<String?>? tutorialVideoPath,
+    Value<int>? rowid,
+  }) {
+    return MeditationsCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      chakraType: chakraType ?? this.chakraType,
+      cognitiveType: cognitiveType ?? this.cognitiveType,
+      level: level ?? this.level,
+      audioCompletePath: audioCompletePath ?? this.audioCompletePath,
+      audioBeginningPath: audioBeginningPath ?? this.audioBeginningPath,
+      audioRepeatingPath: audioRepeatingPath ?? this.audioRepeatingPath,
+      audioEndPath: audioEndPath ?? this.audioEndPath,
+      tutorialVideoPath: tutorialVideoPath ?? this.tutorialVideoPath,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (chakraType.present) {
+      map['chakra_type'] = Variable<String>(chakraType.value);
+    }
+    if (cognitiveType.present) {
+      map['cognitive_type'] = Variable<String>(cognitiveType.value);
+    }
+    if (level.present) {
+      map['level'] = Variable<String>(level.value);
+    }
+    if (audioCompletePath.present) {
+      map['audio_complete_path'] = Variable<String>(audioCompletePath.value);
+    }
+    if (audioBeginningPath.present) {
+      map['audio_beginning_path'] = Variable<String>(audioBeginningPath.value);
+    }
+    if (audioRepeatingPath.present) {
+      map['audio_repeating_path'] = Variable<String>(audioRepeatingPath.value);
+    }
+    if (audioEndPath.present) {
+      map['audio_end_path'] = Variable<String>(audioEndPath.value);
+    }
+    if (tutorialVideoPath.present) {
+      map['tutorial_video_path'] = Variable<String>(tutorialVideoPath.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MeditationsCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('type: $type, ')
+          ..write('chakraType: $chakraType, ')
+          ..write('cognitiveType: $cognitiveType, ')
+          ..write('level: $level, ')
+          ..write('audioCompletePath: $audioCompletePath, ')
+          ..write('audioBeginningPath: $audioBeginningPath, ')
+          ..write('audioRepeatingPath: $audioRepeatingPath, ')
+          ..write('audioEndPath: $audioEndPath, ')
+          ..write('tutorialVideoPath: $tutorialVideoPath, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -2195,6 +2959,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $CommsCheckEntriesTable(this);
   late final $EmotionExplorerMapsTable emotionExplorerMaps =
       $EmotionExplorerMapsTable(this);
+  late final $MeditationsTable meditations = $MeditationsTable(this);
   late final JournalDao journalDao = JournalDao(this as AppDatabase);
   late final JournalReflectionDao journalReflectionDao = JournalReflectionDao(
     this as AppDatabase,
@@ -2202,6 +2967,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final CommsCheckDao commsCheckDao = CommsCheckDao(this as AppDatabase);
   late final EmotionExplorerMapDao emotionExplorerMapDao =
       EmotionExplorerMapDao(this as AppDatabase);
+  late final MeditationDao meditationDao = MeditationDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2211,6 +2977,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     journalReflections,
     commsCheckEntries,
     emotionExplorerMaps,
+    meditations,
   ];
 }
 
@@ -3544,6 +4311,355 @@ typedef $$EmotionExplorerMapsTableProcessedTableManager =
       EmotionExplorerMap,
       PrefetchHooks Function()
     >;
+typedef $$MeditationsTableCreateCompanionBuilder =
+    MeditationsCompanion Function({
+      required String id,
+      required String title,
+      required String description,
+      required String type,
+      Value<String?> chakraType,
+      Value<String?> cognitiveType,
+      required String level,
+      Value<String?> audioCompletePath,
+      Value<String?> audioBeginningPath,
+      Value<String?> audioRepeatingPath,
+      Value<String?> audioEndPath,
+      Value<String?> tutorialVideoPath,
+      Value<int> rowid,
+    });
+typedef $$MeditationsTableUpdateCompanionBuilder =
+    MeditationsCompanion Function({
+      Value<String> id,
+      Value<String> title,
+      Value<String> description,
+      Value<String> type,
+      Value<String?> chakraType,
+      Value<String?> cognitiveType,
+      Value<String> level,
+      Value<String?> audioCompletePath,
+      Value<String?> audioBeginningPath,
+      Value<String?> audioRepeatingPath,
+      Value<String?> audioEndPath,
+      Value<String?> tutorialVideoPath,
+      Value<int> rowid,
+    });
+
+class $$MeditationsTableFilterComposer
+    extends Composer<_$AppDatabase, $MeditationsTable> {
+  $$MeditationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get chakraType => $composableBuilder(
+    column: $table.chakraType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get cognitiveType => $composableBuilder(
+    column: $table.cognitiveType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get level => $composableBuilder(
+    column: $table.level,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get audioCompletePath => $composableBuilder(
+    column: $table.audioCompletePath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get audioBeginningPath => $composableBuilder(
+    column: $table.audioBeginningPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get audioRepeatingPath => $composableBuilder(
+    column: $table.audioRepeatingPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get audioEndPath => $composableBuilder(
+    column: $table.audioEndPath,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get tutorialVideoPath => $composableBuilder(
+    column: $table.tutorialVideoPath,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$MeditationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MeditationsTable> {
+  $$MeditationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get chakraType => $composableBuilder(
+    column: $table.chakraType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get cognitiveType => $composableBuilder(
+    column: $table.cognitiveType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get level => $composableBuilder(
+    column: $table.level,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get audioCompletePath => $composableBuilder(
+    column: $table.audioCompletePath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get audioBeginningPath => $composableBuilder(
+    column: $table.audioBeginningPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get audioRepeatingPath => $composableBuilder(
+    column: $table.audioRepeatingPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get audioEndPath => $composableBuilder(
+    column: $table.audioEndPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get tutorialVideoPath => $composableBuilder(
+    column: $table.tutorialVideoPath,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$MeditationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MeditationsTable> {
+  $$MeditationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get chakraType => $composableBuilder(
+    column: $table.chakraType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get cognitiveType => $composableBuilder(
+    column: $table.cognitiveType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get level =>
+      $composableBuilder(column: $table.level, builder: (column) => column);
+
+  GeneratedColumn<String> get audioCompletePath => $composableBuilder(
+    column: $table.audioCompletePath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get audioBeginningPath => $composableBuilder(
+    column: $table.audioBeginningPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get audioRepeatingPath => $composableBuilder(
+    column: $table.audioRepeatingPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get audioEndPath => $composableBuilder(
+    column: $table.audioEndPath,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get tutorialVideoPath => $composableBuilder(
+    column: $table.tutorialVideoPath,
+    builder: (column) => column,
+  );
+}
+
+class $$MeditationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $MeditationsTable,
+          Meditation,
+          $$MeditationsTableFilterComposer,
+          $$MeditationsTableOrderingComposer,
+          $$MeditationsTableAnnotationComposer,
+          $$MeditationsTableCreateCompanionBuilder,
+          $$MeditationsTableUpdateCompanionBuilder,
+          (
+            Meditation,
+            BaseReferences<_$AppDatabase, $MeditationsTable, Meditation>,
+          ),
+          Meditation,
+          PrefetchHooks Function()
+        > {
+  $$MeditationsTableTableManager(_$AppDatabase db, $MeditationsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MeditationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MeditationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MeditationsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String?> chakraType = const Value.absent(),
+                Value<String?> cognitiveType = const Value.absent(),
+                Value<String> level = const Value.absent(),
+                Value<String?> audioCompletePath = const Value.absent(),
+                Value<String?> audioBeginningPath = const Value.absent(),
+                Value<String?> audioRepeatingPath = const Value.absent(),
+                Value<String?> audioEndPath = const Value.absent(),
+                Value<String?> tutorialVideoPath = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MeditationsCompanion(
+                id: id,
+                title: title,
+                description: description,
+                type: type,
+                chakraType: chakraType,
+                cognitiveType: cognitiveType,
+                level: level,
+                audioCompletePath: audioCompletePath,
+                audioBeginningPath: audioBeginningPath,
+                audioRepeatingPath: audioRepeatingPath,
+                audioEndPath: audioEndPath,
+                tutorialVideoPath: tutorialVideoPath,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String title,
+                required String description,
+                required String type,
+                Value<String?> chakraType = const Value.absent(),
+                Value<String?> cognitiveType = const Value.absent(),
+                required String level,
+                Value<String?> audioCompletePath = const Value.absent(),
+                Value<String?> audioBeginningPath = const Value.absent(),
+                Value<String?> audioRepeatingPath = const Value.absent(),
+                Value<String?> audioEndPath = const Value.absent(),
+                Value<String?> tutorialVideoPath = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => MeditationsCompanion.insert(
+                id: id,
+                title: title,
+                description: description,
+                type: type,
+                chakraType: chakraType,
+                cognitiveType: cognitiveType,
+                level: level,
+                audioCompletePath: audioCompletePath,
+                audioBeginningPath: audioBeginningPath,
+                audioRepeatingPath: audioRepeatingPath,
+                audioEndPath: audioEndPath,
+                tutorialVideoPath: tutorialVideoPath,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$MeditationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $MeditationsTable,
+      Meditation,
+      $$MeditationsTableFilterComposer,
+      $$MeditationsTableOrderingComposer,
+      $$MeditationsTableAnnotationComposer,
+      $$MeditationsTableCreateCompanionBuilder,
+      $$MeditationsTableUpdateCompanionBuilder,
+      (
+        Meditation,
+        BaseReferences<_$AppDatabase, $MeditationsTable, Meditation>,
+      ),
+      Meditation,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3556,4 +4672,6 @@ class $AppDatabaseManager {
       $$CommsCheckEntriesTableTableManager(_db, _db.commsCheckEntries);
   $$EmotionExplorerMapsTableTableManager get emotionExplorerMaps =>
       $$EmotionExplorerMapsTableTableManager(_db, _db.emotionExplorerMaps);
+  $$MeditationsTableTableManager get meditations =>
+      $$MeditationsTableTableManager(_db, _db.meditations);
 }

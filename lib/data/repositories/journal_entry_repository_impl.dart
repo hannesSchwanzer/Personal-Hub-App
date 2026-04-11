@@ -5,11 +5,11 @@ import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:uuid/uuid.dart';
 
-class JournalEntryReporsitoryImpl implements JournalEntryRepository {
+class JournalEntryRepositoryImpl implements JournalEntryRepository {
   final JournalDao journalDao;
   final _uuid = const Uuid();
 
-  JournalEntryReporsitoryImpl(this.journalDao);
+  JournalEntryRepositoryImpl(this.journalDao);
 
   @override
   Stream<List<JournalEntryEntity>> watchAllEntries() {

@@ -42,10 +42,10 @@ class MeditationEntry {
     String? chakraType,
     String? cognitiveType,
     String? level,
-    AudioFile? audioCompletePath,
-    AudioFile? audioBeginningPath,
-    AudioFile? audioRepeatingPath,
-    AudioFile? audioEndPath,
+    AudioFile? audioComplete,
+    AudioFile? audioBeginning,
+    AudioFile? audioRepeating,
+    AudioFile? audioEnd,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -56,10 +56,10 @@ class MeditationEntry {
       chakraType: chakraType ?? this.chakraType,
       cognitiveType: cognitiveType ?? this.cognitiveType,
       level: level ?? this.level,
-      audioComplete: audioCompletePath ?? this.audioComplete,
-      audioBeginning: audioBeginningPath ?? this.audioBeginning,
-      audioRepeating: audioRepeatingPath ?? this.audioRepeating,
-      audioEnd: audioEndPath ?? this.audioEnd,
+      audioComplete: audioComplete ?? this.audioComplete,
+      audioBeginning: audioBeginning ?? this.audioBeginning,
+      audioRepeating: audioRepeating ?? this.audioRepeating,
+      audioEnd: audioEnd ?? this.audioEnd,
       tutorialVideoPath: tutorialVideoPath ?? this.tutorialVideoPath,
     );
   }
@@ -72,10 +72,10 @@ class MeditationEntry {
     String? chakraType,
     String? cognitiveType,
     required String level,
-    AudioFile? audioCompletePath,
-    AudioFile? audioBeginningPath,
-    AudioFile? audioRepeatingPath,
-    AudioFile? audioEndPath,
+    AudioFile? audioComplete,
+    AudioFile? audioBeginning,
+    AudioFile? audioRepeating,
+    AudioFile? audioEnd,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -86,11 +86,13 @@ class MeditationEntry {
       chakraType: chakraType,
       cognitiveType: cognitiveType,
       level: level,
-      audioComplete: audioCompletePath,
-      audioBeginning: audioBeginningPath,
-      audioRepeating: audioRepeatingPath,
-      audioEnd: audioEndPath,
+      audioComplete: audioComplete,
+      audioBeginning: audioBeginning,
+      audioRepeating: audioRepeating,
+      audioEnd: audioEnd,
       tutorialVideoPath: tutorialVideoPath,
     );
   }
 }
+
+
