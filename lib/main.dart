@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
-import 'package:personal_hub_app/ui/hub/widgets/hub_view.dart';
+import 'package:personal_hub_app/ui/bootstrap/screens/bootstrapper_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 
@@ -32,7 +32,7 @@ class AppRoot extends ConsumerWidget {
         Locale('en'),
         Locale('de'),
       ],
-      home: const HubView(),
+      home: const BootstrapperView(),
     );
   }
 }

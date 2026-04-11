@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/cooking_view.dart';
 import 'package:personal_hub_app/ui/gym_tracker/widgets/gym_view.dart';
-import 'package:personal_hub_app/ui/meditation/screens/audio_test.dart';
-import 'package:personal_hub_app/ui/meditation/widgets/meditation_view.dart';
+import 'package:personal_hub_app/ui/meditation/screens/mediation_index_screen.dart';
+import 'package:personal_hub_app/ui/meditation/screens/meditation_overview_screen.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/right_in_the_feels_view.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
 import 'package:personal_hub_app/ui/settings/widgets/settings_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:personal_hub_app/utils/providers.dart';
+
+import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+import 'package:personal_hub_app/domain/entities/audio_file.dart' hide FileType;
 
 class HubView extends ConsumerWidget {
   const HubView({super.key});
@@ -148,7 +151,7 @@ class HubView extends ConsumerWidget {
               title: l10n.hubFeatureMeditation,
               description: l10n.hubFeatureMeditationDesc,
               icon: Icons.self_improvement,
-              onTap: () => _navigateTo(context, const AudioTestPage()),
+              onTap: () => _navigateTo(context, const MeditationIndexScreen()),
             ),
             const SizedBox(height: 16),
             HubFeatureCard(

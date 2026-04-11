@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/ui/meditation/screens/guided_meditation_screen.dart';
 
 class MeditationOverviewScreen extends StatelessWidget {
   final MeditationEntry entry;
@@ -59,7 +60,11 @@ class MeditationOverviewScreen extends StatelessWidget {
 
   Widget _buildMeditationSection(BuildContext context, MeditationEntry entry) {
     if (entry.audioComplete != null) {
-      return _CompleteAudioSection(audioFile: entry.audioComplete!);
+      return _CompleteAudioSection(
+        audioFile: entry.audioComplete!,
+        title: entry.title,
+        description: entry.description,
+      );
     }
     if (entry.audioBeginning != null &&
         entry.audioRepeating != null &&
@@ -68,6 +73,8 @@ class MeditationOverviewScreen extends StatelessWidget {
         audioBeginning: entry.audioBeginning!,
         audioRepeating: entry.audioRepeating!,
         audioEnd: entry.audioEnd!,
+        title: entry.title,
+        description: entry.description,
       );
     }
     return const Text(
@@ -133,31 +140,16 @@ class _MetaChipRow extends StatelessWidget {
   }
 }
 
-class _LabeledValue extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _LabeledValue({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: Colors.grey,
-                )),
-        const SizedBox(height: 2),
-        Text(value, style: Theme.of(context).textTheme.bodyMedium),
-      ],
-    );
-  }
-}
-
 class _CompleteAudioSection extends StatelessWidget {
   final AudioFile audioFile;
+  final String title;
+  final String description;
 
-  const _CompleteAudioSection({required this.audioFile});
+  const _CompleteAudioSection({
+    required this.audioFile,
+    required this.title,
+    required this.description,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +185,16 @@ class _CompleteAudioSection extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () {
-              // TODO: Start meditation action for single audio
+              // Navigate to GuidedMeditationScreen with one item playlist
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => GuidedMeditationScreen(
+                    title: title,
+                    description: description,
+                    playlist: [(audioFile, 1)],
+                  ),
+                ),
+              );
             },
             icon: const Icon(Icons.play_arrow_rounded),
             label: const Text("Start Meditation"),
@@ -215,11 +216,15 @@ class _SegmentedAudioSection extends StatefulWidget {
   final AudioFile audioBeginning;
   final AudioFile audioRepeating;
   final AudioFile audioEnd;
+  final String title;
+  final String description;
 
   const _SegmentedAudioSection({
     required this.audioBeginning,
     required this.audioRepeating,
     required this.audioEnd,
+    required this.title,
+    required this.description,
   });
 
   @override
@@ -419,7 +424,29 @@ class _SegmentedAudioSectionState extends State<_SegmentedAudioSection> {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () {
-              // TODO: Implement start meditation action
+              // Compute total repetitions based on selection
+              int repetitions = isCustom
+                  ? repetitionsForDesiredMinutes(
+                      int.tryParse(_customMinutesController.text) ?? minMinutes)
+                  : (selectedDropdownRep ?? 1);
+
+              // Create the playlist as spec: beginning (1), repeating (n), end (1)
+              final playlist = [
+                (widget.audioBeginning, 1),
+                (widget.audioRepeating, repetitions),
+                (widget.audioEnd, 1),
+              ];
+
+              // Navigate to the GuidedMeditationScreen
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => GuidedMeditationScreen(
+                    title: widget.title,
+                    description: widget.description,
+                    playlist: playlist,
+                  ),
+                ),
+              );
             },
             icon: const Icon(Icons.play_arrow_rounded),
             label: const Text("Start Meditation"),

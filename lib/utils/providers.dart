@@ -2,14 +2,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/journal_dao.dart';
 import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart';
-import 'package:personal_hub_app/data/repositories/journal_entry_reporsitory_impl.dart';
+import 'package:personal_hub_app/data/database/daos/meditation_dao.dart';
+import 'package:personal_hub_app/data/repositories/journal_entry_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
+import 'package:personal_hub_app/data/repositories/meditation_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/settings_repository_impl.dart';
+import 'package:personal_hub_app/data/services/audio_duration_service.dart';
 import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
+import 'package:personal_hub_app/data/services/builtin_meditation_seeder.dart';
+import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
+import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 import 'package:personal_hub_app/domain/services/backup_service.dart';
 import 'package:personal_hub_app/ui/settings/view_models/settings_notifier.dart';
@@ -41,7 +47,7 @@ final journalDaoProvider = Provider<JournalDao>((ref) {
 
 final journalEntryRepositoryProvider = Provider<JournalEntryRepository>((ref) {
   final dao = ref.watch(journalDaoProvider);
-  return JournalEntryReporsitoryImpl(dao);
+  return JournalEntryRepositoryImpl(dao);
 });
 
 final journalReflectionDaoProvider = Provider<JournalReflectionDao>((ref) {
@@ -80,6 +86,26 @@ final emotionExplorerMapRepositoryProvider = Provider<EmotionExplorerMapReposito
   return EmotionExplorerMapRepositoryImpl(dao);
 });
 
+final mediationDaoProvider = Provider<MeditationDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return MeditationDao(db);
+});
+
+final meditationRepositoryProvider = Provider<MeditationRepository>((ref) {
+  final dao = ref.watch(mediationDaoProvider);
+  return MeditationRepositoryImpl(dao);
+});
+
+final meditationEntryCreationServiceProvider = Provider<MeditationEntryCreationService>((ref) {
+  final repo = ref.watch(meditationRepositoryProvider);
+  final durationService = ref.watch(audioDurationServiceProvider);
+  return MeditationEntryCreationService(durationService, repo);
+});
+
+final audioDurationServiceProvider = Provider<AudioDurationService>((ref) {
+  return AudioDurationService();
+});
+
 final audioPlayerServiceProvider = Provider<AudioPlayerService>(
   (ref) {
     final service = AudioPlayerService();
@@ -87,4 +113,9 @@ final audioPlayerServiceProvider = Provider<AudioPlayerService>(
     return service;
   },
 );
+
+final builtInMeditationSeederProvider = Provider<BuiltInMeditationSeeder>((ref) {
+  final meditationEntryCreationService = ref.watch(meditationEntryCreationServiceProvider);
+  return BuiltInMeditationSeeder(meditationEntryCreationService);
+});
 
