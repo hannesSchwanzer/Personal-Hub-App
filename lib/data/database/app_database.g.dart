@@ -2200,6 +2200,20 @@ class $MeditationsTable extends Meditations
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _favoriteMeta = const VerificationMeta(
+    'favorite',
+  );
+  @override
+  late final GeneratedColumn<bool> favorite = GeneratedColumn<bool>(
+    'favorite',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("favorite" IN (0, 1))',
+    ),
+  );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
   late final GeneratedColumn<String> title = GeneratedColumn<String>(
@@ -2247,9 +2261,9 @@ class $MeditationsTable extends Meditations
   late final GeneratedColumn<String> cognitiveType = GeneratedColumn<String>(
     'cognitive_type',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _levelMeta = const VerificationMeta('level');
   @override
@@ -2320,6 +2334,7 @@ class $MeditationsTable extends Meditations
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    favorite,
     title,
     description,
     type,
@@ -2348,6 +2363,14 @@ class $MeditationsTable extends Meditations
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     } else if (isInserting) {
       context.missing(_idMeta);
+    }
+    if (data.containsKey('favorite')) {
+      context.handle(
+        _favoriteMeta,
+        favorite.isAcceptableOrUnknown(data['favorite']!, _favoriteMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_favoriteMeta);
     }
     if (data.containsKey('title')) {
       context.handle(
@@ -2390,6 +2413,8 @@ class $MeditationsTable extends Meditations
           _cognitiveTypeMeta,
         ),
       );
+    } else if (isInserting) {
+      context.missing(_cognitiveTypeMeta);
     }
     if (data.containsKey('level')) {
       context.handle(
@@ -2457,6 +2482,10 @@ class $MeditationsTable extends Meditations
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
+      favorite: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}favorite'],
+      )!,
       title: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}title'],
@@ -2476,7 +2505,7 @@ class $MeditationsTable extends Meditations
       cognitiveType: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}cognitive_type'],
-      ),
+      )!,
       level: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}level'],
@@ -2512,11 +2541,12 @@ class $MeditationsTable extends Meditations
 
 class Meditation extends DataClass implements Insertable<Meditation> {
   final String id;
+  final bool favorite;
   final String title;
   final String description;
   final String type;
   final String? chakraType;
-  final String? cognitiveType;
+  final String cognitiveType;
   final String level;
   final String? audioCompletePath;
   final String? audioBeginningPath;
@@ -2525,11 +2555,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   final String? tutorialVideoPath;
   const Meditation({
     required this.id,
+    required this.favorite,
     required this.title,
     required this.description,
     required this.type,
     this.chakraType,
-    this.cognitiveType,
+    required this.cognitiveType,
     required this.level,
     this.audioCompletePath,
     this.audioBeginningPath,
@@ -2541,15 +2572,14 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
+    map['favorite'] = Variable<bool>(favorite);
     map['title'] = Variable<String>(title);
     map['description'] = Variable<String>(description);
     map['type'] = Variable<String>(type);
     if (!nullToAbsent || chakraType != null) {
       map['chakra_type'] = Variable<String>(chakraType);
     }
-    if (!nullToAbsent || cognitiveType != null) {
-      map['cognitive_type'] = Variable<String>(cognitiveType);
-    }
+    map['cognitive_type'] = Variable<String>(cognitiveType);
     map['level'] = Variable<String>(level);
     if (!nullToAbsent || audioCompletePath != null) {
       map['audio_complete_path'] = Variable<String>(audioCompletePath);
@@ -2572,15 +2602,14 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   MeditationsCompanion toCompanion(bool nullToAbsent) {
     return MeditationsCompanion(
       id: Value(id),
+      favorite: Value(favorite),
       title: Value(title),
       description: Value(description),
       type: Value(type),
       chakraType: chakraType == null && nullToAbsent
           ? const Value.absent()
           : Value(chakraType),
-      cognitiveType: cognitiveType == null && nullToAbsent
-          ? const Value.absent()
-          : Value(cognitiveType),
+      cognitiveType: Value(cognitiveType),
       level: Value(level),
       audioCompletePath: audioCompletePath == null && nullToAbsent
           ? const Value.absent()
@@ -2607,11 +2636,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Meditation(
       id: serializer.fromJson<String>(json['id']),
+      favorite: serializer.fromJson<bool>(json['favorite']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
       type: serializer.fromJson<String>(json['type']),
       chakraType: serializer.fromJson<String?>(json['chakraType']),
-      cognitiveType: serializer.fromJson<String?>(json['cognitiveType']),
+      cognitiveType: serializer.fromJson<String>(json['cognitiveType']),
       level: serializer.fromJson<String>(json['level']),
       audioCompletePath: serializer.fromJson<String?>(
         json['audioCompletePath'],
@@ -2633,11 +2663,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
+      'favorite': serializer.toJson<bool>(favorite),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
       'type': serializer.toJson<String>(type),
       'chakraType': serializer.toJson<String?>(chakraType),
-      'cognitiveType': serializer.toJson<String?>(cognitiveType),
+      'cognitiveType': serializer.toJson<String>(cognitiveType),
       'level': serializer.toJson<String>(level),
       'audioCompletePath': serializer.toJson<String?>(audioCompletePath),
       'audioBeginningPath': serializer.toJson<String?>(audioBeginningPath),
@@ -2649,11 +2680,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
 
   Meditation copyWith({
     String? id,
+    bool? favorite,
     String? title,
     String? description,
     String? type,
     Value<String?> chakraType = const Value.absent(),
-    Value<String?> cognitiveType = const Value.absent(),
+    String? cognitiveType,
     String? level,
     Value<String?> audioCompletePath = const Value.absent(),
     Value<String?> audioBeginningPath = const Value.absent(),
@@ -2662,13 +2694,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     Value<String?> tutorialVideoPath = const Value.absent(),
   }) => Meditation(
     id: id ?? this.id,
+    favorite: favorite ?? this.favorite,
     title: title ?? this.title,
     description: description ?? this.description,
     type: type ?? this.type,
     chakraType: chakraType.present ? chakraType.value : this.chakraType,
-    cognitiveType: cognitiveType.present
-        ? cognitiveType.value
-        : this.cognitiveType,
+    cognitiveType: cognitiveType ?? this.cognitiveType,
     level: level ?? this.level,
     audioCompletePath: audioCompletePath.present
         ? audioCompletePath.value
@@ -2687,6 +2718,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   Meditation copyWithCompanion(MeditationsCompanion data) {
     return Meditation(
       id: data.id.present ? data.id.value : this.id,
+      favorite: data.favorite.present ? data.favorite.value : this.favorite,
       title: data.title.present ? data.title.value : this.title,
       description: data.description.present
           ? data.description.value
@@ -2721,6 +2753,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   String toString() {
     return (StringBuffer('Meditation(')
           ..write('id: $id, ')
+          ..write('favorite: $favorite, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('type: $type, ')
@@ -2739,6 +2772,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   @override
   int get hashCode => Object.hash(
     id,
+    favorite,
     title,
     description,
     type,
@@ -2756,6 +2790,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
       identical(this, other) ||
       (other is Meditation &&
           other.id == this.id &&
+          other.favorite == this.favorite &&
           other.title == this.title &&
           other.description == this.description &&
           other.type == this.type &&
@@ -2771,11 +2806,12 @@ class Meditation extends DataClass implements Insertable<Meditation> {
 
 class MeditationsCompanion extends UpdateCompanion<Meditation> {
   final Value<String> id;
+  final Value<bool> favorite;
   final Value<String> title;
   final Value<String> description;
   final Value<String> type;
   final Value<String?> chakraType;
-  final Value<String?> cognitiveType;
+  final Value<String> cognitiveType;
   final Value<String> level;
   final Value<String?> audioCompletePath;
   final Value<String?> audioBeginningPath;
@@ -2785,6 +2821,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   final Value<int> rowid;
   const MeditationsCompanion({
     this.id = const Value.absent(),
+    this.favorite = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
     this.type = const Value.absent(),
@@ -2800,11 +2837,12 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   });
   MeditationsCompanion.insert({
     required String id,
+    required bool favorite,
     required String title,
     required String description,
     required String type,
     this.chakraType = const Value.absent(),
-    this.cognitiveType = const Value.absent(),
+    required String cognitiveType,
     required String level,
     this.audioCompletePath = const Value.absent(),
     this.audioBeginningPath = const Value.absent(),
@@ -2813,12 +2851,15 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     this.tutorialVideoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
+       favorite = Value(favorite),
        title = Value(title),
        description = Value(description),
        type = Value(type),
+       cognitiveType = Value(cognitiveType),
        level = Value(level);
   static Insertable<Meditation> custom({
     Expression<String>? id,
+    Expression<bool>? favorite,
     Expression<String>? title,
     Expression<String>? description,
     Expression<String>? type,
@@ -2834,6 +2875,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (favorite != null) 'favorite': favorite,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
       if (type != null) 'type': type,
@@ -2853,11 +2895,12 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
 
   MeditationsCompanion copyWith({
     Value<String>? id,
+    Value<bool>? favorite,
     Value<String>? title,
     Value<String>? description,
     Value<String>? type,
     Value<String?>? chakraType,
-    Value<String?>? cognitiveType,
+    Value<String>? cognitiveType,
     Value<String>? level,
     Value<String?>? audioCompletePath,
     Value<String?>? audioBeginningPath,
@@ -2868,6 +2911,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   }) {
     return MeditationsCompanion(
       id: id ?? this.id,
+      favorite: favorite ?? this.favorite,
       title: title ?? this.title,
       description: description ?? this.description,
       type: type ?? this.type,
@@ -2888,6 +2932,9 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<String>(id.value);
+    }
+    if (favorite.present) {
+      map['favorite'] = Variable<bool>(favorite.value);
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
@@ -2932,6 +2979,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   String toString() {
     return (StringBuffer('MeditationsCompanion(')
           ..write('id: $id, ')
+          ..write('favorite: $favorite, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('type: $type, ')
@@ -4314,11 +4362,12 @@ typedef $$EmotionExplorerMapsTableProcessedTableManager =
 typedef $$MeditationsTableCreateCompanionBuilder =
     MeditationsCompanion Function({
       required String id,
+      required bool favorite,
       required String title,
       required String description,
       required String type,
       Value<String?> chakraType,
-      Value<String?> cognitiveType,
+      required String cognitiveType,
       required String level,
       Value<String?> audioCompletePath,
       Value<String?> audioBeginningPath,
@@ -4330,11 +4379,12 @@ typedef $$MeditationsTableCreateCompanionBuilder =
 typedef $$MeditationsTableUpdateCompanionBuilder =
     MeditationsCompanion Function({
       Value<String> id,
+      Value<bool> favorite,
       Value<String> title,
       Value<String> description,
       Value<String> type,
       Value<String?> chakraType,
-      Value<String?> cognitiveType,
+      Value<String> cognitiveType,
       Value<String> level,
       Value<String?> audioCompletePath,
       Value<String?> audioBeginningPath,
@@ -4355,6 +4405,11 @@ class $$MeditationsTableFilterComposer
   });
   ColumnFilters<String> get id => $composableBuilder(
     column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get favorite => $composableBuilder(
+    column: $table.favorite,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4428,6 +4483,11 @@ class $$MeditationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get favorite => $composableBuilder(
+    column: $table.favorite,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get title => $composableBuilder(
     column: $table.title,
     builder: (column) => ColumnOrderings(column),
@@ -4495,6 +4555,9 @@ class $$MeditationsTableAnnotationComposer
   });
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<bool> get favorite =>
+      $composableBuilder(column: $table.favorite, builder: (column) => column);
 
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
@@ -4578,11 +4641,12 @@ class $$MeditationsTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
+                Value<bool> favorite = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String> description = const Value.absent(),
                 Value<String> type = const Value.absent(),
                 Value<String?> chakraType = const Value.absent(),
-                Value<String?> cognitiveType = const Value.absent(),
+                Value<String> cognitiveType = const Value.absent(),
                 Value<String> level = const Value.absent(),
                 Value<String?> audioCompletePath = const Value.absent(),
                 Value<String?> audioBeginningPath = const Value.absent(),
@@ -4592,6 +4656,7 @@ class $$MeditationsTableTableManager
                 Value<int> rowid = const Value.absent(),
               }) => MeditationsCompanion(
                 id: id,
+                favorite: favorite,
                 title: title,
                 description: description,
                 type: type,
@@ -4608,11 +4673,12 @@ class $$MeditationsTableTableManager
           createCompanionCallback:
               ({
                 required String id,
+                required bool favorite,
                 required String title,
                 required String description,
                 required String type,
                 Value<String?> chakraType = const Value.absent(),
-                Value<String?> cognitiveType = const Value.absent(),
+                required String cognitiveType,
                 required String level,
                 Value<String?> audioCompletePath = const Value.absent(),
                 Value<String?> audioBeginningPath = const Value.absent(),
@@ -4622,6 +4688,7 @@ class $$MeditationsTableTableManager
                 Value<int> rowid = const Value.absent(),
               }) => MeditationsCompanion.insert(
                 id: id,
+                favorite: favorite,
                 title: title,
                 description: description,
                 type: type,

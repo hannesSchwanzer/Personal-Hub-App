@@ -15,10 +15,10 @@ class MeditationRepositoryImpl implements MeditationRepository {
   Future<void> createEntry({
     required String title,
     required String description,
-    required String type,
-    String? chakraType,
-    String? cognitiveType,
-    required String level,
+    required MeditationType type,
+    ChakraType? chakraType,
+    required List<CognitiveType> cognitiveTypes,
+    required MeditationLevel level,
     AudioFile? audioComplete,
     AudioFile? audioBeginning,
     AudioFile? audioRepeating,
@@ -31,7 +31,7 @@ class MeditationRepositoryImpl implements MeditationRepository {
       description: description,
       type: type,
       chakraType: chakraType,
-      cognitiveType: cognitiveType,
+      cognitiveTypes: cognitiveTypes,
       level: level,
       audioComplete: audioComplete,
       audioBeginning: audioBeginning,
@@ -59,6 +59,16 @@ class MeditationRepositoryImpl implements MeditationRepository {
   @override
   Future<void> deleteEntry(String id) {
     return _mediationDao.deleteEntry(id);
+  }
+
+  @override
+  Future<void> deleteAllEntries() {
+    return _mediationDao.deleteAllEntries();
+  }
+
+  @override
+  Future<void> updateEntry(MeditationEntry entry) {
+    return _mediationDao.updateEntry(entry.toCompanion());
   }
 }
 

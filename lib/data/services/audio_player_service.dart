@@ -34,13 +34,27 @@ class AudioPlayerService {
     _loadDurations(durations);
   }
 
+  Future<void> setAudioSourcePath(String path, {FileType type = FileType.asset}) async {
+    final source = switch (type) {
+      FileType.asset => AudioSource.asset(path),
+      FileType.network => AudioSource.uri(Uri.parse(path)),
+      FileType.file => AudioSource.file(path),
+    };
+
+    await _player.setAudioSource(source, preload: true);
+
+    final duration = _player.duration ?? Duration.zero;
+
+    _loadDurations([duration]);
+  }
+
   /// Load multiple audio files with repetition (tuples of [filepath, count]).
   Future<void> setAudioSourcesWithRepetitions(List<(AudioFile, int)> sources) async {
     final expanded = <AudioSource>[];
     final durations = <Duration>[];
     for (final (file, times) in sources) {
       expanded.addAll(List.generate(times, (_) => AudioSource.asset(file.path)));
-      durations.add(file.duration);
+      durations.addAll(List.generate(times, (_) => file.duration));
     }
     await _player.setAudioSources(expanded, preload: true);
 

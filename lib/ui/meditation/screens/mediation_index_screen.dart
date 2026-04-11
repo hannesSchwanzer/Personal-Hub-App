@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
 import 'package:personal_hub_app/ui/meditation/screens/meditation_overview_screen.dart';
+import 'package:personal_hub_app/ui/meditation/utils/meditation_string_utils.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 
 /// Displays a list of all meditation entries.
@@ -30,7 +31,6 @@ class MeditationIndexScreen extends ConsumerWidget {
           if (entries.isEmpty) {
             return const Center(child: Text('No meditations found.'));
           }
-          // Sort by title
           final sorted = [...entries]..sort((a, b) => a.title.compareTo(b.title));
           return ListView.separated(
             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -47,6 +47,10 @@ class MeditationIndexScreen extends ConsumerWidget {
                     ),
                   );
                 },
+                onToggleFavorite: () async {
+                  final updated = entry.copyWith(favorite: !entry.favorite);
+                  await meditationRepo.updateEntry(updated);
+                },
               );
             },
           );
@@ -59,18 +63,39 @@ class MeditationIndexScreen extends ConsumerWidget {
 class _MeditationListTile extends StatelessWidget {
   final MeditationEntry entry;
   final VoidCallback onTap;
+  final VoidCallback onToggleFavorite;
 
-  const _MeditationListTile({required this.entry, required this.onTap});
+  const _MeditationListTile({
+    required this.entry,
+    required this.onTap,
+    required this.onToggleFavorite,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(20, 6, 18, 6),
-      title: Text(
-        entry.title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              entry.title,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            icon: entry.favorite
+                ? Icon(Icons.star_rounded, color: Colors.amber[700])
+                : Icon(Icons.star_border_rounded, color: Colors.grey[400]),
+            tooltip: entry.favorite ? 'Remove from favorites' : 'Mark as favorite',
+            onPressed: onToggleFavorite,
+            padding: const EdgeInsets.only(left: 6),
+            splashRadius: 20,
+            constraints: BoxConstraints(),
+          ),
+        ],
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,27 +108,27 @@ class _MeditationListTile extends StatelessWidget {
             children: [
               _MeditationChip(
                 icon: Icons.style,
-                label: entry.type,
+                label: entry.type.displayName,
                 color: Colors.indigo.shade50,
                 iconColor: Colors.indigo.shade400,
               ),
               _MeditationChip(
                 icon: Icons.flag,
-                label: 'Level: ${entry.level}',
+                label: entry.level.displayName,
                 color: Colors.orange.shade50,
                 iconColor: Colors.orange.shade400,
               ),
               if (entry.chakraType != null)
                 _MeditationChip(
                   icon: Icons.brightness_low_rounded,
-                  label: 'Chakra: ${entry.chakraType!}',
+                  label: entry.chakraType!.displayName,
                   color: Colors.pink.shade50,
                   iconColor: Colors.pink.shade300,
                 ),
-              if (entry.cognitiveType != null)
+              for (final ct in entry.cognitiveTypes)
                 _MeditationChip(
                   icon: Icons.psychology_alt_rounded,
-                  label: 'Cognitive: ${entry.cognitiveType!}',
+                  label: ct.displayName,
                   color: Colors.teal.shade50,
                   iconColor: Colors.teal.shade400,
                 ),

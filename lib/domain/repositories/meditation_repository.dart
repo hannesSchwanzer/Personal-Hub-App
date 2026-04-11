@@ -5,10 +5,10 @@ abstract class MeditationRepository {
   Future<void> createEntry({
     required String title,
     required String description,
-    required String type,
-    String? chakraType,
-    String? cognitiveType,
-    required String level,
+    required MeditationType type,
+    ChakraType? chakraType,
+    required List<CognitiveType> cognitiveTypes,
+    required MeditationLevel level,
     AudioFile? audioComplete,
     AudioFile? audioBeginning,
     AudioFile? audioRepeating,
@@ -21,4 +21,8 @@ abstract class MeditationRepository {
   Future<List<MeditationEntry>> getAllEntries();
 
   Future<void> deleteEntry(String id);
+
+  Future<void> updateEntry(MeditationEntry entry);
+
+  Future<void> deleteAllEntries();
 }

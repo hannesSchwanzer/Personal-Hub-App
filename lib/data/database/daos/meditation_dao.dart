@@ -26,4 +26,12 @@ class MeditationDao extends DatabaseAccessor<AppDatabase> with _$MeditationDaoMi
   Future<List<Meditation>> getAllEntries() {
     return select(meditations).get();
   }
+
+  Future<void> updateEntry(MeditationsCompanion entry) {
+    return update(meditations).replace(entry);
+  }
+
+  Future<void> deleteAllEntries() {
+    return delete(meditations).go();
+  }
 }
