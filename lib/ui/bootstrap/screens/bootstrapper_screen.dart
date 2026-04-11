@@ -15,7 +15,16 @@ class BootstrapperView extends ConsumerWidget {
     return bootstrapState.when(
       loading: () => const SplashScreen(),
       error: (e, st) => ErrorScreen(error: e),
-      data: (_) => const HubView(),
+      data: (bootstrapState) {
+        // When status is "done", show HubView
+        if (bootstrapState.step == BootstrapStep.done) {
+          return const HubView();
+        }
+        // Otherwise, show SplashScreen with message
+        return SplashScreen(
+          statusMessage: bootstrapState.message,
+        );
+      },
     );
   }
 }

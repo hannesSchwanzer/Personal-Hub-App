@@ -12,6 +12,7 @@ import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/data/services/builtin_meditation_seeder.dart';
 import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
+import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
@@ -103,7 +104,8 @@ final meditationEntryCreationServiceProvider = Provider<MeditationEntryCreationS
 });
 
 final audioDurationServiceProvider = Provider<AudioDurationService>((ref) {
-  return AudioDurationService();
+  final audioPlayerService = ref.watch(audioPlayerServiceProvider);
+  return AudioDurationService(audioPlayerService);
 });
 
 final audioPlayerServiceProvider = Provider<AudioPlayerService>(
@@ -116,6 +118,19 @@ final audioPlayerServiceProvider = Provider<AudioPlayerService>(
 
 final builtInMeditationSeederProvider = Provider<BuiltInMeditationSeeder>((ref) {
   final meditationEntryCreationService = ref.watch(meditationEntryCreationServiceProvider);
-  return BuiltInMeditationSeeder(meditationEntryCreationService);
+  final meditationRepo = ref.watch(meditationRepositoryProvider);
+
+  return BuiltInMeditationSeeder(meditationEntryCreationService, meditationRepo);
 });
 
+final meditationEntryProvider = StreamProvider.family<MeditationEntry?, String>((ref, id) {
+  return ref.watch(meditationRepositoryProvider)
+    .watchAllEntries()
+    .map((entries) {
+      try {
+        return entries.firstWhere((e) => e.id == id);
+      } catch (_) {
+        return null;
+      }
+    });
+});

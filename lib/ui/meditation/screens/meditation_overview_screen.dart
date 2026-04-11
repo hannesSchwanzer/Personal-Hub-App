@@ -1,60 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/audio_file.dart';
 import 'package:personal_hub_app/ui/meditation/screens/guided_meditation_screen.dart';
+import 'package:personal_hub_app/ui/meditation/utils/meditation_string_utils.dart';
+import 'package:personal_hub_app/utils/providers.dart';
 
-class MeditationOverviewScreen extends StatelessWidget {
+class MeditationOverviewScreen extends ConsumerWidget {
   final MeditationEntry entry;
 
   const MeditationOverviewScreen({super.key, required this.entry});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(entry.title),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final meditationRepo = ref.watch(meditationRepositoryProvider);
+    final entryStream = ref.watch(meditationEntryProvider(entry.id));
+
+    return entryStream.when(
+      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(title: const Text("Meditation")),
+        body: Center(child: Text("Error loading meditation")),
       ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Description in Card
-            Card(
-              color: Theme.of(context).colorScheme.surface,
-              elevation: 2,
-              margin: EdgeInsets.zero,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: const EdgeInsets.all(18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('About this meditation',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 10),
-                    Text(entry.description, style: Theme.of(context).textTheme.bodyLarge),
-                  ],
+      data: (currentEntry) {
+        if (currentEntry == null) {
+          return Scaffold(
+            appBar: AppBar(title: const Text("Meditation")),
+            body: Center(child: Text("Meditation not found")),
+          );
+        }
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                Expanded(child: Text(currentEntry.title)),
+                IconButton(
+                  icon: currentEntry.favorite
+                      ? Icon(Icons.star_rounded, color: Colors.amber[700])
+                      : Icon(Icons.star_border_rounded, color: Colors.grey[400]),
+                  tooltip: currentEntry.favorite ? 'Remove from favorites' : 'Mark as favorite',
+                  onPressed: () async {
+                    final updated = currentEntry.copyWith(favorite: !currentEntry.favorite);
+                    await meditationRepo.updateEntry(updated);
+                  },
+                  splashRadius: 22,
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 20),
-            // Meta info as chips
-            _MetaChipRow(entry: entry),
-            Divider(height: 36, thickness: 1.1),
-            // Audio selector panel
-            _SectionPanel(
-              icon: Icons.spa_rounded,
-              title: "Audio Guidance",
-              child: _buildMeditationSection(context, entry),
+          ),
+          body: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                // Description in Card
+                Card(
+                  color: Theme.of(context).colorScheme.surface,
+                  elevation: 2,
+                  margin: EdgeInsets.zero,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('About this meditation',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        Text(currentEntry.description, style: Theme.of(context).textTheme.bodyLarge),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Meta info as chips
+                _MetaChipRow(entry: currentEntry),
+                Divider(height: 36, thickness: 1.1),
+                // Audio selector panel
+                _SectionPanel(
+                  icon: Icons.spa_rounded,
+                  title: "Audio Guidance",
+                  child: _buildMeditationSection(context, currentEntry),
+                ),
+              ],
             ),
-            // You can add more _SectionPanel for new content types (e.g. video) later
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 
@@ -94,14 +129,14 @@ class _MetaChipRow extends StatelessWidget {
     final chips = <Widget>[
       Chip(
         avatar: Icon(Icons.style, size: 18),
-        label: Text(entry.type),
+        label: Text(entry.type.displayName),
         labelStyle: Theme.of(context).textTheme.bodySmall,
         backgroundColor: Colors.indigo.shade50,
         shape: StadiumBorder(),
       ),
       Chip(
         avatar: Icon(Icons.flag, size: 18),
-        label: Text('Level: ${entry.level}'),
+        label: Text(entry.level.displayName),
         labelStyle: Theme.of(context).textTheme.bodySmall,
         backgroundColor: Colors.orange.shade50,
         shape: StadiumBorder(),
@@ -111,18 +146,18 @@ class _MetaChipRow extends StatelessWidget {
       chips.add(
         Chip(
           avatar: Icon(Icons.brightness_low_rounded, size: 18),
-          label: Text('Chakra: ${entry.chakraType!}'),
+          label: Text(entry.chakraType!.displayName),
           labelStyle: Theme.of(context).textTheme.bodySmall,
           backgroundColor: Colors.pink.shade50,
           shape: StadiumBorder(),
         ),
       );
     }
-    if (entry.cognitiveType != null) {
+    for (final ct in entry.cognitiveTypes) {
       chips.add(
         Chip(
           avatar: Icon(Icons.psychology_alt_rounded, size: 18),
-          label: Text('Cognitive: ${entry.cognitiveType!}'),
+          label: Text(ct.displayName),
           labelStyle: Theme.of(context).textTheme.bodySmall,
           backgroundColor: Colors.teal.shade50,
           shape: StadiumBorder(),
