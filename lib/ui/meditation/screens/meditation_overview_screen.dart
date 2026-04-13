@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/ui/meditation/screens/guided_meditation_screen.dart';
 import 'package:personal_hub_app/ui/meditation/utils/meditation_string_utils.dart';
+import 'package:personal_hub_app/ui/meditation/widgets/meditation_repetition_picker.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 
 class MeditationOverviewScreen extends ConsumerWidget {
@@ -94,27 +95,24 @@ class MeditationOverviewScreen extends ConsumerWidget {
   }
 
   Widget _buildMeditationSection(BuildContext context, MeditationEntry entry) {
-    if (entry.audioComplete != null) {
-      return _CompleteAudioSection(
-        audioFile: entry.audioComplete!,
-        title: entry.title,
-        description: entry.description,
+    if (entry.audioSections == null || entry.audioSections!.isEmpty) {
+      return const Text(
+        'No audio available for this meditation.',
+        style: TextStyle(color: Colors.red),
       );
     }
-    if (entry.audioBeginning != null &&
-        entry.audioRepeating != null &&
-        entry.audioEnd != null) {
-      return _SegmentedAudioSection(
-        audioBeginning: entry.audioBeginning!,
-        audioRepeating: entry.audioRepeating!,
-        audioEnd: entry.audioEnd!,
-        title: entry.title,
-        description: entry.description,
+    // If there are no repeatable files, just play in order
+    final hasRepeatable = entry.audioSections!.any((a) => a.isRepeating);
+    if (!hasRepeatable) {
+      return _AudioSectionList(
+        entry: entry,
+        showRepetitionPicker: false,
       );
     }
-    return const Text(
-      'No audio available for this meditation.',
-      style: TextStyle(color: Colors.red),
+    // At least one repeatable file: show picker
+    return _AudioSectionList(
+      entry: entry,
+      showRepetitionPicker: true,
     );
   }
 }
@@ -175,19 +173,29 @@ class _MetaChipRow extends StatelessWidget {
   }
 }
 
-class _CompleteAudioSection extends StatelessWidget {
-  final AudioFile audioFile;
-  final String title;
-  final String description;
+/// Shows a list of meditation audio sections, supporting repetition for repeating sections.
+class _AudioSectionList extends StatefulWidget {
+  final MeditationEntry entry;
+  final bool showRepetitionPicker;
 
-  const _CompleteAudioSection({
-    required this.audioFile,
-    required this.title,
-    required this.description,
+  const _AudioSectionList({
+    required this.entry,
+    required this.showRepetitionPicker,
   });
 
   @override
+  State<_AudioSectionList> createState() => _AudioSectionListState();
+}
+
+class _AudioSectionListState extends State<_AudioSectionList> {
+  int _selectedRepetitions = 1;
+
+  @override
   Widget build(BuildContext context) {
+    final sections = widget.entry.audioSections!;
+    final totalDuration = _calculateTotalDuration(sections, _selectedRepetitions);
+    final repeatableCount = sections.where((a) => a.isRepeating).length;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -202,253 +210,42 @@ class _CompleteAudioSection extends StatelessWidget {
             color: Colors.grey.shade100,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Row(
-            children: [
-              const Icon(Icons.audiotrack_rounded, color: Colors.indigo, size: 28),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  "Duration: ${_formatDuration(audioFile.duration)}",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton.icon(
-            onPressed: () {
-              // Navigate to GuidedMeditationScreen with one item playlist
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => GuidedMeditationScreen(
-                    title: title,
-                    description: description,
-                    playlist: [(audioFile, 1)],
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(Icons.play_arrow_rounded),
-            label: const Text("Start Meditation"),
-            style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _SegmentedAudioSection extends StatefulWidget {
-  final AudioFile audioBeginning;
-  final AudioFile audioRepeating;
-  final AudioFile audioEnd;
-  final String title;
-  final String description;
-
-  const _SegmentedAudioSection({
-    required this.audioBeginning,
-    required this.audioRepeating,
-    required this.audioEnd,
-    required this.title,
-    required this.description,
-  });
-
-  @override
-  State<_SegmentedAudioSection> createState() => _SegmentedAudioSectionState();
-}
-
-class _SegmentedAudioSectionState extends State<_SegmentedAudioSection> {
-  // The dropdown will be based on total durations calculated with a range of repetitions
-  static const List<int> repetitionChoices = [1, 2, 3, 4, 5];
-  int? selectedDropdownRep;
-  bool isCustom = false;
-  late TextEditingController _customMinutesController;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedDropdownRep = repetitionChoices.first;
-    _customMinutesController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _customMinutesController.dispose();
-    super.dispose();
-  }
-
-  /// Calculates the minimum available duration for this meditation, with 1 repetition.
-  int get minMinutes {
-    final d = widget.audioBeginning.duration +
-        widget.audioRepeating.duration +
-        widget.audioEnd.duration;
-    return d.inMinutes;
-  }
-
-  /// For a given number of repetitions, calculate total meditation duration.
-  Duration totalDurationForReps(int repetitions) {
-    return widget.audioBeginning.duration +
-        (widget.audioRepeating.duration * repetitions) +
-        widget.audioEnd.duration;
-  }
-
-  /// For a desired minute count, compute the repetitions needed (always rounds up)
-  int repetitionsForDesiredMinutes(int desiredMinutes) {
-    final segA = widget.audioBeginning.duration;
-    final segB = widget.audioRepeating.duration;
-    final segC = widget.audioEnd.duration;
-    if (segB.inSeconds == 0) return 1;
-    final desiredDuration = Duration(minutes: desiredMinutes);
-    final leftover = desiredDuration - segA - segC;
-    final n = (leftover.inSeconds / segB.inSeconds).ceil();
-    return n < 1 ? 1 : n;
-  }
-
-  /// Returns the actual (effective) total duration for the current selection.
-  Duration get effectiveTotalDuration {
-    if (isCustom) {
-      final val = int.tryParse(_customMinutesController.text);
-      if (val == null || val < minMinutes) {
-        return totalDurationForReps(1);
-      }
-      int reps = repetitionsForDesiredMinutes(val);
-      return totalDurationForReps(reps);
-    } else {
-      return totalDurationForReps(selectedDropdownRep ?? 1);
-    }
-  }
-
-  void _onDropdownChanged(int? repCount) {
-    setState(() {
-      if (repCount == null) {
-        isCustom = true;
-      } else {
-        isCustom = false;
-        selectedDropdownRep = repCount;
-      }
-    });
-  }
-
-  void _onCustomMinutesChanged(String value) {
-    setState(() {
-      // trigger recompute; actual validation is in getter
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final customHint = "At least $minMinutes";
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Meditation Time",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(10),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "How long do you want to meditate?",
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 12),
+              if (widget.showRepetitionPicker) ...[
+                Text(
+                  "How long do you want to meditate?",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                const SizedBox(height: 12),
+                MeditationRepetitionPicker(
+                  meditation: widget.entry,
+                  initialRepetitions: _selectedRepetitions,
+                  onChanged: (reps) {
+                    setState(() {
+                      _selectedRepetitions = reps;
+                    });
+                  },
+                ),
+                const SizedBox(height: 10),
+              ],
               Row(
                 children: [
-                  Expanded(
-                    flex: isCustom ? 2 : 1,
-                    child: DropdownButtonFormField<int>(
-                      value: isCustom ? null : selectedDropdownRep,
-                      isExpanded: true,
-                      decoration: InputDecoration(
-                        labelText: "Preset duration",
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      ),
-                      items: [
-                        ...repetitionChoices.map((rep) {
-                          final dur = totalDurationForReps(rep);
-                          return DropdownMenuItem(
-                            value: rep,
-                            child: Text(
-                                _formatDuration(dur)
-                            ),
-                          );
-                        }),
-                        const DropdownMenuItem(
-                          value: null,
-                          child: Text('Custom...'),
-                        ),
-                      ],
-                      onChanged: _onDropdownChanged,
-                    ),
-                  ),
-                  if (isCustom)
-                    ...[
-                      const SizedBox(width: 12),
-                      SizedBox(
-                        width: 90,
-                        child: TextField(
-                          controller: _customMinutesController,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            labelText: "Minutes",
-                            hintText: customHint,
-                            border: const OutlineInputBorder(),
-                            isDense: true,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          onChanged: _onCustomMinutesChanged,
-                        ),
-                      )
-                    ],
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Icon(Icons.access_time_rounded, color: Colors.indigo[700]),
+                  Icon(Icons.audiotrack_rounded, color: Colors.indigo, size: 22),
                   const SizedBox(width: 8),
                   Text(
-                    "Total meditation time:",
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    _formatDuration(effectiveTotalDuration),
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    "Total duration: ${_formatDuration(totalDuration)}",
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
               ),
-              if (isCustom &&
-                  _customMinutesController.text.isNotEmpty &&
-                  int.tryParse(_customMinutesController.text) != null &&
-                  int.parse(_customMinutesController.text) < minMinutes)
+              if (repeatableCount > 0)
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
+                  padding: const EdgeInsets.only(top: 6),
                   child: Text(
-                    "Minimum is $minMinutes minutes.",
-                    style: TextStyle(color: Colors.red[700], fontSize: 13),
+                    "Repeating sections: $repeatableCount (reps = $_selectedRepetitions)",
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
             ],
@@ -459,25 +256,12 @@ class _SegmentedAudioSectionState extends State<_SegmentedAudioSection> {
           width: double.infinity,
           child: ElevatedButton.icon(
             onPressed: () {
-              // Compute total repetitions based on selection
-              int repetitions = isCustom
-                  ? repetitionsForDesiredMinutes(
-                      int.tryParse(_customMinutesController.text) ?? minMinutes)
-                  : (selectedDropdownRep ?? 1);
-
-              // Create the playlist as spec: beginning (1), repeating (n), end (1)
-              final playlist = [
-                (widget.audioBeginning, 1),
-                (widget.audioRepeating, repetitions),
-                (widget.audioEnd, 1),
-              ];
-
-              // Navigate to the GuidedMeditationScreen
+              final playlist = _buildPlaylist(sections, _selectedRepetitions);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => GuidedMeditationScreen(
-                    title: widget.title,
-                    description: widget.description,
+                    title: widget.entry.title,
+                    description: widget.entry.description,
                     playlist: playlist,
                   ),
                 ),
@@ -497,7 +281,29 @@ class _SegmentedAudioSectionState extends State<_SegmentedAudioSection> {
       ],
     );
   }
+
+  /// Builds the meditation playlist: (AudioFile, count) according to the repetition rules.
+  List<(AudioFile, int)> _buildPlaylist(List<RepeatingAudio> sections, int repetitionCount) {
+    final result = <(AudioFile, int)>[];
+    for (final section in sections) {
+      final count = section.isRepeating ? repetitionCount : 1;
+      result.add((section.file, count));
+    }
+    return result;
+  }
+
+  /// Computes the total duration of all sections, accounting for repetitions.
+  Duration _calculateTotalDuration(List<RepeatingAudio> sections, int repetitionCount) {
+    Duration total = Duration.zero;
+    for (final section in sections) {
+      final count = section.isRepeating ? repetitionCount : 1;
+      total += section.file.duration * count;
+    }
+    return total;
+  }
 }
+
+
 
 /// Small panel widget for section grouping
 class _SectionPanel extends StatelessWidget {
@@ -512,7 +318,7 @@ class _SectionPanel extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 2),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.2),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Padding(

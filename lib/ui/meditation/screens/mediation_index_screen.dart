@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/ui/meditation/screens/meditation_overview_screen.dart';
 import 'package:personal_hub_app/ui/meditation/utils/meditation_string_utils.dart';
 import 'package:personal_hub_app/utils/providers.dart';
@@ -35,7 +35,7 @@ class MeditationIndexScreen extends ConsumerWidget {
           return ListView.separated(
             padding: const EdgeInsets.symmetric(vertical: 12),
             itemCount: sorted.length,
-            separatorBuilder: (_, __) => const Divider(indent: 20, endIndent: 20, height: 1),
+            separatorBuilder: (_, _) => const Divider(indent: 20, endIndent: 20, height: 1),
             itemBuilder: (context, index) {
               final entry = sorted[index];
               return _MeditationListTile(
@@ -138,7 +138,7 @@ class _MeditationListTile extends StatelessWidget {
       ),
       onTap: onTap,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
-      hoverColor: Theme.of(context).colorScheme.secondary.withOpacity(0.07),
+      hoverColor: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.07),
     );
   }
 }

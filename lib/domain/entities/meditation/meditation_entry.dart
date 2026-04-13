@@ -1,6 +1,18 @@
+import 'dart:convert';
+
 import 'package:personal_hub_app/domain/entities/audio_file.dart';
 
 class MeditationEntry {
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MeditationEntry &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
   final String id;
 
   final bool favorite;
@@ -12,11 +24,7 @@ class MeditationEntry {
   final List<CognitiveType> cognitiveTypes;
   final MeditationLevel level;
 
-  final AudioFile? audioComplete;
-
-  final AudioFile? audioBeginning;
-  final AudioFile? audioRepeating;
-  final AudioFile? audioEnd;
+  final List<RepeatingAudio>? audioSections;
 
   final String? tutorialVideoPath;
 
@@ -29,10 +37,7 @@ class MeditationEntry {
     this.chakraType,
     required this.cognitiveTypes,
     required this.level,
-    this.audioComplete,
-    this.audioBeginning,
-    this.audioRepeating,
-    this.audioEnd,
+    this.audioSections,
     this.tutorialVideoPath,
   });
 
@@ -45,10 +50,7 @@ class MeditationEntry {
     ChakraType? chakraType,
     List<CognitiveType>? cognitiveTypes,
     MeditationLevel? level,
-    AudioFile? audioComplete,
-    AudioFile? audioBeginning,
-    AudioFile? audioRepeating,
-    AudioFile? audioEnd,
+    List<RepeatingAudio>? audioSections,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -60,10 +62,7 @@ class MeditationEntry {
       chakraType: chakraType ?? this.chakraType,
       cognitiveTypes: cognitiveTypes ?? this.cognitiveTypes,
       level: level ?? this.level,
-      audioComplete: audioComplete ?? this.audioComplete,
-      audioBeginning: audioBeginning ?? this.audioBeginning,
-      audioRepeating: audioRepeating ?? this.audioRepeating,
-      audioEnd: audioEnd ?? this.audioEnd,
+      audioSections: audioSections ?? this.audioSections,
       tutorialVideoPath: tutorialVideoPath ?? this.tutorialVideoPath,
     );
   }
@@ -76,10 +75,7 @@ class MeditationEntry {
     ChakraType? chakraType,
     required List<CognitiveType> cognitiveTypes,
     required MeditationLevel level,
-    AudioFile? audioComplete,
-    AudioFile? audioBeginning,
-    AudioFile? audioRepeating,
-    AudioFile? audioEnd,
+    required List<RepeatingAudio> audioSections,
     String? tutorialVideoPath,
   }) {
     return MeditationEntry(
@@ -91,10 +87,7 @@ class MeditationEntry {
       chakraType: chakraType,
       cognitiveTypes: cognitiveTypes,
       level: level,
-      audioComplete: audioComplete,
-      audioBeginning: audioBeginning,
-      audioRepeating: audioRepeating,
-      audioEnd: audioEnd,
+      audioSections: audioSections,
       tutorialVideoPath: tutorialVideoPath,
     );
   }
@@ -126,3 +119,29 @@ enum ChakraType {
 }
 
 enum CognitiveType { focusing, inquisitive, grounding, openAwareness }
+
+
+class RepeatingAudio {
+  final AudioFile file;
+  final bool isRepeating;
+
+  RepeatingAudio({
+    required this.file,
+    this.isRepeating = false,
+  });
+
+  String toJsonString() {
+    return jsonEncode({
+      'file': file.toJsonString(),
+      'isRepeating': isRepeating,
+    });
+  }
+
+  factory RepeatingAudio.fromJsonString(String jsonString) {
+    final Map<String, dynamic> map = jsonDecode(jsonString);
+    return RepeatingAudio(
+      file: AudioFile.fromJsonString(map['file'] as String),
+      isRepeating: map['isRepeating'] as bool,
+    );
+  }
+}

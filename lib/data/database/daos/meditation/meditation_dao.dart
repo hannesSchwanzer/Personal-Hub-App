@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import '../app_database.dart';
-import '../tables/meditation_table.dart';
+import '../../app_database.dart';
+import '../../tables/meditation/meditation_table.dart';
 
 part 'meditation_dao.g.dart';
 

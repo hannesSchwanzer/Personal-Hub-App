@@ -2274,50 +2274,16 @@ class $MeditationsTable extends Meditations
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _audioCompletePathMeta = const VerificationMeta(
-    'audioCompletePath',
+  static const VerificationMeta _audioSectionsMeta = const VerificationMeta(
+    'audioSections',
   );
   @override
-  late final GeneratedColumn<String> audioCompletePath =
-      GeneratedColumn<String>(
-        'audio_complete_path',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _audioBeginningPathMeta =
-      const VerificationMeta('audioBeginningPath');
-  @override
-  late final GeneratedColumn<String> audioBeginningPath =
-      GeneratedColumn<String>(
-        'audio_beginning_path',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _audioRepeatingPathMeta =
-      const VerificationMeta('audioRepeatingPath');
-  @override
-  late final GeneratedColumn<String> audioRepeatingPath =
-      GeneratedColumn<String>(
-        'audio_repeating_path',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _audioEndPathMeta = const VerificationMeta(
-    'audioEndPath',
-  );
-  @override
-  late final GeneratedColumn<String> audioEndPath = GeneratedColumn<String>(
-    'audio_end_path',
+  late final GeneratedColumn<String> audioSections = GeneratedColumn<String>(
+    'audio_sections',
     aliasedName,
-    true,
+    false,
     type: DriftSqlType.string,
-    requiredDuringInsert: false,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _tutorialVideoPathMeta = const VerificationMeta(
     'tutorialVideoPath',
@@ -2341,10 +2307,7 @@ class $MeditationsTable extends Meditations
     chakraType,
     cognitiveType,
     level,
-    audioCompletePath,
-    audioBeginningPath,
-    audioRepeatingPath,
-    audioEndPath,
+    audioSections,
     tutorialVideoPath,
   ];
   @override
@@ -2424,41 +2387,16 @@ class $MeditationsTable extends Meditations
     } else if (isInserting) {
       context.missing(_levelMeta);
     }
-    if (data.containsKey('audio_complete_path')) {
+    if (data.containsKey('audio_sections')) {
       context.handle(
-        _audioCompletePathMeta,
-        audioCompletePath.isAcceptableOrUnknown(
-          data['audio_complete_path']!,
-          _audioCompletePathMeta,
+        _audioSectionsMeta,
+        audioSections.isAcceptableOrUnknown(
+          data['audio_sections']!,
+          _audioSectionsMeta,
         ),
       );
-    }
-    if (data.containsKey('audio_beginning_path')) {
-      context.handle(
-        _audioBeginningPathMeta,
-        audioBeginningPath.isAcceptableOrUnknown(
-          data['audio_beginning_path']!,
-          _audioBeginningPathMeta,
-        ),
-      );
-    }
-    if (data.containsKey('audio_repeating_path')) {
-      context.handle(
-        _audioRepeatingPathMeta,
-        audioRepeatingPath.isAcceptableOrUnknown(
-          data['audio_repeating_path']!,
-          _audioRepeatingPathMeta,
-        ),
-      );
-    }
-    if (data.containsKey('audio_end_path')) {
-      context.handle(
-        _audioEndPathMeta,
-        audioEndPath.isAcceptableOrUnknown(
-          data['audio_end_path']!,
-          _audioEndPathMeta,
-        ),
-      );
+    } else if (isInserting) {
+      context.missing(_audioSectionsMeta);
     }
     if (data.containsKey('tutorial_video_path')) {
       context.handle(
@@ -2510,22 +2448,10 @@ class $MeditationsTable extends Meditations
         DriftSqlType.string,
         data['${effectivePrefix}level'],
       )!,
-      audioCompletePath: attachedDatabase.typeMapping.read(
+      audioSections: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}audio_complete_path'],
-      ),
-      audioBeginningPath: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}audio_beginning_path'],
-      ),
-      audioRepeatingPath: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}audio_repeating_path'],
-      ),
-      audioEndPath: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}audio_end_path'],
-      ),
+        data['${effectivePrefix}audio_sections'],
+      )!,
       tutorialVideoPath: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}tutorial_video_path'],
@@ -2548,10 +2474,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
   final String? chakraType;
   final String cognitiveType;
   final String level;
-  final String? audioCompletePath;
-  final String? audioBeginningPath;
-  final String? audioRepeatingPath;
-  final String? audioEndPath;
+  final String audioSections;
   final String? tutorialVideoPath;
   const Meditation({
     required this.id,
@@ -2562,10 +2485,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     this.chakraType,
     required this.cognitiveType,
     required this.level,
-    this.audioCompletePath,
-    this.audioBeginningPath,
-    this.audioRepeatingPath,
-    this.audioEndPath,
+    required this.audioSections,
     this.tutorialVideoPath,
   });
   @override
@@ -2581,18 +2501,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     }
     map['cognitive_type'] = Variable<String>(cognitiveType);
     map['level'] = Variable<String>(level);
-    if (!nullToAbsent || audioCompletePath != null) {
-      map['audio_complete_path'] = Variable<String>(audioCompletePath);
-    }
-    if (!nullToAbsent || audioBeginningPath != null) {
-      map['audio_beginning_path'] = Variable<String>(audioBeginningPath);
-    }
-    if (!nullToAbsent || audioRepeatingPath != null) {
-      map['audio_repeating_path'] = Variable<String>(audioRepeatingPath);
-    }
-    if (!nullToAbsent || audioEndPath != null) {
-      map['audio_end_path'] = Variable<String>(audioEndPath);
-    }
+    map['audio_sections'] = Variable<String>(audioSections);
     if (!nullToAbsent || tutorialVideoPath != null) {
       map['tutorial_video_path'] = Variable<String>(tutorialVideoPath);
     }
@@ -2611,18 +2520,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
           : Value(chakraType),
       cognitiveType: Value(cognitiveType),
       level: Value(level),
-      audioCompletePath: audioCompletePath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(audioCompletePath),
-      audioBeginningPath: audioBeginningPath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(audioBeginningPath),
-      audioRepeatingPath: audioRepeatingPath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(audioRepeatingPath),
-      audioEndPath: audioEndPath == null && nullToAbsent
-          ? const Value.absent()
-          : Value(audioEndPath),
+      audioSections: Value(audioSections),
       tutorialVideoPath: tutorialVideoPath == null && nullToAbsent
           ? const Value.absent()
           : Value(tutorialVideoPath),
@@ -2643,16 +2541,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
       chakraType: serializer.fromJson<String?>(json['chakraType']),
       cognitiveType: serializer.fromJson<String>(json['cognitiveType']),
       level: serializer.fromJson<String>(json['level']),
-      audioCompletePath: serializer.fromJson<String?>(
-        json['audioCompletePath'],
-      ),
-      audioBeginningPath: serializer.fromJson<String?>(
-        json['audioBeginningPath'],
-      ),
-      audioRepeatingPath: serializer.fromJson<String?>(
-        json['audioRepeatingPath'],
-      ),
-      audioEndPath: serializer.fromJson<String?>(json['audioEndPath']),
+      audioSections: serializer.fromJson<String>(json['audioSections']),
       tutorialVideoPath: serializer.fromJson<String?>(
         json['tutorialVideoPath'],
       ),
@@ -2670,10 +2559,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
       'chakraType': serializer.toJson<String?>(chakraType),
       'cognitiveType': serializer.toJson<String>(cognitiveType),
       'level': serializer.toJson<String>(level),
-      'audioCompletePath': serializer.toJson<String?>(audioCompletePath),
-      'audioBeginningPath': serializer.toJson<String?>(audioBeginningPath),
-      'audioRepeatingPath': serializer.toJson<String?>(audioRepeatingPath),
-      'audioEndPath': serializer.toJson<String?>(audioEndPath),
+      'audioSections': serializer.toJson<String>(audioSections),
       'tutorialVideoPath': serializer.toJson<String?>(tutorialVideoPath),
     };
   }
@@ -2687,10 +2573,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     Value<String?> chakraType = const Value.absent(),
     String? cognitiveType,
     String? level,
-    Value<String?> audioCompletePath = const Value.absent(),
-    Value<String?> audioBeginningPath = const Value.absent(),
-    Value<String?> audioRepeatingPath = const Value.absent(),
-    Value<String?> audioEndPath = const Value.absent(),
+    String? audioSections,
     Value<String?> tutorialVideoPath = const Value.absent(),
   }) => Meditation(
     id: id ?? this.id,
@@ -2701,16 +2584,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     chakraType: chakraType.present ? chakraType.value : this.chakraType,
     cognitiveType: cognitiveType ?? this.cognitiveType,
     level: level ?? this.level,
-    audioCompletePath: audioCompletePath.present
-        ? audioCompletePath.value
-        : this.audioCompletePath,
-    audioBeginningPath: audioBeginningPath.present
-        ? audioBeginningPath.value
-        : this.audioBeginningPath,
-    audioRepeatingPath: audioRepeatingPath.present
-        ? audioRepeatingPath.value
-        : this.audioRepeatingPath,
-    audioEndPath: audioEndPath.present ? audioEndPath.value : this.audioEndPath,
+    audioSections: audioSections ?? this.audioSections,
     tutorialVideoPath: tutorialVideoPath.present
         ? tutorialVideoPath.value
         : this.tutorialVideoPath,
@@ -2731,18 +2605,9 @@ class Meditation extends DataClass implements Insertable<Meditation> {
           ? data.cognitiveType.value
           : this.cognitiveType,
       level: data.level.present ? data.level.value : this.level,
-      audioCompletePath: data.audioCompletePath.present
-          ? data.audioCompletePath.value
-          : this.audioCompletePath,
-      audioBeginningPath: data.audioBeginningPath.present
-          ? data.audioBeginningPath.value
-          : this.audioBeginningPath,
-      audioRepeatingPath: data.audioRepeatingPath.present
-          ? data.audioRepeatingPath.value
-          : this.audioRepeatingPath,
-      audioEndPath: data.audioEndPath.present
-          ? data.audioEndPath.value
-          : this.audioEndPath,
+      audioSections: data.audioSections.present
+          ? data.audioSections.value
+          : this.audioSections,
       tutorialVideoPath: data.tutorialVideoPath.present
           ? data.tutorialVideoPath.value
           : this.tutorialVideoPath,
@@ -2760,10 +2625,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
           ..write('chakraType: $chakraType, ')
           ..write('cognitiveType: $cognitiveType, ')
           ..write('level: $level, ')
-          ..write('audioCompletePath: $audioCompletePath, ')
-          ..write('audioBeginningPath: $audioBeginningPath, ')
-          ..write('audioRepeatingPath: $audioRepeatingPath, ')
-          ..write('audioEndPath: $audioEndPath, ')
+          ..write('audioSections: $audioSections, ')
           ..write('tutorialVideoPath: $tutorialVideoPath')
           ..write(')'))
         .toString();
@@ -2779,10 +2641,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
     chakraType,
     cognitiveType,
     level,
-    audioCompletePath,
-    audioBeginningPath,
-    audioRepeatingPath,
-    audioEndPath,
+    audioSections,
     tutorialVideoPath,
   );
   @override
@@ -2797,10 +2656,7 @@ class Meditation extends DataClass implements Insertable<Meditation> {
           other.chakraType == this.chakraType &&
           other.cognitiveType == this.cognitiveType &&
           other.level == this.level &&
-          other.audioCompletePath == this.audioCompletePath &&
-          other.audioBeginningPath == this.audioBeginningPath &&
-          other.audioRepeatingPath == this.audioRepeatingPath &&
-          other.audioEndPath == this.audioEndPath &&
+          other.audioSections == this.audioSections &&
           other.tutorialVideoPath == this.tutorialVideoPath);
 }
 
@@ -2813,10 +2669,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
   final Value<String?> chakraType;
   final Value<String> cognitiveType;
   final Value<String> level;
-  final Value<String?> audioCompletePath;
-  final Value<String?> audioBeginningPath;
-  final Value<String?> audioRepeatingPath;
-  final Value<String?> audioEndPath;
+  final Value<String> audioSections;
   final Value<String?> tutorialVideoPath;
   final Value<int> rowid;
   const MeditationsCompanion({
@@ -2828,10 +2681,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     this.chakraType = const Value.absent(),
     this.cognitiveType = const Value.absent(),
     this.level = const Value.absent(),
-    this.audioCompletePath = const Value.absent(),
-    this.audioBeginningPath = const Value.absent(),
-    this.audioRepeatingPath = const Value.absent(),
-    this.audioEndPath = const Value.absent(),
+    this.audioSections = const Value.absent(),
     this.tutorialVideoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -2844,10 +2694,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     this.chakraType = const Value.absent(),
     required String cognitiveType,
     required String level,
-    this.audioCompletePath = const Value.absent(),
-    this.audioBeginningPath = const Value.absent(),
-    this.audioRepeatingPath = const Value.absent(),
-    this.audioEndPath = const Value.absent(),
+    required String audioSections,
     this.tutorialVideoPath = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -2856,7 +2703,8 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
        description = Value(description),
        type = Value(type),
        cognitiveType = Value(cognitiveType),
-       level = Value(level);
+       level = Value(level),
+       audioSections = Value(audioSections);
   static Insertable<Meditation> custom({
     Expression<String>? id,
     Expression<bool>? favorite,
@@ -2866,10 +2714,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     Expression<String>? chakraType,
     Expression<String>? cognitiveType,
     Expression<String>? level,
-    Expression<String>? audioCompletePath,
-    Expression<String>? audioBeginningPath,
-    Expression<String>? audioRepeatingPath,
-    Expression<String>? audioEndPath,
+    Expression<String>? audioSections,
     Expression<String>? tutorialVideoPath,
     Expression<int>? rowid,
   }) {
@@ -2882,12 +2727,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
       if (chakraType != null) 'chakra_type': chakraType,
       if (cognitiveType != null) 'cognitive_type': cognitiveType,
       if (level != null) 'level': level,
-      if (audioCompletePath != null) 'audio_complete_path': audioCompletePath,
-      if (audioBeginningPath != null)
-        'audio_beginning_path': audioBeginningPath,
-      if (audioRepeatingPath != null)
-        'audio_repeating_path': audioRepeatingPath,
-      if (audioEndPath != null) 'audio_end_path': audioEndPath,
+      if (audioSections != null) 'audio_sections': audioSections,
       if (tutorialVideoPath != null) 'tutorial_video_path': tutorialVideoPath,
       if (rowid != null) 'rowid': rowid,
     });
@@ -2902,10 +2742,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     Value<String?>? chakraType,
     Value<String>? cognitiveType,
     Value<String>? level,
-    Value<String?>? audioCompletePath,
-    Value<String?>? audioBeginningPath,
-    Value<String?>? audioRepeatingPath,
-    Value<String?>? audioEndPath,
+    Value<String>? audioSections,
     Value<String?>? tutorialVideoPath,
     Value<int>? rowid,
   }) {
@@ -2918,10 +2755,7 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
       chakraType: chakraType ?? this.chakraType,
       cognitiveType: cognitiveType ?? this.cognitiveType,
       level: level ?? this.level,
-      audioCompletePath: audioCompletePath ?? this.audioCompletePath,
-      audioBeginningPath: audioBeginningPath ?? this.audioBeginningPath,
-      audioRepeatingPath: audioRepeatingPath ?? this.audioRepeatingPath,
-      audioEndPath: audioEndPath ?? this.audioEndPath,
+      audioSections: audioSections ?? this.audioSections,
       tutorialVideoPath: tutorialVideoPath ?? this.tutorialVideoPath,
       rowid: rowid ?? this.rowid,
     );
@@ -2954,17 +2788,8 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
     if (level.present) {
       map['level'] = Variable<String>(level.value);
     }
-    if (audioCompletePath.present) {
-      map['audio_complete_path'] = Variable<String>(audioCompletePath.value);
-    }
-    if (audioBeginningPath.present) {
-      map['audio_beginning_path'] = Variable<String>(audioBeginningPath.value);
-    }
-    if (audioRepeatingPath.present) {
-      map['audio_repeating_path'] = Variable<String>(audioRepeatingPath.value);
-    }
-    if (audioEndPath.present) {
-      map['audio_end_path'] = Variable<String>(audioEndPath.value);
+    if (audioSections.present) {
+      map['audio_sections'] = Variable<String>(audioSections.value);
     }
     if (tutorialVideoPath.present) {
       map['tutorial_video_path'] = Variable<String>(tutorialVideoPath.value);
@@ -2986,11 +2811,654 @@ class MeditationsCompanion extends UpdateCompanion<Meditation> {
           ..write('chakraType: $chakraType, ')
           ..write('cognitiveType: $cognitiveType, ')
           ..write('level: $level, ')
-          ..write('audioCompletePath: $audioCompletePath, ')
-          ..write('audioBeginningPath: $audioBeginningPath, ')
-          ..write('audioRepeatingPath: $audioRepeatingPath, ')
-          ..write('audioEndPath: $audioEndPath, ')
+          ..write('audioSections: $audioSections, ')
           ..write('tutorialVideoPath: $tutorialVideoPath, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutineMeditationsTable extends RoutineMeditations
+    with TableInfo<$RoutineMeditationsTable, RoutineMeditation> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutineMeditationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _routineIdMeta = const VerificationMeta(
+    'routineId',
+  );
+  @override
+  late final GeneratedColumn<String> routineId = GeneratedColumn<String>(
+    'routine_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _meditationIdMeta = const VerificationMeta(
+    'meditationId',
+  );
+  @override
+  late final GeneratedColumn<String> meditationId = GeneratedColumn<String>(
+    'meditation_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _orderIndexMeta = const VerificationMeta(
+    'orderIndex',
+  );
+  @override
+  late final GeneratedColumn<int> orderIndex = GeneratedColumn<int>(
+    'order_index',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _repetitionsMeta = const VerificationMeta(
+    'repetitions',
+  );
+  @override
+  late final GeneratedColumn<int> repetitions = GeneratedColumn<int>(
+    'repetitions',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    routineId,
+    meditationId,
+    orderIndex,
+    repetitions,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routine_meditations';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<RoutineMeditation> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('routine_id')) {
+      context.handle(
+        _routineIdMeta,
+        routineId.isAcceptableOrUnknown(data['routine_id']!, _routineIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_routineIdMeta);
+    }
+    if (data.containsKey('meditation_id')) {
+      context.handle(
+        _meditationIdMeta,
+        meditationId.isAcceptableOrUnknown(
+          data['meditation_id']!,
+          _meditationIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_meditationIdMeta);
+    }
+    if (data.containsKey('order_index')) {
+      context.handle(
+        _orderIndexMeta,
+        orderIndex.isAcceptableOrUnknown(data['order_index']!, _orderIndexMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_orderIndexMeta);
+    }
+    if (data.containsKey('repetitions')) {
+      context.handle(
+        _repetitionsMeta,
+        repetitions.isAcceptableOrUnknown(
+          data['repetitions']!,
+          _repetitionsMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {routineId, meditationId};
+  @override
+  RoutineMeditation map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RoutineMeditation(
+      routineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}routine_id'],
+      )!,
+      meditationId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}meditation_id'],
+      )!,
+      orderIndex: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}order_index'],
+      )!,
+      repetitions: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}repetitions'],
+      )!,
+    );
+  }
+
+  @override
+  $RoutineMeditationsTable createAlias(String alias) {
+    return $RoutineMeditationsTable(attachedDatabase, alias);
+  }
+}
+
+class RoutineMeditation extends DataClass
+    implements Insertable<RoutineMeditation> {
+  final String routineId;
+  final String meditationId;
+  final int orderIndex;
+  final int repetitions;
+  const RoutineMeditation({
+    required this.routineId,
+    required this.meditationId,
+    required this.orderIndex,
+    required this.repetitions,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['routine_id'] = Variable<String>(routineId);
+    map['meditation_id'] = Variable<String>(meditationId);
+    map['order_index'] = Variable<int>(orderIndex);
+    map['repetitions'] = Variable<int>(repetitions);
+    return map;
+  }
+
+  RoutineMeditationsCompanion toCompanion(bool nullToAbsent) {
+    return RoutineMeditationsCompanion(
+      routineId: Value(routineId),
+      meditationId: Value(meditationId),
+      orderIndex: Value(orderIndex),
+      repetitions: Value(repetitions),
+    );
+  }
+
+  factory RoutineMeditation.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RoutineMeditation(
+      routineId: serializer.fromJson<String>(json['routineId']),
+      meditationId: serializer.fromJson<String>(json['meditationId']),
+      orderIndex: serializer.fromJson<int>(json['orderIndex']),
+      repetitions: serializer.fromJson<int>(json['repetitions']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'routineId': serializer.toJson<String>(routineId),
+      'meditationId': serializer.toJson<String>(meditationId),
+      'orderIndex': serializer.toJson<int>(orderIndex),
+      'repetitions': serializer.toJson<int>(repetitions),
+    };
+  }
+
+  RoutineMeditation copyWith({
+    String? routineId,
+    String? meditationId,
+    int? orderIndex,
+    int? repetitions,
+  }) => RoutineMeditation(
+    routineId: routineId ?? this.routineId,
+    meditationId: meditationId ?? this.meditationId,
+    orderIndex: orderIndex ?? this.orderIndex,
+    repetitions: repetitions ?? this.repetitions,
+  );
+  RoutineMeditation copyWithCompanion(RoutineMeditationsCompanion data) {
+    return RoutineMeditation(
+      routineId: data.routineId.present ? data.routineId.value : this.routineId,
+      meditationId: data.meditationId.present
+          ? data.meditationId.value
+          : this.meditationId,
+      orderIndex: data.orderIndex.present
+          ? data.orderIndex.value
+          : this.orderIndex,
+      repetitions: data.repetitions.present
+          ? data.repetitions.value
+          : this.repetitions,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineMeditation(')
+          ..write('routineId: $routineId, ')
+          ..write('meditationId: $meditationId, ')
+          ..write('orderIndex: $orderIndex, ')
+          ..write('repetitions: $repetitions')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(routineId, meditationId, orderIndex, repetitions);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RoutineMeditation &&
+          other.routineId == this.routineId &&
+          other.meditationId == this.meditationId &&
+          other.orderIndex == this.orderIndex &&
+          other.repetitions == this.repetitions);
+}
+
+class RoutineMeditationsCompanion extends UpdateCompanion<RoutineMeditation> {
+  final Value<String> routineId;
+  final Value<String> meditationId;
+  final Value<int> orderIndex;
+  final Value<int> repetitions;
+  final Value<int> rowid;
+  const RoutineMeditationsCompanion({
+    this.routineId = const Value.absent(),
+    this.meditationId = const Value.absent(),
+    this.orderIndex = const Value.absent(),
+    this.repetitions = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutineMeditationsCompanion.insert({
+    required String routineId,
+    required String meditationId,
+    required int orderIndex,
+    this.repetitions = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : routineId = Value(routineId),
+       meditationId = Value(meditationId),
+       orderIndex = Value(orderIndex);
+  static Insertable<RoutineMeditation> custom({
+    Expression<String>? routineId,
+    Expression<String>? meditationId,
+    Expression<int>? orderIndex,
+    Expression<int>? repetitions,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (routineId != null) 'routine_id': routineId,
+      if (meditationId != null) 'meditation_id': meditationId,
+      if (orderIndex != null) 'order_index': orderIndex,
+      if (repetitions != null) 'repetitions': repetitions,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutineMeditationsCompanion copyWith({
+    Value<String>? routineId,
+    Value<String>? meditationId,
+    Value<int>? orderIndex,
+    Value<int>? repetitions,
+    Value<int>? rowid,
+  }) {
+    return RoutineMeditationsCompanion(
+      routineId: routineId ?? this.routineId,
+      meditationId: meditationId ?? this.meditationId,
+      orderIndex: orderIndex ?? this.orderIndex,
+      repetitions: repetitions ?? this.repetitions,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (routineId.present) {
+      map['routine_id'] = Variable<String>(routineId.value);
+    }
+    if (meditationId.present) {
+      map['meditation_id'] = Variable<String>(meditationId.value);
+    }
+    if (orderIndex.present) {
+      map['order_index'] = Variable<int>(orderIndex.value);
+    }
+    if (repetitions.present) {
+      map['repetitions'] = Variable<int>(repetitions.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutineMeditationsCompanion(')
+          ..write('routineId: $routineId, ')
+          ..write('meditationId: $meditationId, ')
+          ..write('orderIndex: $orderIndex, ')
+          ..write('repetitions: $repetitions, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RoutinesTable extends Routines with TableInfo<$RoutinesTable, Routine> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoutinesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _visibleMeta = const VerificationMeta(
+    'visible',
+  );
+  @override
+  late final GeneratedColumn<bool> visible = GeneratedColumn<bool>(
+    'visible',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("visible" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, name, description, visible];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'routines';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Routine> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('visible')) {
+      context.handle(
+        _visibleMeta,
+        visible.isAcceptableOrUnknown(data['visible']!, _visibleMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Routine map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Routine(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      visible: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}visible'],
+      )!,
+    );
+  }
+
+  @override
+  $RoutinesTable createAlias(String alias) {
+    return $RoutinesTable(attachedDatabase, alias);
+  }
+}
+
+class Routine extends DataClass implements Insertable<Routine> {
+  final String id;
+  final String name;
+  final String? description;
+  final bool visible;
+  const Routine({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.visible,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    map['visible'] = Variable<bool>(visible);
+    return map;
+  }
+
+  RoutinesCompanion toCompanion(bool nullToAbsent) {
+    return RoutinesCompanion(
+      id: Value(id),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      visible: Value(visible),
+    );
+  }
+
+  factory Routine.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Routine(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      visible: serializer.fromJson<bool>(json['visible']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'visible': serializer.toJson<bool>(visible),
+    };
+  }
+
+  Routine copyWith({
+    String? id,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    bool? visible,
+  }) => Routine(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    visible: visible ?? this.visible,
+  );
+  Routine copyWithCompanion(RoutinesCompanion data) {
+    return Routine(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      visible: data.visible.present ? data.visible.value : this.visible,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Routine(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('visible: $visible')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, description, visible);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Routine &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.visible == this.visible);
+}
+
+class RoutinesCompanion extends UpdateCompanion<Routine> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<bool> visible;
+  final Value<int> rowid;
+  const RoutinesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.visible = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  RoutinesCompanion.insert({
+    required String id,
+    required String name,
+    this.description = const Value.absent(),
+    this.visible = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name);
+  static Insertable<Routine> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<bool>? visible,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (visible != null) 'visible': visible,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  RoutinesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<bool>? visible,
+    Value<int>? rowid,
+  }) {
+    return RoutinesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      visible: visible ?? this.visible,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (visible.present) {
+      map['visible'] = Variable<bool>(visible.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoutinesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('visible: $visible, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3008,6 +3476,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $EmotionExplorerMapsTable emotionExplorerMaps =
       $EmotionExplorerMapsTable(this);
   late final $MeditationsTable meditations = $MeditationsTable(this);
+  late final $RoutineMeditationsTable routineMeditations =
+      $RoutineMeditationsTable(this);
+  late final $RoutinesTable routines = $RoutinesTable(this);
   late final JournalDao journalDao = JournalDao(this as AppDatabase);
   late final JournalReflectionDao journalReflectionDao = JournalReflectionDao(
     this as AppDatabase,
@@ -3016,6 +3487,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final EmotionExplorerMapDao emotionExplorerMapDao =
       EmotionExplorerMapDao(this as AppDatabase);
   late final MeditationDao meditationDao = MeditationDao(this as AppDatabase);
+  late final RoutineDao routineDao = RoutineDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -3026,6 +3498,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     commsCheckEntries,
     emotionExplorerMaps,
     meditations,
+    routineMeditations,
+    routines,
   ];
 }
 
@@ -4369,10 +4843,7 @@ typedef $$MeditationsTableCreateCompanionBuilder =
       Value<String?> chakraType,
       required String cognitiveType,
       required String level,
-      Value<String?> audioCompletePath,
-      Value<String?> audioBeginningPath,
-      Value<String?> audioRepeatingPath,
-      Value<String?> audioEndPath,
+      required String audioSections,
       Value<String?> tutorialVideoPath,
       Value<int> rowid,
     });
@@ -4386,10 +4857,7 @@ typedef $$MeditationsTableUpdateCompanionBuilder =
       Value<String?> chakraType,
       Value<String> cognitiveType,
       Value<String> level,
-      Value<String?> audioCompletePath,
-      Value<String?> audioBeginningPath,
-      Value<String?> audioRepeatingPath,
-      Value<String?> audioEndPath,
+      Value<String> audioSections,
       Value<String?> tutorialVideoPath,
       Value<int> rowid,
     });
@@ -4443,23 +4911,8 @@ class $$MeditationsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get audioCompletePath => $composableBuilder(
-    column: $table.audioCompletePath,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get audioBeginningPath => $composableBuilder(
-    column: $table.audioBeginningPath,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get audioRepeatingPath => $composableBuilder(
-    column: $table.audioRepeatingPath,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get audioEndPath => $composableBuilder(
-    column: $table.audioEndPath,
+  ColumnFilters<String> get audioSections => $composableBuilder(
+    column: $table.audioSections,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4518,23 +4971,8 @@ class $$MeditationsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get audioCompletePath => $composableBuilder(
-    column: $table.audioCompletePath,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get audioBeginningPath => $composableBuilder(
-    column: $table.audioBeginningPath,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get audioRepeatingPath => $composableBuilder(
-    column: $table.audioRepeatingPath,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get audioEndPath => $composableBuilder(
-    column: $table.audioEndPath,
+  ColumnOrderings<String> get audioSections => $composableBuilder(
+    column: $table.audioSections,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -4583,23 +5021,8 @@ class $$MeditationsTableAnnotationComposer
   GeneratedColumn<String> get level =>
       $composableBuilder(column: $table.level, builder: (column) => column);
 
-  GeneratedColumn<String> get audioCompletePath => $composableBuilder(
-    column: $table.audioCompletePath,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get audioBeginningPath => $composableBuilder(
-    column: $table.audioBeginningPath,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get audioRepeatingPath => $composableBuilder(
-    column: $table.audioRepeatingPath,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get audioEndPath => $composableBuilder(
-    column: $table.audioEndPath,
+  GeneratedColumn<String> get audioSections => $composableBuilder(
+    column: $table.audioSections,
     builder: (column) => column,
   );
 
@@ -4648,10 +5071,7 @@ class $$MeditationsTableTableManager
                 Value<String?> chakraType = const Value.absent(),
                 Value<String> cognitiveType = const Value.absent(),
                 Value<String> level = const Value.absent(),
-                Value<String?> audioCompletePath = const Value.absent(),
-                Value<String?> audioBeginningPath = const Value.absent(),
-                Value<String?> audioRepeatingPath = const Value.absent(),
-                Value<String?> audioEndPath = const Value.absent(),
+                Value<String> audioSections = const Value.absent(),
                 Value<String?> tutorialVideoPath = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MeditationsCompanion(
@@ -4663,10 +5083,7 @@ class $$MeditationsTableTableManager
                 chakraType: chakraType,
                 cognitiveType: cognitiveType,
                 level: level,
-                audioCompletePath: audioCompletePath,
-                audioBeginningPath: audioBeginningPath,
-                audioRepeatingPath: audioRepeatingPath,
-                audioEndPath: audioEndPath,
+                audioSections: audioSections,
                 tutorialVideoPath: tutorialVideoPath,
                 rowid: rowid,
               ),
@@ -4680,10 +5097,7 @@ class $$MeditationsTableTableManager
                 Value<String?> chakraType = const Value.absent(),
                 required String cognitiveType,
                 required String level,
-                Value<String?> audioCompletePath = const Value.absent(),
-                Value<String?> audioBeginningPath = const Value.absent(),
-                Value<String?> audioRepeatingPath = const Value.absent(),
-                Value<String?> audioEndPath = const Value.absent(),
+                required String audioSections,
                 Value<String?> tutorialVideoPath = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => MeditationsCompanion.insert(
@@ -4695,10 +5109,7 @@ class $$MeditationsTableTableManager
                 chakraType: chakraType,
                 cognitiveType: cognitiveType,
                 level: level,
-                audioCompletePath: audioCompletePath,
-                audioBeginningPath: audioBeginningPath,
-                audioRepeatingPath: audioRepeatingPath,
-                audioEndPath: audioEndPath,
+                audioSections: audioSections,
                 tutorialVideoPath: tutorialVideoPath,
                 rowid: rowid,
               ),
@@ -4727,6 +5138,383 @@ typedef $$MeditationsTableProcessedTableManager =
       Meditation,
       PrefetchHooks Function()
     >;
+typedef $$RoutineMeditationsTableCreateCompanionBuilder =
+    RoutineMeditationsCompanion Function({
+      required String routineId,
+      required String meditationId,
+      required int orderIndex,
+      Value<int> repetitions,
+      Value<int> rowid,
+    });
+typedef $$RoutineMeditationsTableUpdateCompanionBuilder =
+    RoutineMeditationsCompanion Function({
+      Value<String> routineId,
+      Value<String> meditationId,
+      Value<int> orderIndex,
+      Value<int> repetitions,
+      Value<int> rowid,
+    });
+
+class $$RoutineMeditationsTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutineMeditationsTable> {
+  $$RoutineMeditationsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get meditationId => $composableBuilder(
+    column: $table.meditationId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get repetitions => $composableBuilder(
+    column: $table.repetitions,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutineMeditationsTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutineMeditationsTable> {
+  $$RoutineMeditationsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get routineId => $composableBuilder(
+    column: $table.routineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get meditationId => $composableBuilder(
+    column: $table.meditationId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get repetitions => $composableBuilder(
+    column: $table.repetitions,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutineMeditationsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutineMeditationsTable> {
+  $$RoutineMeditationsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get routineId =>
+      $composableBuilder(column: $table.routineId, builder: (column) => column);
+
+  GeneratedColumn<String> get meditationId => $composableBuilder(
+    column: $table.meditationId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get orderIndex => $composableBuilder(
+    column: $table.orderIndex,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get repetitions => $composableBuilder(
+    column: $table.repetitions,
+    builder: (column) => column,
+  );
+}
+
+class $$RoutineMeditationsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutineMeditationsTable,
+          RoutineMeditation,
+          $$RoutineMeditationsTableFilterComposer,
+          $$RoutineMeditationsTableOrderingComposer,
+          $$RoutineMeditationsTableAnnotationComposer,
+          $$RoutineMeditationsTableCreateCompanionBuilder,
+          $$RoutineMeditationsTableUpdateCompanionBuilder,
+          (
+            RoutineMeditation,
+            BaseReferences<
+              _$AppDatabase,
+              $RoutineMeditationsTable,
+              RoutineMeditation
+            >,
+          ),
+          RoutineMeditation,
+          PrefetchHooks Function()
+        > {
+  $$RoutineMeditationsTableTableManager(
+    _$AppDatabase db,
+    $RoutineMeditationsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutineMeditationsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoutineMeditationsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoutineMeditationsTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> routineId = const Value.absent(),
+                Value<String> meditationId = const Value.absent(),
+                Value<int> orderIndex = const Value.absent(),
+                Value<int> repetitions = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineMeditationsCompanion(
+                routineId: routineId,
+                meditationId: meditationId,
+                orderIndex: orderIndex,
+                repetitions: repetitions,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String routineId,
+                required String meditationId,
+                required int orderIndex,
+                Value<int> repetitions = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutineMeditationsCompanion.insert(
+                routineId: routineId,
+                meditationId: meditationId,
+                orderIndex: orderIndex,
+                repetitions: repetitions,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutineMeditationsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutineMeditationsTable,
+      RoutineMeditation,
+      $$RoutineMeditationsTableFilterComposer,
+      $$RoutineMeditationsTableOrderingComposer,
+      $$RoutineMeditationsTableAnnotationComposer,
+      $$RoutineMeditationsTableCreateCompanionBuilder,
+      $$RoutineMeditationsTableUpdateCompanionBuilder,
+      (
+        RoutineMeditation,
+        BaseReferences<
+          _$AppDatabase,
+          $RoutineMeditationsTable,
+          RoutineMeditation
+        >,
+      ),
+      RoutineMeditation,
+      PrefetchHooks Function()
+    >;
+typedef $$RoutinesTableCreateCompanionBuilder =
+    RoutinesCompanion Function({
+      required String id,
+      required String name,
+      Value<String?> description,
+      Value<bool> visible,
+      Value<int> rowid,
+    });
+typedef $$RoutinesTableUpdateCompanionBuilder =
+    RoutinesCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String?> description,
+      Value<bool> visible,
+      Value<int> rowid,
+    });
+
+class $$RoutinesTableFilterComposer
+    extends Composer<_$AppDatabase, $RoutinesTable> {
+  $$RoutinesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get visible => $composableBuilder(
+    column: $table.visible,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$RoutinesTableOrderingComposer
+    extends Composer<_$AppDatabase, $RoutinesTable> {
+  $$RoutinesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get visible => $composableBuilder(
+    column: $table.visible,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$RoutinesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RoutinesTable> {
+  $$RoutinesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get visible =>
+      $composableBuilder(column: $table.visible, builder: (column) => column);
+}
+
+class $$RoutinesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $RoutinesTable,
+          Routine,
+          $$RoutinesTableFilterComposer,
+          $$RoutinesTableOrderingComposer,
+          $$RoutinesTableAnnotationComposer,
+          $$RoutinesTableCreateCompanionBuilder,
+          $$RoutinesTableUpdateCompanionBuilder,
+          (Routine, BaseReferences<_$AppDatabase, $RoutinesTable, Routine>),
+          Routine,
+          PrefetchHooks Function()
+        > {
+  $$RoutinesTableTableManager(_$AppDatabase db, $RoutinesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RoutinesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RoutinesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RoutinesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<bool> visible = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinesCompanion(
+                id: id,
+                name: name,
+                description: description,
+                visible: visible,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                Value<String?> description = const Value.absent(),
+                Value<bool> visible = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => RoutinesCompanion.insert(
+                id: id,
+                name: name,
+                description: description,
+                visible: visible,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$RoutinesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $RoutinesTable,
+      Routine,
+      $$RoutinesTableFilterComposer,
+      $$RoutinesTableOrderingComposer,
+      $$RoutinesTableAnnotationComposer,
+      $$RoutinesTableCreateCompanionBuilder,
+      $$RoutinesTableUpdateCompanionBuilder,
+      (Routine, BaseReferences<_$AppDatabase, $RoutinesTable, Routine>),
+      Routine,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -4741,4 +5529,8 @@ class $AppDatabaseManager {
       $$EmotionExplorerMapsTableTableManager(_db, _db.emotionExplorerMaps);
   $$MeditationsTableTableManager get meditations =>
       $$MeditationsTableTableManager(_db, _db.meditations);
+  $$RoutineMeditationsTableTableManager get routineMeditations =>
+      $$RoutineMeditationsTableTableManager(_db, _db.routineMeditations);
+  $$RoutinesTableTableManager get routines =>
+      $$RoutinesTableTableManager(_db, _db.routines);
 }

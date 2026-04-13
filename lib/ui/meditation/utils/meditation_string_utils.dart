@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 
 extension MeditationLevelDisplay on MeditationLevel {
   String get displayName {

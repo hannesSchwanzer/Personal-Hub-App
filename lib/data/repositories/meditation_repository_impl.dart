@@ -1,7 +1,6 @@
-import 'package:personal_hub_app/data/database/daos/meditation_dao.dart';
+import 'package:personal_hub_app/data/database/daos/meditation/meditation_dao.dart';
 import 'package:personal_hub_app/data/mappers/mediation_mapper.dart';
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,10 +18,7 @@ class MeditationRepositoryImpl implements MeditationRepository {
     ChakraType? chakraType,
     required List<CognitiveType> cognitiveTypes,
     required MeditationLevel level,
-    AudioFile? audioComplete,
-    AudioFile? audioBeginning,
-    AudioFile? audioRepeating,
-    AudioFile? audioEnd,
+    required List<RepeatingAudio> audioSections,
     String? tutorialVideoPath,
   }) {
     final entry = MeditationEntry.create(
@@ -33,10 +29,7 @@ class MeditationRepositoryImpl implements MeditationRepository {
       chakraType: chakraType,
       cognitiveTypes: cognitiveTypes,
       level: level,
-      audioComplete: audioComplete,
-      audioBeginning: audioBeginning,
-      audioRepeating: audioRepeating,
-      audioEnd: audioEnd,
+      audioSections: audioSections,
       tutorialVideoPath: tutorialVideoPath,
     );
     return _mediationDao.insertEntry(entry.toCompanion());

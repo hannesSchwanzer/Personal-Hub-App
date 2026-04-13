@@ -12,11 +12,7 @@ class Meditations extends Table {
   TextColumn get cognitiveType => text()();
   TextColumn get level => text()();
 
-  TextColumn get audioCompletePath => text().nullable()();
-
-  TextColumn get audioBeginningPath => text().nullable()();
-  TextColumn get audioRepeatingPath => text().nullable()();
-  TextColumn get audioEndPath => text().nullable()();
+  TextColumn get audioSections => text()();
 
   TextColumn get tutorialVideoPath => text().nullable()();
 

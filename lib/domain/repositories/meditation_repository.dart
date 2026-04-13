@@ -1,4 +1,4 @@
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/audio_file.dart';
 
 abstract class MeditationRepository {
@@ -9,10 +9,7 @@ abstract class MeditationRepository {
     ChakraType? chakraType,
     required List<CognitiveType> cognitiveTypes,
     required MeditationLevel level,
-    AudioFile? audioComplete,
-    AudioFile? audioBeginning,
-    AudioFile? audioRepeating,
-    AudioFile? audioEnd,
+    required List<RepeatingAudio> audioSections,
     String? tutorialVideoPath,
   });
 

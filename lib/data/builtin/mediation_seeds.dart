@@ -1,4 +1,6 @@
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+
+import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 
 final meditationSeeds = [
   {
@@ -8,9 +10,11 @@ final meditationSeeds = [
     'chakraType': ChakraType.ajna,
     'cognitiveTypes': [CognitiveType.focusing],
     'level': MeditationLevel.expert,
-    'audioBeginningPath': 'assets/audio/prana-shuddhi-start.mp3',
-    'audioRepeatingPath': 'assets/audio/prana-shuddhi-middle.mp3',
-    'audioEndPath': 'assets/audio/prana-shuddhi-end.mp3',
+    'audioSections': [
+      ('assets/audio/prana-shuddhi-start.mp3', FileType.asset, false),
+      ('assets/audio/prana-shuddhi-middle.mp3', FileType.asset, true),
+      ('assets/audio/prana-shuddhi-end.mp3', FileType.asset, false),
+    ],
   },
   {
     'title': 'Anuloma Viloma',
@@ -18,9 +22,11 @@ final meditationSeeds = [
     'type': MeditationType.breath,
     'cognitiveTypes': [CognitiveType.focusing, CognitiveType.grounding],
     'level': MeditationLevel.advanced,
-    'audioBeginningPath': 'assets/audio/anuloma-viloma-start.mp3',
-    'audioRepeatingPath': 'assets/audio/silence-1min.mp3',
-    'audioEndPath': 'assets/audio/anuloma-viloma-end.mp3',
+    'audioSections': [
+      ('assets/audio/anuloma-viloma-start.mp3', FileType.asset, false),
+      ('assets/audio/silence-1min.mp3', FileType.asset, true),
+      ('assets/audio/anuloma-viloma-end.mp3', FileType.asset, false),
+    ],
   },
   {
     'title': 'Nadi Shuddhi',
@@ -28,9 +34,26 @@ final meditationSeeds = [
     'type': MeditationType.breath,
     'cognitiveTypes': [CognitiveType.focusing, CognitiveType.grounding],
     'level': MeditationLevel.basic,
-    'audioBeginningPath': 'assets/audio/nadi-shuddhi-start.mp3',
-    'audioRepeatingPath': 'assets/audio/nadi-shuddhi-middle.mp3',
-    'audioEndPath': 'assets/audio/nadi-shuddhi-end.mp3',
+    'audioSections': [
+      ('assets/audio/nadi-shuddhi-start.mp3', FileType.asset, false),
+      ('assets/audio/nadi-shuddhi-middle.mp3', FileType.asset, true),
+      ('assets/audio/nadi-shuddhi-end.mp3', FileType.asset, false),
+    ],
+  },
+  {
+    'title': 'Trataka',
+    'description': 'Trataka, or fixed point gazing, is a powerful technique that builds concentration and gently cleanses the ajna, or third eye chakra.',
+    'type': MeditationType.sight,
+    'cognitiveTypes': [CognitiveType.focusing],
+    'level': MeditationLevel.advanced,
+    'chakraType': ChakraType.ajna,
+    'audioSections': [
+      ('assets/audio/trataka-start.mp3', FileType.asset, false),
+      ('assets/audio/silence-1min.mp3', FileType.asset, true),
+      ('assets/audio/trataka-middle.mp3', FileType.asset, false),
+      ('assets/audio/silence-45sec.mp3', FileType.asset, true),
+      ('assets/audio/trataka-end.mp3', FileType.asset, false),
+    ],
   },
 ];
 

@@ -2,21 +2,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/journal_dao.dart';
 import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart';
-import 'package:personal_hub_app/data/database/daos/meditation_dao.dart';
+import 'package:personal_hub_app/data/database/daos/meditation/meditation_dao.dart';
+import 'package:personal_hub_app/data/database/daos/meditation/routine_dao.dart';
 import 'package:personal_hub_app/data/repositories/journal_entry_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/meditation_repository_impl.dart';
+import 'package:personal_hub_app/data/repositories/routine_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/settings_repository_impl.dart';
 import 'package:personal_hub_app/data/services/audio_duration_service.dart';
 import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/data/services/builtin_meditation_seeder.dart';
 import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
-import 'package:personal_hub_app/domain/entities/meditation_entry.dart';
+import 'package:personal_hub_app/data/services/routine_service.dart';
+import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
+import 'package:personal_hub_app/domain/repositories/routine_repository.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 import 'package:personal_hub_app/domain/services/backup_service.dart';
 import 'package:personal_hub_app/ui/settings/view_models/settings_notifier.dart';
@@ -134,3 +138,19 @@ final meditationEntryProvider = StreamProvider.family<MeditationEntry?, String>(
       }
     });
 });
+
+final meditationRoutineDaoProvider = Provider<RoutineDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return RoutineDao(db);
+});
+
+final meditationRoutineRepositoryProvider = Provider<RoutineRepository>((ref) {
+  final dao = ref.watch(meditationRoutineDaoProvider);
+  return RoutineRepositoryImpl(dao);
+});
+
+final meditationRoutineServiceProvider = Provider<RoutineService>((ref) {
+  final routineRepo = ref.watch(meditationRoutineRepositoryProvider);
+  return RoutineService(routineRepo);
+});
+
