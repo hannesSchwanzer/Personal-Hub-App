@@ -55,5 +55,30 @@ final meditationSeeds = [
       ('assets/audio/trataka-end.mp3', FileType.asset, false),
     ],
   },
+  {
+    'title': 'Kaya Shtiram',
+    'description': 'This foundational practice is focused on physical stillness. It prepares the body for deeper practice, and reveals the power of simply being present.',
+    'type': MeditationType.pratyahara,
+    'cognitiveTypes': [CognitiveType.focusing],
+    'level': MeditationLevel.advanced,
+    'audioSections': [
+      ('assets/audio/kaya-shtiram-start.mp3', FileType.asset, false),
+      ('assets/audio/silence-1min.mp3', FileType.asset, true),
+      ('assets/audio/kaya-shtiram-end.mp3', FileType.asset, false),
+    ],
+  },
+  {
+    'title': 'Activating Ajna Chakra',
+    'description': 'This practice will start to activate your Ajna Chakra, which governs our sense of intuition, and help you gain an understanding of yourself and the world around you.',
+    'type': MeditationType.sight,
+    'cognitiveTypes': [CognitiveType.focusing],
+    'level': MeditationLevel.advanced,
+    'chakraType': ChakraType.ajna,
+    'audioSections': [
+      ('assets/audio/activating-ajna-chakra-start.mp3', FileType.asset, false),
+      ('assets/audio/silence-1min.mp3', FileType.asset, true),
+      ('assets/audio/activating-ajna-chakra-end.mp3', FileType.asset, false),
+    ],
+  },
 ];
 

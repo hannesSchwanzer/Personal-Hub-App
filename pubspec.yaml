@@ -79,8 +79,12 @@ flutter:
     - assets/images/body_map.png
 
     # Audio
+    - assets/audio/activating-ajna-chakra-end.mp3
+    - assets/audio/activating-ajna-chakra-start.mp3
     - assets/audio/anuloma-viloma-end.mp3
     - assets/audio/anuloma-viloma-start.mp3
+    - assets/audio/kaya-shtiram-end.mp3
+    - assets/audio/kaya-shtiram-start.mp3
     - assets/audio/nadi-shuddhi-end.mp3
     - assets/audio/nadi-shuddhi-middle.mp3
     - assets/audio/nadi-shuddhi-start.mp3
@@ -93,6 +97,7 @@ flutter:
     - assets/audio/trataka-end.mp3
     - assets/audio/trataka-middle.mp3
     - assets/audio/trataka-start.mp3
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
