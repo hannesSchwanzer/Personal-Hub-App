@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.2.2
   file_picker: ^10.1.9
   just_audio: ^0.10.5
+  image_picker: ^1.2.1
 
 dev_dependencies:
   flutter_test:

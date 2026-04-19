@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
+import 'package:personal_hub_app/ui/cooking/screens/recipe_index_screen.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/cooking_view.dart';
 import 'package:personal_hub_app/ui/gym_tracker/widgets/gym_view.dart';
-import 'package:personal_hub_app/ui/meditation/screens/mediation_index_screen.dart';
 import 'package:personal_hub_app/ui/meditation/screens/meditation_hub_screen.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/right_in_the_feels_view.dart';
 import 'package:personal_hub_app/ui/core/widgets/hub_feature_card.dart';
@@ -162,7 +162,7 @@ class HubView extends ConsumerWidget {
               title: l10n.hubFeatureCooking,
               description: l10n.hubFeatureCookingDesc,
               icon: Icons.restaurant,
-              onTap: () => _navigateTo(context, const CookingView()),
+              onTap: () => _navigateTo(context, const RecipeIndexScreen()),
             ),
           ],
         ),

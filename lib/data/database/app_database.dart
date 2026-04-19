@@ -10,6 +10,14 @@ import 'package:personal_hub_app/data/database/tables/emotion_explorer_maps_tabl
 import 'package:personal_hub_app/data/database/tables/meditation/routine_meditation_table.dart';
 import 'package:personal_hub_app/data/database/tables/meditation/routine_table.dart';
 
+// Cooking tables
+import 'package:personal_hub_app/data/database/tables/cooking/recipe_table.dart';
+import 'package:personal_hub_app/data/database/tables/cooking/ingredient_table.dart';
+import 'package:personal_hub_app/data/database/tables/cooking/step_table.dart';
+import 'package:personal_hub_app/data/database/tables/cooking/step_ingredient_table.dart';
+import 'package:personal_hub_app/data/database/tables/cooking/tag_table.dart';
+import 'package:personal_hub_app/data/database/tables/cooking/recipe_tag_table.dart';
+
 import 'daos/comms_check_dao.dart';
 import 'daos/journal_dao.dart';
 import 'daos/journal_reflection_dao.dart';
@@ -30,6 +38,12 @@ part 'app_database.g.dart';
     Meditations,
     RoutineMeditations,
     Routines,
+    Recipes,
+    Ingredients,
+    Steps,
+    StepIngredients,
+    Tags,
+    RecipeTags,
   ],
   daos: [
     JournalDao,
@@ -54,8 +68,17 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from == 2 && to == 3) {
         await migrator.createTable(meditations);
+        await migrator.createTable(routines);
+        await migrator.createTable(routineMeditations);
       }
-      // If you need to handle upgrades from any version lower to 3, add handle-all upgrades as needed.
+      if (from < 4 && to >= 4) {
+        await migrator.createTable(recipes);
+        await migrator.createTable(ingredients);
+        await migrator.createTable(steps);
+        await migrator.createTable(stepIngredients);
+        await migrator.createTable(tags);
+        await migrator.createTable(recipeTags);
+      }
     },
   );
 }
