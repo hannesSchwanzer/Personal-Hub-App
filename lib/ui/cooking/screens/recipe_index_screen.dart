@@ -21,7 +21,9 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
   /// Resets all search filters and controllers to their initial state.
   void _clearFilters() {
     _searchController.clear();
-    ref.read(recipeIndexViewModelProvider.notifier).setFilters(const RecipeSearchFilters());
+    ref
+        .read(recipeIndexViewModelProvider.notifier)
+        .setFilters(const RecipeSearchFilters());
     setState(() {
       // AdvancedSearchPanel and filter state will be reset by provider update
     });
@@ -82,9 +84,13 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
                 const SizedBox(height: 4),
                 // Advanced Search Expansion
                 AdvancedSearchPanel(
-                  filters: ref.read(recipeIndexViewModelProvider.notifier).filters,
+                  filters: ref
+                      .read(recipeIndexViewModelProvider.notifier)
+                      .filters,
                   onFiltersChanged: (newFilters) {
-                    ref.read(recipeIndexViewModelProvider.notifier).setFilters(newFilters);
+                    ref
+                        .read(recipeIndexViewModelProvider.notifier)
+                        .setFilters(newFilters);
                   },
                 ),
               ],
@@ -94,11 +100,19 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
             child: asyncRecipes.when(
               data: (recipes) => recipes.isEmpty
                   ? const Center(child: Text('No recipes found'))
-                  : ListView.separated(
+                  : GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount:
+                                2, // Two columns, adjust as necessary
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 0.95, // Control grid tile height
+                          ),
+                      padding: const EdgeInsets.all(8),
                       itemCount: recipes.length,
-                      separatorBuilder: (_, _) => const Divider(height: 0),
                       itemBuilder: (context, idx) {
-                        return _RecipeListTile(recipe: recipes[idx]);
+                        return RecipeGridTile(recipe: recipes[idx]);
                       },
                     ),
               loading: () => const Center(child: CircularProgressIndicator()),
@@ -124,42 +138,14 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
 
 /// Shows a single recipe as a list tile with image (if available), name, and a truncated description.
 /// Tapping navigates to details (not implemented yet).
-class _RecipeListTile extends StatelessWidget {
+/// A tile widget that displays image, title, and cooking time in a fixed grid layout.
+class RecipeGridTile extends StatelessWidget {
   final RecipeEntity recipe;
-  static const int maxDescriptionLength = 120;
-
-  const _RecipeListTile({required this.recipe});
+  const RecipeGridTile({required this.recipe, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: recipe.imagePath.isNotEmpty
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.file(
-                File(recipe.imagePath),
-                width: 54,
-                height: 54,
-                fit: BoxFit.cover,
-                errorBuilder: (c, e, st) =>
-                    const Icon(Icons.image_not_supported),
-              ),
-            )
-          : Container(
-              width: 54,
-              height: 54,
-              decoration: BoxDecoration(
-                color: Colors.grey[250],
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: const Icon(Icons.restaurant_menu, size: 32),
-            ),
-      title: Text(recipe.name, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: Text(
-        _truncDesc(recipe.description),
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-      ),
+    return InkWell(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
@@ -167,13 +153,75 @@ class _RecipeListTile extends StatelessWidget {
           ),
         );
       },
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 3,
+              offset: const Offset(1, 2),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Recipe Image
+            SizedBox(
+              height: 90,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: recipe.imagePath.isNotEmpty
+                    ? Image.file(
+                        File(recipe.imagePath),
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (c, e, st) => Container(
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.image_not_supported,
+                            size: 38,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.restaurant_menu, size: 40),
+                      ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Flexible(
+              child: Center(
+                child: Text(
+                  recipe.name,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                const Icon(Icons.schedule, size: 18, color: Colors.grey),
+                const SizedBox(width: 4),
+                Text(
+                  '${recipe.preparationTimeMinutes + recipe.cookingTimeMinutes} min',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.grey[700]),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
-
-  /// Truncate description safely to [maxDescriptionLength]
-  String _truncDesc(String desc) {
-    if (desc.length <= maxDescriptionLength) return desc;
-    return '${desc.substring(0, maxDescriptionLength - 1)}…';
-  }
 }
-

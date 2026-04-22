@@ -28,6 +28,19 @@ final tagNameRecommendationsProvider = StreamProvider<List<String>>((ref) {
 /// Notifier for recipe creation/editing. Exposes the current RecipeEntity being
 /// edited or created. All state changes and persistence are handled here.
 class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
+  /// Generate a recipe by uploading image(s); returns the generated recipe or throws an error.
+  Future<RecipeEntity> generateRecipeFromImages(List<File> images, {String? inputLanguage, String? outputLanguage}) async {
+    state = const AsyncLoading();
+    try {
+      final recipe = await _repository.generateRecipeFromImages(images, inputLanguage: inputLanguage, outputLanguage: outputLanguage);
+      state = AsyncData(recipe);
+      return recipe;
+    } catch (e, st) {
+      state = AsyncError(e, st);
+      rethrow;
+    }
+  }
+
   /// Deletes the currently loaded recipe. Sets state to loading during deletion and error if deletion fails.
   Future<void> deleteRecipe() async {
     final recipe = state.value;
@@ -186,6 +199,18 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
 
   void setTags(List<String> tags) {
     _updateRecipe((r) => r.copyWith(tags: tags));
+  }
+
+  /// Returns true if the recipe has unsaved changes (i.e., edits compared to a pristine/newly loaded state).
+  /// For simplicity, this checks if the state.hasValue and the recipeId is empty, or compares with the last loaded entity.
+  /// Adapt comparison logic as needed for deep-diff in the future.
+  bool hasUnsavedChanges() {
+    // In a real app, this should compare the current state.recipe to the original loaded one.
+    // Here, we simply check if id is empty or any field has likely changed (as a basic heuristic).
+    final recipe = state.value;
+    if (recipe == null) return false;
+    // If id is still empty after loading, consider it new/unsaved.
+    return recipe.id.isEmpty || recipe.name.isNotEmpty || recipe.ingredients.isNotEmpty || recipe.steps.isNotEmpty;
   }
 
   /// Helper to safely update the recipe if present.

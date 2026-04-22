@@ -70,30 +70,47 @@ class _StepIngredientsEditorState extends State<StepIngredientsEditor> {
                 Row(
                   children: [
                     // Ingredient selection dropdown (cannot invent new!)
-                    Expanded(
-                      child: DropdownButtonFormField<String>(
-                        value: widget.availableIngredients.any(
-                                (element) => element.name == ing.name,
+                    Flexible(
+                      flex: 3,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 180),
+                        child: DropdownButtonFormField<String>(
+                          value: widget.availableIngredients.any((element) => element.name == ing.name)
+                              ? ing.name
+                              : (widget.availableIngredients.isNotEmpty
+                                  ? widget.availableIngredients.first.name
+                                  : ""),
+                          items: widget.availableIngredients
+                              .map(
+                                (ing) => DropdownMenuItem<String>(
+                                  value: ing.name,
+                                  child: Text(ing.name, overflow: TextOverflow.ellipsis, maxLines: 1),
+                                ),
                               )
-                            ? ing.name
-                            : (widget.availableIngredients.isNotEmpty
-                                ? widget.availableIngredients.first.name
-                                : ""),
-                        items: widget.availableIngredients
-                            .map(
-                              (ing) => DropdownMenuItem<String>(
-                                value: ing.name,
-                                child: Text(ing.name),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (newName) {
-                          if (newName != null) {
-                            _onChanged(i, ing.copyWith(name: newName));
-                          }
-                        },
-                        decoration: const InputDecoration(
-                          labelText: 'Ingredient',
+                              .toList(),
+                          selectedItemBuilder: (context) => widget.availableIngredients
+                              .map((ing) => Container(
+                                    alignment: Alignment.centerLeft,
+                                    constraints: const BoxConstraints(maxWidth: 140), // Ensure the button view has a width limit (<= field width)
+                                    child: Text(
+                                      ing.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: Theme.of(context).textTheme.bodyMedium,
+                                      softWrap: false,
+                                    ),
+                                  ))
+                              .toList(),
+                          onChanged: (newName) {
+                            if (newName != null) {
+                              _onChanged(i, ing.copyWith(name: newName));
+                            }
+                          },
+                          decoration: const InputDecoration(
+                            labelText: 'Ingredient',
+                            isDense: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          ),
                         ),
                       ),
                     ),
@@ -102,7 +119,7 @@ class _StepIngredientsEditorState extends State<StepIngredientsEditor> {
                       width: 75,
                       child: TextFormField(
                         initialValue: ing.quantityPercent.toStringAsFixed(0),
-                        decoration: const InputDecoration(labelText: 'Qty'),
+                        decoration: const InputDecoration(labelText: 'Percent'),
                         keyboardType:
                             const TextInputType.numberWithOptions(decimal: false),
                         onChanged: (v) {
@@ -111,21 +128,6 @@ class _StepIngredientsEditorState extends State<StepIngredientsEditor> {
                           final base = ingredientMap[ing.name]?.quantity ?? 1;
                           final percent = base > 0 ? (q * 100.0 / base) : 100.0;
                           _onChanged(i, ing.copyWith(quantityPercent: percent));
-                        },
-                      ),
-                    ),
-                    // Show calculated percent
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Builder(
-                        builder: (context) {
-                          final base = ingredientMap[ing.name]?.quantity ?? 1;
-                          final percent = ing.quantityPercent;
-                          final allocated = ((percent / 100) * base)
-                              .toStringAsFixed(0);
-                          return Text(
-                            "$allocated/$base (${percent.toStringAsFixed(0)}%)",
-                          );
                         },
                       ),
                     ),

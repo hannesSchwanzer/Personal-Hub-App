@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 
 abstract class RecipeRepository {
@@ -59,6 +61,13 @@ abstract class RecipeRepository {
     bool ingredientAllMustMatch = false,
     List<String>? tagList,
     bool tagAllMustMatch = false,
+  });
+  /// Uploads image(s) to the backend to generate a recipe using AI/ML.
+  /// Throws on error.
+  Future<RecipeEntity> generateRecipeFromImages(
+    List<File> images, {
+    String? inputLanguage,
+    String? outputLanguage,
   });
 }
 
