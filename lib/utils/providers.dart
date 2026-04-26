@@ -16,9 +16,9 @@ import 'package:personal_hub_app/data/services/audio_duration_service.dart';
 import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/data/services/builtin_meditation_seeder.dart';
-import 'package:personal_hub_app/data/services/image_save_service.dart';
+import 'package:personal_hub_app/data/services/image_service.dart';
 import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
-import 'package:personal_hub_app/data/services/recipe_image_generate_service.dart';
+import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
 import 'package:personal_hub_app/data/services/routine_service.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/settings.dart';
@@ -167,20 +167,20 @@ final recipeDaoProvider = Provider<RecipeDao>((ref) {
 
 final recipeApiBaseUrlProvider = Provider<String>((ref) => recipeApiBaseUrl);
 
-final recipeImageGenerateServiceProvider = Provider<RecipeImageGenerateService>((ref) {
+final recipeGenerateServiceProvider = Provider<RecipeGenerateService>((ref) {
   final baseUrl = ref.watch(recipeApiBaseUrlProvider);
-  return RecipeImageGenerateService(baseUrl: baseUrl);
+  final imageService = ref.watch(imageServiceProvider);
+  return RecipeGenerateService(baseUrl: baseUrl, imageService: imageService);
 });
 
 final recipeRepositoryProvider = Provider<RecipeRepository>((ref) {
   final dao = ref.watch(recipeDaoProvider);
-  final recipeImageGenerateService = ref.watch(recipeImageGenerateServiceProvider);
   return RecipeRepositoryImpl(
     dao: dao,
-    recipeImageGenerateService: recipeImageGenerateService,
   );
 });
 
-final imageSaveServiceProvider = Provider<ImageSaveService>((ref) {
-  return ImageSaveService();
+final imageServiceProvider = Provider<ImageService>((ref) {
+  return ImageService();
 });
+

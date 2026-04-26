@@ -1,5 +1,6 @@
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
+import 'package:personal_hub_app/data/dtos/recipe_dto.dart';
 import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 import 'package:drift/drift.dart';
 
@@ -163,3 +164,60 @@ StepIngredientsCompanion stepIngredientToDbAbsentStep(StepIngredientEntity entit
   );
 }
 
+extension RecipeDtoMapper on RecipeDto {
+  RecipeEntity toEntity({String? localImagePath}) {
+    return RecipeEntity(
+      id: "",
+      name: name,
+      description: description,
+      ingredients: ingredients.map((e) => e.toEntity()).toList(),
+      steps: steps.map((e) => e.toEntity()).toList(),
+      tags: [],
+      servings: servings,
+      cookingTimeMinutes: cookingTimeMinutes,
+      preparationTimeMinutes: preparationTimeMinutes,
+      nutritionInfo: nutritionInfo.toEntity(),
+      imagePath: localImagePath ?? '',
+    );
+  }
+}
+
+extension IngredientDtoMapper on IngredientDto {
+  IngredientEntity toEntity() {
+    return IngredientEntity(
+      name: name,
+      quantity: quantity,
+      unit: unit, // same enum
+    );
+  }
+}
+
+extension StepDtoMapper on StepDto {
+  StepEntity toEntity() {
+    return StepEntity(
+      ingredients: ingredients.map((e) => e.toEntity()).toList(),
+      instruction: instruction,
+      imagePath: null, // DTO doesn't provide it
+    );
+  }
+}
+
+extension StepIngredientDtoMapper on StepIngredientDto {
+  StepIngredientEntity toEntity() {
+    return StepIngredientEntity(
+      name: name,
+      quantityPercent: quantityPercent,
+    );
+  }
+}
+
+extension NutritionInfoDtoMapper on NutritionInfoDto {
+  NutritionInfoEntity toEntity() {
+    return NutritionInfoEntity(
+      calories: calories,
+      carbohydratesGrams: carbohydratesGrams,
+      proteinGrams: proteinGrams,
+      fatGrams: fatGrams,
+    );
+  }
+}

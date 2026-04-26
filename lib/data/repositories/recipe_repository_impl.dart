@@ -2,40 +2,20 @@ import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 import 'package:personal_hub_app/data/mappers/recipe_mapper.dart';
 import 'package:personal_hub_app/domain/repositories/recipe_repository.dart';
 import 'package:uuid/uuid.dart';
-import 'dart:io';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
-import 'package:personal_hub_app/data/services/recipe_image_generate_service.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeDao _dao;
-  final RecipeImageGenerateService _recipeImageGenerateService;
 
   RecipeRepositoryImpl({
     required RecipeDao dao,
-    required RecipeImageGenerateService recipeImageGenerateService,
-  }) : _dao = dao,
-       _recipeImageGenerateService = recipeImageGenerateService;
+  }) : _dao = dao;
 
   @override
   Future<RecipeEntity?> getRecipe(String id) async {
     final recipeWithAll = await _dao.getFullRecipe(id);
     if (recipeWithAll == null) return null;
     return recipeWithAllToEntity(recipeWithAll);
-  }
-
-  /// Uploads image(s) to the backend to generate a recipe using AI/ML.
-  /// Throws on error.
-  @override
-  Future<RecipeEntity> generateRecipeFromImages(
-    List<File> images, {
-    String? inputLanguage,
-    String? outputLanguage,
-  }) async {
-    return await _recipeImageGenerateService.generateRecipeFromImages(
-      images,
-      inputLanguage: inputLanguage,
-      outputLanguage: outputLanguage,
-    );
   }
 
   @override

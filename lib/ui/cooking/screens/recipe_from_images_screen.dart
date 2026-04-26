@@ -1,35 +1,37 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:personal_hub_app/ui/cooking/view_models/recipe_generation_view_model.dart';
+import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/ui/cooking/widgets/language_selector.dart';
 
-/// Screen for picking multiple images from device (gallery or camera) to generate a recipe.
-/// Shows previews of selected images and allows confirmation.
-/// Integrate into flow by calling onImagesPicked callback when the user confirms selection.
-class RecipeFromImagesScreen extends StatefulWidget {
-  /// Called with the picked images on confirmation
-  final void Function(List<XFile> images) onImagesPicked;
-
-  /// Optional: warning that the recipe will be overwritten if already edited
+class RecipeFromImagesScreen extends ConsumerStatefulWidget {
+  final void Function(RecipeEntity recipe) onRecipeGenerated;
   final bool showEditWarning;
 
   const RecipeFromImagesScreen({
     Key? key,
-    required this.onImagesPicked,
+    required this.onRecipeGenerated,
     this.showEditWarning = false,
   }) : super(key: key);
 
   @override
-  State<RecipeFromImagesScreen> createState() => _RecipeFromImagesScreenState();
+  ConsumerState<RecipeFromImagesScreen> createState() =>
+      _RecipeFromImagesScreenState();
 }
 
-class _RecipeFromImagesScreenState extends State<RecipeFromImagesScreen> {
+class _RecipeFromImagesScreenState
+    extends ConsumerState<RecipeFromImagesScreen> {
   final ImagePicker _picker = ImagePicker();
   final List<XFile> _images = [];
-  bool _loading = false;
+  String? _inputLanguage;
+  String? _outputLanguage;
+  bool _keepOriginalSize = false;
+
   String? _error;
 
-  /// Pick multiple images from gallery
   Future<void> _pickImagesFromGallery() async {
     final selected = await _picker.pickMultiImage();
     if (selected.isNotEmpty) {
@@ -40,7 +42,6 @@ class _RecipeFromImagesScreenState extends State<RecipeFromImagesScreen> {
     }
   }
 
-  /// Pick a single image using the camera
   Future<void> _pickImageFromCamera() async {
     final picked = await _picker.pickImage(source: ImageSource.camera);
     if (picked != null) {
@@ -51,22 +52,37 @@ class _RecipeFromImagesScreenState extends State<RecipeFromImagesScreen> {
     }
   }
 
-  void _onConfirm() {
+  Future<void> _onConfirm() async {
     if (_images.isEmpty) {
       setState(() {
         _error = 'Please select at least one image.';
       });
       return;
     }
-    widget.onImagesPicked(_images);
+
+    final notifier = ref.read(recipeGenerationNotifierProvider.notifier);
+
+    try {
+      final files = _images.map((x) => File(x.path)).toList();
+
+      final recipe = await notifier.generateFromImages(files, inputLanguage: _inputLanguage, outputLanguage: _outputLanguage, keepOriginalSize: _keepOriginalSize);
+
+      if (!mounted) return;
+
+      widget.onRecipeGenerated(recipe);
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to generate recipe: $e';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(recipeGenerationNotifierProvider);
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Select Images'),
-      ),
+      appBar: AppBar(title: const Text('Select Images')),
       body: Column(
         children: [
           if (widget.showEditWarning)
@@ -75,79 +91,116 @@ class _RecipeFromImagesScreenState extends State<RecipeFromImagesScreen> {
               padding: const EdgeInsets.all(12),
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: const Text(
-                'Warning: Generating a recipe from images will overwrite any current changes.',
-                style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+                'Warning: This will overwrite current changes.',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
+
           if (_error != null)
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(_error!, style: const TextStyle(color: Colors.red)),
             ),
+
+          // 🔥 NEW SETTINGS SECTION
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                LanguageSelector(
+                  label: 'Input Language',
+                  onChanged: (value) => _inputLanguage = value,
+                ),
+                const SizedBox(height: 12),
+                LanguageSelector(
+                  label: 'Output Language',
+                  onChanged: (value) => _outputLanguage = value,
+                ),
+                const SizedBox(height: 12),
+
+                Row(
+                  children: [
+                    Checkbox(
+                      value: _keepOriginalSize,
+                      onChanged: (value) {
+                        setState(() {
+                          _keepOriginalSize = value ?? false;
+                        });
+                      },
+                    ),
+                    const Expanded(child: Text('Keep original image size')),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
           Expanded(
             child: _images.isEmpty
                 ? const Center(child: Text('No images selected.'))
                 : GridView.builder(
                     padding: const EdgeInsets.all(10),
                     itemCount: _images.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                        ),
+                    itemBuilder: (_, i) => Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Image.file(
+                            File(_images[i].path),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: IconButton(
+                            icon: const Icon(Icons.cancel),
+                            onPressed: () =>
+                                setState(() => _images.removeAt(i)),
+                          ),
+                        ),
+                      ],
                     ),
-                    itemBuilder: (context, i) {
-                      return Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Image.file(
-                              File(_images[i].path),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: IconButton(
-                              icon: const Icon(Icons.cancel, color: Colors.black54),
-                              onPressed: () {
-                                setState(() => _images.removeAt(i));
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    },
                   ),
           ),
-          if (_loading)
+
+          if (state.isLoading)
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: CircularProgressIndicator(),
             ),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton.icon(
                 icon: const Icon(Icons.photo),
                 label: const Text('Gallery'),
-                onPressed: _loading ? null : _pickImagesFromGallery,
+                onPressed: state.isLoading ? null : _pickImagesFromGallery,
               ),
               ElevatedButton.icon(
                 icon: const Icon(Icons.camera_alt),
                 label: const Text('Camera'),
-                onPressed: _loading ? null : _pickImageFromCamera,
+                onPressed: state.isLoading ? null : _pickImageFromCamera,
               ),
               ElevatedButton.icon(
                 icon: const Icon(Icons.done),
                 label: const Text('Confirm'),
-                onPressed: _loading ? null : _onConfirm,
+                onPressed: state.isLoading ? null : _onConfirm,
               ),
             ],
           ),
+
           const SizedBox(height: 12),
         ],
       ),
     );
   }
 }
-

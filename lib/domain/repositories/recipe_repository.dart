@@ -62,12 +62,5 @@ abstract class RecipeRepository {
     List<String>? tagList,
     bool tagAllMustMatch = false,
   });
-  /// Uploads image(s) to the backend to generate a recipe using AI/ML.
-  /// Throws on error.
-  Future<RecipeEntity> generateRecipeFromImages(
-    List<File> images, {
-    String? inputLanguage,
-    String? outputLanguage,
-  });
 }
 

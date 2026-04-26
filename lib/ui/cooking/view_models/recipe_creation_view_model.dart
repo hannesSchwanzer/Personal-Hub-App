@@ -4,18 +4,22 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
 import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 import 'package:personal_hub_app/domain/repositories/recipe_repository.dart';
 import 'package:personal_hub_app/utils/providers.dart';
-import 'package:personal_hub_app/data/services/image_save_service.dart';
+import 'package:personal_hub_app/data/services/image_service.dart';
 
 /// Provider for the RecipeCreationNotifier via Riverpod, handles async state.
-final recipeCreationNotifierProvider = AsyncNotifierProvider<
-    RecipeCreationNotifier, RecipeEntity?>(RecipeCreationNotifier.new);
+final recipeCreationNotifierProvider =
+    AsyncNotifierProvider<RecipeCreationNotifier, RecipeEntity?>(
+      RecipeCreationNotifier.new,
+    );
 
 /// Providers to get the available ingredient and tag recommendations for autocomplete fields as streams (for real-time updates).
-final ingredientNameRecommendationsProvider =
-    StreamProvider<List<String>>((ref) {
+final ingredientNameRecommendationsProvider = StreamProvider<List<String>>((
+  ref,
+) {
   final repo = ref.read(recipeRepositoryProvider);
   return repo.watchAllIngredientNames();
 });
@@ -28,19 +32,6 @@ final tagNameRecommendationsProvider = StreamProvider<List<String>>((ref) {
 /// Notifier for recipe creation/editing. Exposes the current RecipeEntity being
 /// edited or created. All state changes and persistence are handled here.
 class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
-  /// Generate a recipe by uploading image(s); returns the generated recipe or throws an error.
-  Future<RecipeEntity> generateRecipeFromImages(List<File> images, {String? inputLanguage, String? outputLanguage}) async {
-    state = const AsyncLoading();
-    try {
-      final recipe = await _repository.generateRecipeFromImages(images, inputLanguage: inputLanguage, outputLanguage: outputLanguage);
-      state = AsyncData(recipe);
-      return recipe;
-    } catch (e, st) {
-      state = AsyncError(e, st);
-      rethrow;
-    }
-  }
-
   /// Deletes the currently loaded recipe. Sets state to loading during deletion and error if deletion fails.
   Future<void> deleteRecipe() async {
     final recipe = state.value;
@@ -53,12 +44,15 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
       state = AsyncError(e, st);
     }
   }
+
   late RecipeRepository _repository;
+  late ImageService _imageService;
 
   /// Initialize dependencies.
   @override
   Future<RecipeEntity> build() async {
     _repository = ref.read(recipeRepositoryProvider);
+    _imageService = ref.read(imageServiceProvider);
     return RecipeEntity(
       id: '',
       name: '',
@@ -126,6 +120,10 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     }
   }
 
+  void setRecipe(RecipeEntity recipe) {
+    state = AsyncData(recipe);
+  }
+
   // UI setters for each recipe field
   void setName(String name) {
     _updateRecipe((r) => r.copyWith(name: name));
@@ -154,7 +152,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
   /// Save the picked image internally and update recipe imageUrl with path.
   Future<void> saveImageAndSetPath(File file) async {
     try {
-      final savedPath = await ImageSaveService.saveImage(file);
+      final savedPath = await _imageService.saveImage(file);
       setImageUrl(savedPath);
     } catch (e) {
       // Optionally, handle error
@@ -170,8 +168,11 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
   }
 
   void addIngredient(IngredientEntity ing) {
-    _updateRecipe((r) => r.copyWith(
-        ingredients: List<IngredientEntity>.from(r.ingredients)..add(ing)));
+    _updateRecipe(
+      (r) => r.copyWith(
+        ingredients: List<IngredientEntity>.from(r.ingredients)..add(ing),
+      ),
+    );
   }
 
   void removeIngredient(int index) {
@@ -186,8 +187,9 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
   }
 
   void addStep(StepEntity step) {
-    _updateRecipe((r) =>
-        r.copyWith(steps: List<StepEntity>.from(r.steps)..add(step)));
+    _updateRecipe(
+      (r) => r.copyWith(steps: List<StepEntity>.from(r.steps)..add(step)),
+    );
   }
 
   void removeStep(int index) {
@@ -210,7 +212,10 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     final recipe = state.value;
     if (recipe == null) return false;
     // If id is still empty after loading, consider it new/unsaved.
-    return recipe.id.isEmpty || recipe.name.isNotEmpty || recipe.ingredients.isNotEmpty || recipe.steps.isNotEmpty;
+    return recipe.id.isEmpty ||
+        recipe.name.isNotEmpty ||
+        recipe.ingredients.isNotEmpty ||
+        recipe.steps.isNotEmpty;
   }
 
   /// Helper to safely update the recipe if present.
@@ -220,4 +225,3 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     state = AsyncData(update(recipe));
   }
 }
-
