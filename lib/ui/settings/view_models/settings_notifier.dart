@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/settings.dart';
+import 'package:personal_hub_app/domain/entities/generic/settings.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 

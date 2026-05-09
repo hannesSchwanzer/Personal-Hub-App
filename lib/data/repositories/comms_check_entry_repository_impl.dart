@@ -1,6 +1,6 @@
 import 'package:personal_hub_app/data/database/daos/comms_check_dao.dart';
 import 'package:personal_hub_app/data/mappers/comms_check_mapper.dart';
-import 'package:personal_hub_app/domain/entities/comms_check_entry_entity.dart';
+import 'package:personal_hub_app/domain/entities/journaling/comms_check_entry_entity.dart';
 import 'package:personal_hub_app/domain/repositories/comms_check_entry_repository.dart';
 import 'package:uuid/uuid.dart';
 

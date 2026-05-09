@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/domain/services/backup_service.dart';
-import 'package:personal_hub_app/data/mappers/comms_check_mapper.dart';
 
 class BackupServiceImpl implements BackupService {
   final AppDatabase _database;

@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/widgets/body_map_painter.dart';
 import 'package:personal_hub_app/utils/asset_loader.dart';
 

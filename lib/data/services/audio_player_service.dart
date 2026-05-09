@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:just_audio/just_audio.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 
 /// Abstraction class for cross-audio-source playback.
 /// Use this via [AudioPlayerService] Riverpod provider, not directly.

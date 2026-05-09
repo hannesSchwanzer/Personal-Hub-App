@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
-import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_entry_entity.dart';
 
 extension JournalMapper on JournalEntry {
   JournalEntryEntity toEntity() {

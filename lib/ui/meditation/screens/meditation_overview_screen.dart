@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/ui/meditation/screens/guided_meditation_screen.dart';
 import 'package:personal_hub_app/ui/meditation/utils/meditation_string_utils.dart';

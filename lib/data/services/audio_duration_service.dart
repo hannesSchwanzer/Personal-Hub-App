@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:personal_hub_app/data/services/audio_player_service.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 
 /// Service for fetching durations of audio files by path.
 class AudioDurationService {

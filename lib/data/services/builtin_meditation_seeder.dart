@@ -1,6 +1,6 @@
 import 'package:personal_hub_app/data/builtin/mediation_seeds.dart';
 import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';

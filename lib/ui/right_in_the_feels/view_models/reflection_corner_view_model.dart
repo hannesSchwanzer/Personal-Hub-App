@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_entry_entity.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_ui_model.dart';

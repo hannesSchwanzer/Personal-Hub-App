@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 import 'package:personal_hub_app/ui/core/widgets/audio_player_controls.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 

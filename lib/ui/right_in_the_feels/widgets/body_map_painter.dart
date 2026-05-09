@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
 import 'package:personal_hub_app/utils/image_utils.dart';
 
 class BodyMapPainter extends CustomPainter {

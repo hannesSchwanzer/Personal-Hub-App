@@ -22,7 +22,7 @@ import 'package:personal_hub_app/data/services/meditation_entry_creation_service
 import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
 import 'package:personal_hub_app/data/services/routine_service.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
-import 'package:personal_hub_app/domain/entities/settings.dart';
+import 'package:personal_hub_app/domain/entities/generic/settings.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';

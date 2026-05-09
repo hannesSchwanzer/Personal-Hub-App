@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:personal_hub_app/domain/entities/settings.dart';
+import 'package:personal_hub_app/domain/entities/generic/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/domain/repositories/settings_repository.dart';
 

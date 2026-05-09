@@ -1,5 +1,4 @@
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
 
 abstract class MeditationRepository {
   Future<void> createEntry({

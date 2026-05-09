@@ -1,6 +1,4 @@
-import 'dart:developer';
-
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
 import 'package:personal_hub_app/data/services/audio_duration_service.dart';

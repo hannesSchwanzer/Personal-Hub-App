@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/emotion_explorer_map_entity.dart';
+
+import 'package:personal_hub_app/domain/entities/journaling/emotion_explorer_map_entity.dart';
 
 abstract class EmotionExplorerMapRepository {
   Future<EmotionExplorerMapEntity?> getMap();

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/domain/entities/journaling/emotion_explorer_map_entity.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_ui_model.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_tree.dart';
 import 'package:personal_hub_app/utils/providers.dart';
-import 'package:personal_hub_app/domain/entities/emotion_explorer_map_entity.dart';
 import 'package:personal_hub_app/domain/repositories/emotion_explorer_map_repository.dart';
 
 /// StreamProvider that emits the latest EmotionExplorerMapEntity from the DB.

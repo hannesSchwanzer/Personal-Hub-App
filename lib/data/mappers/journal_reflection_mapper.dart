@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 
 import 'package:personal_hub_app/data/database/app_database.dart';
-import 'package:personal_hub_app/domain/entities/journal_reflection.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_reflection.dart';
 
 extension JournalReflectionMapper on JournalReflection {
   JournalReflectionEntity toEntity() {

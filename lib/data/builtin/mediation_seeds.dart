@@ -1,5 +1,5 @@
 
-import 'package:personal_hub_app/domain/entities/audio_file.dart';
+import 'package:personal_hub_app/domain/entities/generic/audio_file.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 
 final meditationSeeds = [

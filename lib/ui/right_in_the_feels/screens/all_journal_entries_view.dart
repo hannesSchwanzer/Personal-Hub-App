@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_entry_entity.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 import 'journal_entry_detail_view.dart';
 

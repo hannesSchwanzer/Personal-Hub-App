@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
+
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
 
 class JournalEntryEntity {
   final String id;

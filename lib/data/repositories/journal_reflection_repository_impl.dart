@@ -1,6 +1,6 @@
 import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart';
 import 'package:personal_hub_app/data/mappers/journal_reflection_mapper.dart';
-import 'package:personal_hub_app/domain/entities/journal_reflection.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_reflection.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:uuid/uuid.dart';
 

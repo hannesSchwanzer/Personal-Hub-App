@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:personal_hub_app/ui/cooking/screens/recipe_from_text_screen.dart';
 import 'package:personal_hub_app/ui/cooking/screens/recipe_from_url_screen.dart';
 import 'package:personal_hub_app/ui/cooking/screens/steps_editor_screen.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/core/widgets/tab_tool_tip.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/models/emotion_tree.dart';

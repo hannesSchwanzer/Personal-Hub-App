@@ -1,5 +1,5 @@
-import 'package:personal_hub_app/domain/entities/body_map_drawing.dart';
-import 'package:personal_hub_app/domain/entities/journal_entry_entity.dart';
+import 'package:personal_hub_app/domain/entities/journaling/body_map_drawing.dart';
+import 'package:personal_hub_app/domain/entities/journaling/journal_entry_entity.dart';
 
 abstract class JournalEntryRepository {
     Future<void> createEntry({

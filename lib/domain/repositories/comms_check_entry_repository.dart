@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/comms_check_entry_entity.dart';
+
+import 'package:personal_hub_app/domain/entities/journaling/comms_check_entry_entity.dart';
 
 abstract class CommsCheckEntryRepository {
   Future<void> createEntry({

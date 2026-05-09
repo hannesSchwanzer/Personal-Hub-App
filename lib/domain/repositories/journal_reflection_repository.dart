@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/journal_reflection.dart';
+
+import 'package:personal_hub_app/domain/entities/journaling/journal_reflection.dart';
 
 abstract class JournalReflectionRepository {
     Future<void> createReflection({
