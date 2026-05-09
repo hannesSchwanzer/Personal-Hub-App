@@ -12,7 +12,7 @@ import '../widgets/recipe_image_picker.dart';
 import 'package:personal_hub_app/ui/cooking/screens/cooking_times_editor_screen.dart';
 import 'package:personal_hub_app/ui/cooking/screens/nutrition_editor_screen.dart';
 import '../widgets/tags_editor.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/ui/cooking/screens/ingredients_editor_screen.dart';
 
 /// Screen for creating or editing a recipe. Uses Riverpod's RecipeCreationNotifier.
@@ -520,19 +520,19 @@ class _RecipeCreationScreenState extends ConsumerState<RecipeCreationScreen> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'Calories: \t${recipe.nutritionInfo.calories ?? '-'} kcal',
+                                'Calories: \t${recipe.nutritionInfo.energyKcal ?? '-'} kcal',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                'Protein: \t${recipe.nutritionInfo.proteinGrams ?? '-'} g',
+                                'Protein: \t${recipe.nutritionInfo.proteins ?? '-'} g',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                'Carbs: \t${recipe.nutritionInfo.carbohydratesGrams ?? '-'} g',
+                                'Carbs: \t${recipe.nutritionInfo.carbohydrates ?? '-'} g',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                'Fat: \t${recipe.nutritionInfo.fatGrams ?? '-'} g',
+                                'Fat: \t${recipe.nutritionInfo.fat ?? '-'} g',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               const SizedBox(height: 4),

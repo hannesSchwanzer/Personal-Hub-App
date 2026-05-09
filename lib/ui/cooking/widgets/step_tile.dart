@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'step_ingredients_editor.dart';
 import 'recipe_image_picker.dart';
-import 'dart:io';
 
 /// Step tile widget. Pass the current recipe ingredients for ingredient selection in steps.
 class StepTile extends StatelessWidget {

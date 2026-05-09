@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
 /// Widget for editing ingredient row: uses Flutter's Autocomplete for name entry and a dropdown for unit type.
 class IngredientTile extends StatefulWidget {

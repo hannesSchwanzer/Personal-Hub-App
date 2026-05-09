@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 
 abstract class RecipeRepository {
   /// Watches a single recipe and emits a new value whenever the recipe or any associated tables change.

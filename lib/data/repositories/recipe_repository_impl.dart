@@ -1,4 +1,4 @@
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/data/mappers/recipe_mapper.dart';
 import 'package:personal_hub_app/domain/repositories/recipe_repository.dart';
 import 'package:uuid/uuid.dart';

@@ -1,8 +1,11 @@
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
 import 'package:personal_hub_app/data/dtos/recipe_dto.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/data/mappers/nutition_mapper.dart';
+import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:drift/drift.dart';
+import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
 /// Maps a [RecipesData] and its children into a domain [RecipeEntity].
 RecipeEntity recipeFromDbParts(
@@ -23,8 +26,8 @@ RecipeEntity recipeFromDbParts(
     return stepFromDb(stepRow, matchingStepIngredients);
   }).toList();
 
-  final NutritionInfoEntity nutritionInfo =
-      NutritionInfoEntity.fromJsonString(recipe.nutritionInfoJson);
+  final NutritionEntity nutritionInfo =
+      NutritionEntity.fromJsonString(recipe.nutritionInfoJson);
 
   return RecipeEntity(
     id: recipe.id,
@@ -211,13 +214,3 @@ extension StepIngredientDtoMapper on StepIngredientDto {
   }
 }
 
-extension NutritionInfoDtoMapper on NutritionInfoDto {
-  NutritionInfoEntity toEntity() {
-    return NutritionInfoEntity(
-      calories: calories,
-      carbohydratesGrams: carbohydratesGrams,
-      proteinGrams: proteinGrams,
-      fatGrams: fatGrams,
-    );
-  }
-}

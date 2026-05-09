@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
 
 /// Screen for editing nutrition information. Returns updated NutritionInfoEntity on save.
 class NutritionEditorScreen extends StatefulWidget {
   /// The initial nutrition info to be edited.
-  final NutritionInfoEntity initial;
+  final NutritionEntity initial;
 
   const NutritionEditorScreen({
     Key? key,
@@ -16,7 +16,7 @@ class NutritionEditorScreen extends StatefulWidget {
 }
 
 class _NutritionEditorScreenState extends State<NutritionEditorScreen> {
-  late int? calories;
+  late double? calories;
   late double? proteinGrams;
   late double? carbohydratesGrams;
   late double? fatGrams;
@@ -25,10 +25,10 @@ class _NutritionEditorScreenState extends State<NutritionEditorScreen> {
   @override
   void initState() {
     super.initState();
-    calories = widget.initial.calories;
-    proteinGrams = widget.initial.proteinGrams;
-    carbohydratesGrams = widget.initial.carbohydratesGrams;
-    fatGrams = widget.initial.fatGrams;
+    calories = widget.initial.energyKcal;
+    proteinGrams = widget.initial.proteins;
+    carbohydratesGrams = widget.initial.carbohydrates;
+    fatGrams = widget.initial.fat;
   }
 
   @override
@@ -51,7 +51,7 @@ class _NutritionEditorScreenState extends State<NutritionEditorScreen> {
                   if (value == null || value < 0) return 'Enter 0 or more';
                   return null;
                 },
-                onSaved: (v) => calories = int.tryParse(v ?? ''),
+                onSaved: (v) => calories = double.tryParse(v ?? ''),
               ),
               const SizedBox(height: 16),
               TextFormField(
@@ -95,11 +95,11 @@ class _NutritionEditorScreenState extends State<NutritionEditorScreen> {
                   if (!_formKey.currentState!.validate()) return;
                   _formKey.currentState!.save();
                   Navigator.of(context).pop(
-                    NutritionInfoEntity(
-                      calories: calories,
-                      proteinGrams: proteinGrams,
-                      carbohydratesGrams: carbohydratesGrams,
-                      fatGrams: fatGrams,
+                    NutritionEntity(
+                      energyKcal: calories,
+                      proteins: proteinGrams,
+                      carbohydrates: carbohydratesGrams,
+                      fat: fatGrams,
                     ),
                   );
                 },

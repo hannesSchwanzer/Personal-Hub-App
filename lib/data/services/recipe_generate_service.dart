@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:personal_hub_app/data/dtos/recipe_dto.dart';
 import 'package:personal_hub_app/data/mappers/recipe_mapper.dart';
 import 'package:personal_hub_app/data/services/image_service.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 
 /// Service to generate a recipe by uploading one or more images to the backend API.
 class RecipeGenerateService {
@@ -135,21 +135,3 @@ class RecipeGenerateService {
     return recipeDto.toEntity(localImagePath: localImagePath);
   }
 }
-
-// /// Needed for some content type construction (if not already imported)
-// class MediaType {
-//   final String type;
-//   final String subtype;
-//
-//   MediaType(this.type, this.subtype);
-//
-//   static MediaType parse(String raw) {
-//     final parts = raw.split('/');
-//     if (parts.length != 2) throw Exception('Invalid MediaType');
-//     return MediaType(parts[0], parts[1]);
-//   }
-//
-//   @override
-//   String toString() => '$type/$subtype';
-// }
-//

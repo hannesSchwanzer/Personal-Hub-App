@@ -16,6 +16,7 @@ import 'package:personal_hub_app/data/services/audio_duration_service.dart';
 import 'package:personal_hub_app/data/services/audio_player_service.dart';
 import 'package:personal_hub_app/data/services/backup_service_impl.dart';
 import 'package:personal_hub_app/data/services/builtin_meditation_seeder.dart';
+import 'package:personal_hub_app/data/services/food_service.dart';
 import 'package:personal_hub_app/data/services/image_service.dart';
 import 'package:personal_hub_app/data/services/meditation_entry_creation_service.dart';
 import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
@@ -166,6 +167,13 @@ final recipeDaoProvider = Provider<RecipeDao>((ref) {
 });
 
 final recipeApiBaseUrlProvider = Provider<String>((ref) => recipeApiBaseUrl);
+
+final foodApiBaseUrlProvider = Provider<String>((ref) => foodApiBaseUrl); // Reuse or split if needed
+
+final foodServiceProvider = Provider<FoodService>((ref) {
+  final baseUrl = ref.watch(foodApiBaseUrlProvider);
+  return FoodService(baseUrl: baseUrl);
+});
 
 final recipeGenerateServiceProvider = Provider<RecipeGenerateService>((ref) {
   final baseUrl = ref.watch(recipeApiBaseUrlProvider);

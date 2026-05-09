@@ -1,4 +1,5 @@
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/data/dtos/nutrition_dto.dart';
+import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
 class RecipeDto {
   final String name;
@@ -8,7 +9,7 @@ class RecipeDto {
   final int servings;
   final int cookingTimeMinutes;
   final int preparationTimeMinutes;
-  final NutritionInfoDto nutritionInfo;
+  final NutritionDto nutritionInfo;
   final String? imageUrl;
 
   RecipeDto({
@@ -37,7 +38,7 @@ class RecipeDto {
       cookingTimeMinutes: json['cookingTimeMinutes'],
       preparationTimeMinutes: json['preparationTimeMinutes'],
       nutritionInfo:
-          NutritionInfoDto.fromJson(json['nutritionInfo']),
+          NutritionDto.fromJson(json['nutritionInfo']),
       imageUrl: json['imageUrl'],
     );
   }
@@ -53,38 +54,6 @@ class RecipeDto {
       'preparationTimeMinutes': preparationTimeMinutes,
       'nutritionInfo': nutritionInfo.toJson(),
       'imageUrl': imageUrl,
-    };
-  }
-}
-
-class NutritionInfoDto {
-  final int? calories;
-  final double? carbohydratesGrams;
-  final double? proteinGrams;
-  final double? fatGrams;
-
-  NutritionInfoDto({
-    this.calories,
-    this.carbohydratesGrams,
-    this.proteinGrams,
-    this.fatGrams,
-  });
-
-  factory NutritionInfoDto.fromJson(Map<String, dynamic> json) {
-    return NutritionInfoDto(
-      calories: json['calories'],
-      carbohydratesGrams: (json['carbohydratesGrams'] as num?)?.toDouble(),
-      proteinGrams: (json['proteinGrams'] as num?)?.toDouble(),
-      fatGrams: (json['fatGrams'] as num?)?.toDouble(),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'calories': calories,
-      'carbohydratesGrams': carbohydratesGrams,
-      'proteinGrams': proteinGrams,
-      'fatGrams': fatGrams,
     };
   }
 }

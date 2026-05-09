@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 
 /// Widget for a single recipe step with optional image and per-step ingredient info.
 class RecipeStepWidget extends StatelessWidget {

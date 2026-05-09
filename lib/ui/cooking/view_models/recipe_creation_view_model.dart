@@ -5,7 +5,8 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/domain/repositories/recipe_repository.dart';
 import 'package:personal_hub_app/utils/providers.dart';
 import 'package:personal_hub_app/data/services/image_service.dart';
@@ -63,7 +64,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
       servings: 1,
       cookingTimeMinutes: 0,
       preparationTimeMinutes: 0,
-      nutritionInfo: NutritionInfoEntity(calories: 0),
+      nutritionInfo: NutritionEntity(energyKcal: 0),
       imagePath: '',
     );
   }
@@ -84,7 +85,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
           servings: 1,
           cookingTimeMinutes: 0,
           preparationTimeMinutes: 0,
-          nutritionInfo: NutritionInfoEntity(calories: 0),
+          nutritionInfo: NutritionEntity(energyKcal: 0),
           imagePath: '',
         ),
       );
@@ -159,7 +160,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     }
   }
 
-  void setNutritionInfo(NutritionInfoEntity info) {
+  void setNutritionInfo(NutritionEntity info) {
     _updateRecipe((r) => r.copyWith(nutritionInfo: info));
   }
 

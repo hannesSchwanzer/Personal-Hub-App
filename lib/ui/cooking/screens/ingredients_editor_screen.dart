@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 import 'package:personal_hub_app/ui/cooking/view_models/recipe_creation_view_model.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/ingredient_tile.dart';
 

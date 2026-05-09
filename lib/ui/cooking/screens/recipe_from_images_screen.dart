@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:personal_hub_app/ui/cooking/view_models/recipe_generation_view_model.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/language_selector.dart';
 
 class RecipeFromImagesScreen extends ConsumerStatefulWidget {

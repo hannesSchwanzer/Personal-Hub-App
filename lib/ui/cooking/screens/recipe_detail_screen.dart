@@ -167,11 +167,11 @@ class RecipeDetailScreen extends ConsumerWidget {
             const SizedBox(height: 18),
 
             /// Nutrition card
-            if (recipe.nutritionInfo.calories != null ||
-                recipe.nutritionInfo.carbohydratesGrams != null ||
-                recipe.nutritionInfo.proteinGrams != null ||
-                recipe.nutritionInfo.fatGrams != null)
-              RecipeNutritionWidget(nutrition: recipe.nutritionInfo),
+            if (recipe.nutritionInfo.energyKcal != null ||
+                recipe.nutritionInfo.carbohydrates != null ||
+                recipe.nutritionInfo.proteins != null ||
+                recipe.nutritionInfo.fat != null)
+              NutritionDisplayWidget(nutrition: recipe.nutritionInfo),
             const SizedBox(height: 18),
             // Ingredient List (scaled)
             Text('Ingredients', style: Theme.of(context).textTheme.titleLarge),

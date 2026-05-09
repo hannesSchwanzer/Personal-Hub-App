@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 
 /// Screen for editing preparation time and cooking time. Returns updated values on save.
 class CookingTimesEditorScreen extends StatefulWidget {

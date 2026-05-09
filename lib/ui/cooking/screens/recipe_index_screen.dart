@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/ui/cooking/screens/recipe_creation_screen.dart';
 import 'package:personal_hub_app/ui/cooking/screens/recipe_detail_screen.dart';
 import 'package:personal_hub_app/ui/cooking/view_models/recipe_index_view_model.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/advanced_search_panel.dart';
-import 'package:personal_hub_app/domain/entities/cooking/recipe_entity.dart';
 
 /// The main screen for browsing recipes.
 class RecipeIndexScreen extends ConsumerStatefulWidget {
