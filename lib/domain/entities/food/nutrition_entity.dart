@@ -85,4 +85,18 @@ class NutritionEntity {
       perQuantity: (json['perQuantity'] as num?)?.toDouble(),
     );
   }
+
+  NutritionEntity operator +(NutritionEntity other) {
+    return NutritionEntity(
+      energyKcal: (energyKcal ?? 0) + (other.energyKcal ?? 0),
+      carbohydrates: (carbohydrates ?? 0) + (other.carbohydrates ?? 0),
+      proteins: (proteins ?? 0) + (other.proteins ?? 0),
+      fat: (fat ?? 0) + (other.fat ?? 0),
+      sugars: (sugars ?? 0) + (other.sugars ?? 0),
+      saturatedFat: (saturatedFat ?? 0) + (other.saturatedFat ?? 0),
+      sodium: (sodium ?? 0) + (other.sodium ?? 0),
+      quantityUnit: null,
+      perQuantity: null,
+    );
+  }
 }

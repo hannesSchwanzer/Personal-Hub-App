@@ -9,19 +9,19 @@ import 'package:personal_hub_app/data/database/daos/meditation/routine_dao.dart'
 import 'package:personal_hub_app/data/database/tables/emotion_explorer_maps_table.dart';
 import 'package:personal_hub_app/data/database/tables/meditation/routine_meditation_table.dart';
 import 'package:personal_hub_app/data/database/tables/meditation/routine_table.dart';
-
-// Cooking tables
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/ingredient_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/step_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/step_ingredient_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/tag_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_tag_table.dart';
+import 'package:personal_hub_app/data/database/tables/food_tracking_table.dart';
 
 import 'daos/comms_check_dao.dart';
 import 'daos/journal_dao.dart';
 import 'daos/journal_reflection_dao.dart';
 import 'daos/meditation/meditation_dao.dart';
+import 'daos/food_tracking_dao.dart';
 import 'tables/comms_check_entries_table.dart';
 import 'tables/journal_entries_table.dart';
 import 'tables/journal_reflection_table.dart';
@@ -44,6 +44,7 @@ part 'app_database.g.dart';
     StepIngredients,
     Tags,
     RecipeTags,
+    FoodTrackings,
   ],
   daos: [
     JournalDao,
@@ -52,13 +53,14 @@ part 'app_database.g.dart';
     EmotionExplorerMapDao,
     MeditationDao,
     RoutineDao,
+    FoodTrackingDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -78,6 +80,9 @@ class AppDatabase extends _$AppDatabase {
         await migrator.createTable(stepIngredients);
         await migrator.createTable(tags);
         await migrator.createTable(recipeTags);
+      }
+      if (from < 5 && to >= 5) {
+        await migrator.createTable(foodTrackings);
       }
     },
   );

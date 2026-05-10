@@ -5373,6 +5373,490 @@ class RecipeTagsCompanion extends UpdateCompanion<RecipeTag> {
   }
 }
 
+class $FoodTrackingsTable extends FoodTrackings
+    with TableInfo<$FoodTrackingsTable, FoodTracking> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FoodTrackingsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _nutritionJsonMeta = const VerificationMeta(
+    'nutritionJson',
+  );
+  @override
+  late final GeneratedColumn<String> nutritionJson = GeneratedColumn<String>(
+    'nutrition_json',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _quantityMeta = const VerificationMeta(
+    'quantity',
+  );
+  @override
+  late final GeneratedColumn<double> quantity = GeneratedColumn<double>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sourceMeta = const VerificationMeta('source');
+  @override
+  late final GeneratedColumn<int> source = GeneratedColumn<int>(
+    'source',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _referenceIdMeta = const VerificationMeta(
+    'referenceId',
+  );
+  @override
+  late final GeneratedColumn<String> referenceId = GeneratedColumn<String>(
+    'reference_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _trackedAtMeta = const VerificationMeta(
+    'trackedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> trackedAt = GeneratedColumn<DateTime>(
+    'tracked_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    nutritionJson,
+    quantity,
+    source,
+    referenceId,
+    trackedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'food_trackings';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FoodTracking> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('nutrition_json')) {
+      context.handle(
+        _nutritionJsonMeta,
+        nutritionJson.isAcceptableOrUnknown(
+          data['nutrition_json']!,
+          _nutritionJsonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_nutritionJsonMeta);
+    }
+    if (data.containsKey('quantity')) {
+      context.handle(
+        _quantityMeta,
+        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_quantityMeta);
+    }
+    if (data.containsKey('source')) {
+      context.handle(
+        _sourceMeta,
+        source.isAcceptableOrUnknown(data['source']!, _sourceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_sourceMeta);
+    }
+    if (data.containsKey('reference_id')) {
+      context.handle(
+        _referenceIdMeta,
+        referenceId.isAcceptableOrUnknown(
+          data['reference_id']!,
+          _referenceIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('tracked_at')) {
+      context.handle(
+        _trackedAtMeta,
+        trackedAt.isAcceptableOrUnknown(data['tracked_at']!, _trackedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_trackedAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FoodTracking map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FoodTracking(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      nutritionJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}nutrition_json'],
+      )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}quantity'],
+      )!,
+      source: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}source'],
+      )!,
+      referenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference_id'],
+      ),
+      trackedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}tracked_at'],
+      )!,
+    );
+  }
+
+  @override
+  $FoodTrackingsTable createAlias(String alias) {
+    return $FoodTrackingsTable(attachedDatabase, alias);
+  }
+}
+
+class FoodTracking extends DataClass implements Insertable<FoodTracking> {
+  /// Unique ID for this food tracking entry.
+  final String id;
+
+  /// The display name of the tracked food.
+  final String name;
+
+  /// Nutrition info is stored as a JSON string, matching NutritionEntity spec. Use mappers for (de)serialization.
+  final String nutritionJson;
+
+  /// The amount in the unit below (see documentation of NutritionEntity's base quantity unit).
+  final double quantity;
+
+  /// The source: 0=recipe, 1=manual, 2=product, 3=generic
+  final int source;
+
+  /// The reference id (recipe/product/generic id). Allow null for manual entries. Uuid or server id.
+  final String? referenceId;
+
+  /// The timestamp when this food was tracked.
+  final DateTime trackedAt;
+  const FoodTracking({
+    required this.id,
+    required this.name,
+    required this.nutritionJson,
+    required this.quantity,
+    required this.source,
+    this.referenceId,
+    required this.trackedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['nutrition_json'] = Variable<String>(nutritionJson);
+    map['quantity'] = Variable<double>(quantity);
+    map['source'] = Variable<int>(source);
+    if (!nullToAbsent || referenceId != null) {
+      map['reference_id'] = Variable<String>(referenceId);
+    }
+    map['tracked_at'] = Variable<DateTime>(trackedAt);
+    return map;
+  }
+
+  FoodTrackingsCompanion toCompanion(bool nullToAbsent) {
+    return FoodTrackingsCompanion(
+      id: Value(id),
+      name: Value(name),
+      nutritionJson: Value(nutritionJson),
+      quantity: Value(quantity),
+      source: Value(source),
+      referenceId: referenceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceId),
+      trackedAt: Value(trackedAt),
+    );
+  }
+
+  factory FoodTracking.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FoodTracking(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      nutritionJson: serializer.fromJson<String>(json['nutritionJson']),
+      quantity: serializer.fromJson<double>(json['quantity']),
+      source: serializer.fromJson<int>(json['source']),
+      referenceId: serializer.fromJson<String?>(json['referenceId']),
+      trackedAt: serializer.fromJson<DateTime>(json['trackedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'nutritionJson': serializer.toJson<String>(nutritionJson),
+      'quantity': serializer.toJson<double>(quantity),
+      'source': serializer.toJson<int>(source),
+      'referenceId': serializer.toJson<String?>(referenceId),
+      'trackedAt': serializer.toJson<DateTime>(trackedAt),
+    };
+  }
+
+  FoodTracking copyWith({
+    String? id,
+    String? name,
+    String? nutritionJson,
+    double? quantity,
+    int? source,
+    Value<String?> referenceId = const Value.absent(),
+    DateTime? trackedAt,
+  }) => FoodTracking(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    nutritionJson: nutritionJson ?? this.nutritionJson,
+    quantity: quantity ?? this.quantity,
+    source: source ?? this.source,
+    referenceId: referenceId.present ? referenceId.value : this.referenceId,
+    trackedAt: trackedAt ?? this.trackedAt,
+  );
+  FoodTracking copyWithCompanion(FoodTrackingsCompanion data) {
+    return FoodTracking(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      nutritionJson: data.nutritionJson.present
+          ? data.nutritionJson.value
+          : this.nutritionJson,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      source: data.source.present ? data.source.value : this.source,
+      referenceId: data.referenceId.present
+          ? data.referenceId.value
+          : this.referenceId,
+      trackedAt: data.trackedAt.present ? data.trackedAt.value : this.trackedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodTracking(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('nutritionJson: $nutritionJson, ')
+          ..write('quantity: $quantity, ')
+          ..write('source: $source, ')
+          ..write('referenceId: $referenceId, ')
+          ..write('trackedAt: $trackedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    nutritionJson,
+    quantity,
+    source,
+    referenceId,
+    trackedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FoodTracking &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.nutritionJson == this.nutritionJson &&
+          other.quantity == this.quantity &&
+          other.source == this.source &&
+          other.referenceId == this.referenceId &&
+          other.trackedAt == this.trackedAt);
+}
+
+class FoodTrackingsCompanion extends UpdateCompanion<FoodTracking> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<String> nutritionJson;
+  final Value<double> quantity;
+  final Value<int> source;
+  final Value<String?> referenceId;
+  final Value<DateTime> trackedAt;
+  final Value<int> rowid;
+  const FoodTrackingsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.nutritionJson = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.source = const Value.absent(),
+    this.referenceId = const Value.absent(),
+    this.trackedAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  FoodTrackingsCompanion.insert({
+    required String id,
+    required String name,
+    required String nutritionJson,
+    required double quantity,
+    required int source,
+    this.referenceId = const Value.absent(),
+    required DateTime trackedAt,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       name = Value(name),
+       nutritionJson = Value(nutritionJson),
+       quantity = Value(quantity),
+       source = Value(source),
+       trackedAt = Value(trackedAt);
+  static Insertable<FoodTracking> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<String>? nutritionJson,
+    Expression<double>? quantity,
+    Expression<int>? source,
+    Expression<String>? referenceId,
+    Expression<DateTime>? trackedAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (nutritionJson != null) 'nutrition_json': nutritionJson,
+      if (quantity != null) 'quantity': quantity,
+      if (source != null) 'source': source,
+      if (referenceId != null) 'reference_id': referenceId,
+      if (trackedAt != null) 'tracked_at': trackedAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  FoodTrackingsCompanion copyWith({
+    Value<String>? id,
+    Value<String>? name,
+    Value<String>? nutritionJson,
+    Value<double>? quantity,
+    Value<int>? source,
+    Value<String?>? referenceId,
+    Value<DateTime>? trackedAt,
+    Value<int>? rowid,
+  }) {
+    return FoodTrackingsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      nutritionJson: nutritionJson ?? this.nutritionJson,
+      quantity: quantity ?? this.quantity,
+      source: source ?? this.source,
+      referenceId: referenceId ?? this.referenceId,
+      trackedAt: trackedAt ?? this.trackedAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (nutritionJson.present) {
+      map['nutrition_json'] = Variable<String>(nutritionJson.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<double>(quantity.value);
+    }
+    if (source.present) {
+      map['source'] = Variable<int>(source.value);
+    }
+    if (referenceId.present) {
+      map['reference_id'] = Variable<String>(referenceId.value);
+    }
+    if (trackedAt.present) {
+      map['tracked_at'] = Variable<DateTime>(trackedAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FoodTrackingsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('nutritionJson: $nutritionJson, ')
+          ..write('quantity: $quantity, ')
+          ..write('source: $source, ')
+          ..write('referenceId: $referenceId, ')
+          ..write('trackedAt: $trackedAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -5395,6 +5879,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   );
   late final $TagsTable tags = $TagsTable(this);
   late final $RecipeTagsTable recipeTags = $RecipeTagsTable(this);
+  late final $FoodTrackingsTable foodTrackings = $FoodTrackingsTable(this);
   late final JournalDao journalDao = JournalDao(this as AppDatabase);
   late final JournalReflectionDao journalReflectionDao = JournalReflectionDao(
     this as AppDatabase,
@@ -5404,6 +5889,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       EmotionExplorerMapDao(this as AppDatabase);
   late final MeditationDao meditationDao = MeditationDao(this as AppDatabase);
   late final RoutineDao routineDao = RoutineDao(this as AppDatabase);
+  late final FoodTrackingDao foodTrackingDao = FoodTrackingDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5422,6 +5910,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     stepIngredients,
     tags,
     recipeTags,
+    foodTrackings,
   ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules([
@@ -9181,6 +9670,248 @@ typedef $$RecipeTagsTableProcessedTableManager =
       RecipeTag,
       PrefetchHooks Function()
     >;
+typedef $$FoodTrackingsTableCreateCompanionBuilder =
+    FoodTrackingsCompanion Function({
+      required String id,
+      required String name,
+      required String nutritionJson,
+      required double quantity,
+      required int source,
+      Value<String?> referenceId,
+      required DateTime trackedAt,
+      Value<int> rowid,
+    });
+typedef $$FoodTrackingsTableUpdateCompanionBuilder =
+    FoodTrackingsCompanion Function({
+      Value<String> id,
+      Value<String> name,
+      Value<String> nutritionJson,
+      Value<double> quantity,
+      Value<int> source,
+      Value<String?> referenceId,
+      Value<DateTime> trackedAt,
+      Value<int> rowid,
+    });
+
+class $$FoodTrackingsTableFilterComposer
+    extends Composer<_$AppDatabase, $FoodTrackingsTable> {
+  $$FoodTrackingsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get nutritionJson => $composableBuilder(
+    column: $table.nutritionJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get referenceId => $composableBuilder(
+    column: $table.referenceId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get trackedAt => $composableBuilder(
+    column: $table.trackedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$FoodTrackingsTableOrderingComposer
+    extends Composer<_$AppDatabase, $FoodTrackingsTable> {
+  $$FoodTrackingsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get nutritionJson => $composableBuilder(
+    column: $table.nutritionJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get quantity => $composableBuilder(
+    column: $table.quantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get source => $composableBuilder(
+    column: $table.source,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get referenceId => $composableBuilder(
+    column: $table.referenceId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get trackedAt => $composableBuilder(
+    column: $table.trackedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$FoodTrackingsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FoodTrackingsTable> {
+  $$FoodTrackingsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get nutritionJson => $composableBuilder(
+    column: $table.nutritionJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get quantity =>
+      $composableBuilder(column: $table.quantity, builder: (column) => column);
+
+  GeneratedColumn<int> get source =>
+      $composableBuilder(column: $table.source, builder: (column) => column);
+
+  GeneratedColumn<String> get referenceId => $composableBuilder(
+    column: $table.referenceId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get trackedAt =>
+      $composableBuilder(column: $table.trackedAt, builder: (column) => column);
+}
+
+class $$FoodTrackingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FoodTrackingsTable,
+          FoodTracking,
+          $$FoodTrackingsTableFilterComposer,
+          $$FoodTrackingsTableOrderingComposer,
+          $$FoodTrackingsTableAnnotationComposer,
+          $$FoodTrackingsTableCreateCompanionBuilder,
+          $$FoodTrackingsTableUpdateCompanionBuilder,
+          (
+            FoodTracking,
+            BaseReferences<_$AppDatabase, $FoodTrackingsTable, FoodTracking>,
+          ),
+          FoodTracking,
+          PrefetchHooks Function()
+        > {
+  $$FoodTrackingsTableTableManager(_$AppDatabase db, $FoodTrackingsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FoodTrackingsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FoodTrackingsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FoodTrackingsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> nutritionJson = const Value.absent(),
+                Value<double> quantity = const Value.absent(),
+                Value<int> source = const Value.absent(),
+                Value<String?> referenceId = const Value.absent(),
+                Value<DateTime> trackedAt = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FoodTrackingsCompanion(
+                id: id,
+                name: name,
+                nutritionJson: nutritionJson,
+                quantity: quantity,
+                source: source,
+                referenceId: referenceId,
+                trackedAt: trackedAt,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String name,
+                required String nutritionJson,
+                required double quantity,
+                required int source,
+                Value<String?> referenceId = const Value.absent(),
+                required DateTime trackedAt,
+                Value<int> rowid = const Value.absent(),
+              }) => FoodTrackingsCompanion.insert(
+                id: id,
+                name: name,
+                nutritionJson: nutritionJson,
+                quantity: quantity,
+                source: source,
+                referenceId: referenceId,
+                trackedAt: trackedAt,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$FoodTrackingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FoodTrackingsTable,
+      FoodTracking,
+      $$FoodTrackingsTableFilterComposer,
+      $$FoodTrackingsTableOrderingComposer,
+      $$FoodTrackingsTableAnnotationComposer,
+      $$FoodTrackingsTableCreateCompanionBuilder,
+      $$FoodTrackingsTableUpdateCompanionBuilder,
+      (
+        FoodTracking,
+        BaseReferences<_$AppDatabase, $FoodTrackingsTable, FoodTracking>,
+      ),
+      FoodTracking,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9210,4 +9941,6 @@ class $AppDatabaseManager {
   $$TagsTableTableManager get tags => $$TagsTableTableManager(_db, _db.tags);
   $$RecipeTagsTableTableManager get recipeTags =>
       $$RecipeTagsTableTableManager(_db, _db.recipeTags);
+  $$FoodTrackingsTableTableManager get foodTrackings =>
+      $$FoodTrackingsTableTableManager(_db, _db.foodTrackings);
 }

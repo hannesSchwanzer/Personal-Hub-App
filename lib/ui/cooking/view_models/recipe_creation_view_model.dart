@@ -4,7 +4,6 @@
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
 import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
 import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/domain/repositories/recipe_repository.dart';

@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
+import 'package:personal_hub_app/data/database/daos/food_tracking_dao.dart';
 import 'package:personal_hub_app/data/database/daos/journal_dao.dart';
 import 'package:personal_hub_app/data/database/daos/journal_reflection_dao.dart';
 import 'package:personal_hub_app/data/database/daos/meditation/meditation_dao.dart';
 import 'package:personal_hub_app/data/database/daos/meditation/routine_dao.dart';
+import 'package:personal_hub_app/data/repositories/food_tracking_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_entry_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/journal_reflection_repository_impl.dart';
 import 'package:personal_hub_app/data/repositories/meditation_repository_impl.dart';
@@ -23,6 +25,7 @@ import 'package:personal_hub_app/data/services/recipe_generate_service.dart';
 import 'package:personal_hub_app/data/services/routine_service.dart';
 import 'package:personal_hub_app/domain/entities/meditation/meditation_entry.dart';
 import 'package:personal_hub_app/domain/entities/generic/settings.dart';
+import 'package:personal_hub_app/domain/repositories/food_tracking_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_entry_repository.dart';
 import 'package:personal_hub_app/domain/repositories/journal_reflection_repository.dart';
 import 'package:personal_hub_app/domain/repositories/meditation_repository.dart';
@@ -192,3 +195,12 @@ final imageServiceProvider = Provider<ImageService>((ref) {
   return ImageService();
 });
 
+final foodTrackingDaoProvider = Provider<FoodTrackingDao>((ref) {
+  final db = ref.watch(databaseProvider);
+  return FoodTrackingDao(db);
+});
+
+final foodTrackingRepositoryProvider = Provider<FoodTrackingRepository>((ref) {
+  final dao = ref.watch(foodTrackingDaoProvider);
+  return FoodTrackingRepositoryImpl(dao: dao);
+});

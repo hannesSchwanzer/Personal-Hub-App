@@ -3,8 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:personal_hub_app/l10n/app_localizations.dart';
 import 'package:personal_hub_app/ui/cooking/screens/recipe_index_screen.dart';
-import 'package:personal_hub_app/ui/food_tracker/screens/barcode_scan_screen.dart';
-import 'package:personal_hub_app/ui/food_tracker/screens/food_autofill_test_screen.dart';
+import 'package:personal_hub_app/ui/food_tracker/screens/food_tracker_screen.dart';
 import 'package:personal_hub_app/ui/gym_tracker/widgets/gym_view.dart';
 import 'package:personal_hub_app/ui/meditation/screens/meditation_hub_screen.dart';
 import 'package:personal_hub_app/ui/right_in_the_feels/screens/right_in_the_feels_view.dart';
@@ -170,7 +169,7 @@ class HubView extends ConsumerWidget {
               title: "Food Tracker",
               description: "[Test] Food Autofill Widget",
               icon: Icons.abc,
-              onTap: () => _navigateTo(context, const BarcodeScanScreen()),
+              onTap: () => _navigateTo(context, const FoodTrackerScreen()),
             ),
           ],
         ),
