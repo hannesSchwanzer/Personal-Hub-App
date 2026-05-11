@@ -1,6 +1,3 @@
-/// View model for recipe creation and editing.
-/// Handles both creation of new recipes and editing existing ones.
-/// Persists data using the injected RecipeRepository via Riverpod.
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,14 +12,6 @@ final recipeCreationNotifierProvider =
     AsyncNotifierProvider<RecipeCreationNotifier, RecipeEntity?>(
       RecipeCreationNotifier.new,
     );
-
-/// Providers to get the available ingredient and tag recommendations for autocomplete fields as streams (for real-time updates).
-final ingredientNameRecommendationsProvider = StreamProvider<List<String>>((
-  ref,
-) {
-  final repo = ref.read(recipeRepositoryProvider);
-  return repo.watchAllIngredientNames();
-});
 
 final tagNameRecommendationsProvider = StreamProvider<List<String>>((ref) {
   final repo = ref.read(recipeRepositoryProvider);
@@ -53,19 +42,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
   Future<RecipeEntity> build() async {
     _repository = ref.read(recipeRepositoryProvider);
     _imageService = ref.read(imageServiceProvider);
-    return RecipeEntity(
-      id: '',
-      name: '',
-      description: '',
-      ingredients: [],
-      steps: [],
-      tags: [],
-      servings: 1,
-      cookingTimeMinutes: 0,
-      preparationTimeMinutes: 0,
-      nutritionInfo: NutritionEntity(energyKcal: 0),
-      imagePath: '',
-    );
+    return RecipeEntity.empty();
   }
 
   /// Loads a recipe for editing, or starts a new one if [recipeId] is null or empty.
@@ -74,19 +51,7 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     if (recipeId == null || recipeId.isEmpty) {
       // New recipe
       state = AsyncData(
-        RecipeEntity(
-          id: '',
-          name: '',
-          description: '',
-          ingredients: [],
-          steps: [],
-          tags: [],
-          servings: 1,
-          cookingTimeMinutes: 0,
-          preparationTimeMinutes: 0,
-          nutritionInfo: NutritionEntity(energyKcal: 0),
-          imagePath: '',
-        ),
+        RecipeEntity.empty(),
       );
       return;
     }
@@ -137,12 +102,8 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
     _updateRecipe((r) => r.copyWith(servings: servings));
   }
 
-  void setCookingTimeMinutes(int minutes) {
-    _updateRecipe((r) => r.copyWith(cookingTimeMinutes: minutes));
-  }
-
-  void setPreparationTimeMinutes(int minutes) {
-    _updateRecipe((r) => r.copyWith(preparationTimeMinutes: minutes));
+  void setDuration(DurationEntity duration) {
+    _updateRecipe((r) => r.copyWith(duration: duration));
   }
 
   void setImageUrl(String url) {
@@ -161,25 +122,6 @@ class RecipeCreationNotifier extends AsyncNotifier<RecipeEntity?> {
 
   void setNutritionInfo(NutritionEntity info) {
     _updateRecipe((r) => r.copyWith(nutritionInfo: info));
-  }
-
-  void setIngredients(List<IngredientEntity> ingredients) {
-    _updateRecipe((r) => r.copyWith(ingredients: ingredients));
-  }
-
-  void addIngredient(IngredientEntity ing) {
-    _updateRecipe(
-      (r) => r.copyWith(
-        ingredients: List<IngredientEntity>.from(r.ingredients)..add(ing),
-      ),
-    );
-  }
-
-  void removeIngredient(int index) {
-    _updateRecipe((r) {
-      final list = List<IngredientEntity>.from(r.ingredients)..removeAt(index);
-      return r.copyWith(ingredients: list);
-    });
   }
 
   void setSteps(List<StepEntity> steps) {

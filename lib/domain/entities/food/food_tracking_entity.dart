@@ -49,20 +49,6 @@ class FoodTrackingEntity {
   }
 
   NutritionEntity get totalNutrition {
-    if (nutrition.quantityUnit == null || nutrition.perQuantity == null) {
-      return nutrition;
-    }
-    final factor = quantity / nutrition.perQuantity!;
-    return NutritionEntity(
-      energyKcal: nutrition.energyKcal != null ? nutrition.energyKcal! * factor : null,
-      carbohydrates: nutrition.carbohydrates != null ? nutrition.carbohydrates! * factor : null,
-      proteins: nutrition.proteins != null ? nutrition.proteins! * factor : null,
-      fat: nutrition.fat != null ? nutrition.fat! * factor : null,
-      sugars: nutrition.sugars != null ? nutrition.sugars! * factor : null,
-      saturatedFat: nutrition.saturatedFat != null ? nutrition.saturatedFat! * factor : null,
-      sodium: nutrition.sodium != null ? nutrition.sodium! * factor : null,
-      quantityUnit: UnitType.pieces,
-      perQuantity: 1, // Total nutrition is for the entire quantity, so perQuantity is set to 1 unit of the quantityUnit
-    );
+    return nutrition * quantity;
   }
 }

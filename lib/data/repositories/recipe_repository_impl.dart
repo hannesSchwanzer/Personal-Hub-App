@@ -13,21 +13,21 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
   @override
   Future<RecipeEntity?> getRecipe(String id) async {
-    final recipeWithAll = await _dao.getFullRecipe(id);
-    if (recipeWithAll == null) return null;
-    return recipeWithAllToEntity(recipeWithAll);
+    final recipe = await _dao.getRecipe(id);
+    if (recipe == null) return null;
+    return recipe.toEntity();
   }
 
   @override
   Future<List<RecipeEntity>> getAllRecipes() async {
     final rows = await _dao.getAllRecipes();
-    return rows.map(recipeWithAllToEntity).toList();
+    return rows.map((r) => r.toEntity()).toList();
   }
 
   @override
   Stream<List<RecipeEntity>> watchAllRecipes() {
     return _dao.watchAllRecipes().map(
-      (rows) => rows.map(recipeWithAllToEntity).toList(),
+      (rows) => rows.map((r) => r.toEntity()).toList()
     );
   }
 
@@ -35,17 +35,8 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<void> insertRecipe(RecipeEntity entity) async {
     entity = entity.copyWith(id: Uuid().v4());
     final dbMap = recipeToDb(entity);
-    // Build per-step stepIngredient companions for DB insert
-    final stepIngredientsByStep = entity.steps
-        .map(
-          (step) => step.ingredients.map(stepIngredientToDbAbsentStep).toList(),
-        )
-        .toList();
-    await _dao.insertFullRecipe(
+    await _dao.insertRecipeWithTags(
       recipe: dbMap['recipe'],
-      ingredientList: dbMap['ingredients'],
-      stepList: dbMap['steps'],
-      stepIngredientsByStep: stepIngredientsByStep,
       tagList: dbMap['tags'],
     );
   }
@@ -55,9 +46,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
     final dbMap = recipeToDb(entity);
     await _dao.updateRecipe(
       recipe: dbMap['recipe'],
-      ingredientList: dbMap['ingredients'],
-      stepList: dbMap['steps'],
-      stepIngredientList: dbMap['stepIngredients'],
       tagList: dbMap['tags'],
     );
   }
@@ -71,8 +59,6 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<List<RecipeEntity>> searchRecipes({
     String? searchString,
     bool fuzzy = false,
-    List<String>? ingredientList,
-    bool ingredientAllMustMatch = false,
     List<String>? tagList,
     bool tagAllMustMatch = false,
   }) {
@@ -80,22 +66,10 @@ class RecipeRepositoryImpl implements RecipeRepository {
         .searchRecipes(
           searchString: searchString,
           fuzzy: fuzzy,
-          ingredientList: ingredientList,
-          ingredientAllMustMatch: ingredientAllMustMatch,
           tagList: tagList,
           tagAllMustMatch: tagAllMustMatch,
         )
-        .then((rows) => rows.map(recipeWithAllToEntity).toList());
-  }
-
-  @override
-  Future<List<String>> getAllIngredientNames() {
-    return _dao.getAllIngredientNames();
-  }
-
-  @override
-  Stream<List<String>> watchAllIngredientNames() {
-    return _dao.watchAllIngredientNames();
+        .then((rows) => rows.map((r) => r.toEntity()).toList());
   }
 
   @override
@@ -114,7 +88,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Stream<RecipeEntity?> watchRecipe(String id) {
     return _dao
         .watchRecipe(id)
-        .map((data) => data == null ? null : recipeWithAllToEntity(data));
+        .map((data) => data?.toEntity());
   }
 
   @override
@@ -130,11 +104,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
         .watchSearchRecipes(
           searchString: searchString,
           fuzzy: fuzzy,
-          ingredientList: ingredientList,
-          ingredientAllMustMatch: ingredientAllMustMatch,
           tagList: tagList,
           tagAllMustMatch: tagAllMustMatch,
         )
-        .map((rows) => rows.map(recipeWithAllToEntity).toList());
+        .map((rows) => rows.map((r) => r.toEntity()).toList());
   }
 }

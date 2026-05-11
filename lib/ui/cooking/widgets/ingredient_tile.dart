@@ -7,14 +7,11 @@ class IngredientTile extends StatefulWidget {
   final IngredientEntity ingredient;
   final ValueChanged<IngredientEntity> onChanged;
   final VoidCallback onRemove;
-  final List<String> ingredientNameRecommendations;
-
   const IngredientTile({
     super.key,
     required this.ingredient,
     required this.onChanged,
     required this.onRemove,
-    required this.ingredientNameRecommendations,
   });
 
   @override
@@ -60,13 +57,16 @@ class _IngredientTileState extends State<IngredientTile> {
               if (textEditingValue.text.isEmpty) {
                 return const Iterable<String>.empty();
               }
-              return widget.ingredientNameRecommendations.where((
-                String option,
-              ) {
-                return option.toLowerCase().contains(
-                  textEditingValue.text.toLowerCase(),
-                );
-              });
+              // return widget.ingredientNameRecommendations.where((
+              //   String option,
+              // ) {
+              //   return option.toLowerCase().contains(
+              //     textEditingValue.text.toLowerCase(),
+              //   );
+              // });
+              return const Iterable<
+                String
+              >.empty(); // TODO: implement ingredient name recommendations
             },
             displayStringForOption: (option) => option,
             fieldViewBuilder:
@@ -134,7 +134,7 @@ class _IngredientTileState extends State<IngredientTile> {
             keyboardType: TextInputType.number,
             onChanged: (v) => widget.onChanged(
               widget.ingredient.copyWith(
-                            quantity: double.tryParse(v) ?? widget.ingredient.quantity,
+                quantity: double.tryParse(v) ?? widget.ingredient.quantity,
               ),
             ),
           ),
@@ -143,7 +143,7 @@ class _IngredientTileState extends State<IngredientTile> {
         SizedBox(
           width: 90,
           child: DropdownButtonFormField<UnitType>(
-            value: widget.ingredient.unit,
+            initialValue: widget.ingredient.unit,
             items: UnitType.values
                 .map(
                   (unit) => DropdownMenuItem(
@@ -165,4 +165,3 @@ class _IngredientTileState extends State<IngredientTile> {
     );
   }
 }
-

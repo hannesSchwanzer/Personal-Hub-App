@@ -41,6 +41,23 @@ class FoodTrackerViewModel extends AsyncNotifier<FoodTrackerState> {
     await refresh();
   }
 
+  Future<void> addFoodEntryFromCustomInput({
+    required String name,
+    required NutritionEntity nutrition,
+  }) async {
+    final repo = ref.read(foodTrackingRepositoryProvider);
+    final entity = FoodTrackingEntity(
+      id: "",
+      name: name,
+      nutrition: nutrition,
+      trackedAt: DateTime.now(),
+      quantity: 1,
+      source: FoodTrackingSource.product,
+    );
+    await repo.insertFoodTracking(entity);
+    await refresh();
+  }
+
   Future<FoodTrackerState> _loadToday() async {
     final date = DateTime.now();
     final entries = await ref.watch(foodTrackingRepositoryProvider).getFoodTrackingsForDate(date);

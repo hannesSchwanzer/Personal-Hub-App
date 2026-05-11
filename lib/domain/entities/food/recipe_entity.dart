@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
 import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
+/// Domain model for a Recipe, including strong modification methods to enforce consistency.
 class RecipeEntity {
   final String id;
   final String name;
@@ -9,8 +12,7 @@ class RecipeEntity {
   final List<StepEntity> steps;
   final List<String> tags;
   final int servings;
-  final int cookingTimeMinutes;
-  final int preparationTimeMinutes;
+  final DurationEntity duration;
   final NutritionEntity nutritionInfo;
   final String imagePath;
 
@@ -22,11 +24,44 @@ class RecipeEntity {
     required this.steps,
     required this.tags,
     required this.servings,
-    required this.cookingTimeMinutes,
-    required this.preparationTimeMinutes,
     required this.nutritionInfo,
     required this.imagePath,
+    required this.duration,
   });
+
+  /// Returns a new RecipeEntity with the specified ingredient added.
+  RecipeEntity addIngredient(IngredientEntity ingredient) {
+    print("Add ingredient: ${ingredient.name}");
+    final updatedIngredients = List<IngredientEntity>.from(ingredients)..add(ingredient);
+    return copyWith(ingredients: updatedIngredients);
+  }
+
+  /// Returns a new RecipeEntity where the specified ingredient has been renamed everywhere (ingredients + step references).
+  RecipeEntity renameIngredient(String oldName, String newName) {
+    print("Rename ingredient: $oldName to $newName");
+    final updatedIngredients = ingredients
+        .map((ing) => ing.name == oldName ? ing.copyWith(name: newName) : ing)
+        .toList();
+    final updatedSteps = steps
+        .map((step) => step.copyWith(
+            ingredients: step.ingredients
+                .map((si) => si.name == oldName ? si.copyWith(name: newName) : si)
+                .toList()))
+        .toList();
+    return copyWith(ingredients: updatedIngredients, steps: updatedSteps);
+  }
+
+  /// Returns a new RecipeEntity with the given ingredient removed from ingredients and any steps it is referenced in.
+  RecipeEntity removeIngredient(String nameToRemove) {
+    print("Remove ingredient: $nameToRemove");
+    final updatedIngredients = ingredients.where((ing) => ing.name != nameToRemove).toList();
+    final updatedSteps = steps
+        .map((step) => step.copyWith(
+              ingredients: step.ingredients.where((si) => si.name != nameToRemove).toList(),
+            ))
+        .toList();
+    return copyWith(ingredients: updatedIngredients, steps: updatedSteps);
+  }
 
   RecipeEntity copyWith({
     String? id,
@@ -36,10 +71,9 @@ class RecipeEntity {
     List<StepEntity>? steps,
     List<String>? tags,
     int? servings,
-    int? cookingTimeMinutes,
-    int? preparationTimeMinutes,
     NutritionEntity? nutritionInfo,
     String? imagePath,
+    DurationEntity? duration,
   }) {
     return RecipeEntity(
       id: id ?? this.id,
@@ -49,50 +83,72 @@ class RecipeEntity {
       steps: steps ?? this.steps,
       tags: tags ?? this.tags,
       servings: servings ?? this.servings,
-      cookingTimeMinutes: cookingTimeMinutes ?? this.cookingTimeMinutes,
-      preparationTimeMinutes:
-          preparationTimeMinutes ?? this.preparationTimeMinutes,
       nutritionInfo: nutritionInfo ?? this.nutritionInfo,
       imagePath: imagePath ?? this.imagePath,
+      duration: duration ?? this.duration,
     );
   }
 
-  @override
-  String toString() {
-    return 'RecipeEntity(id: $id, name: $name, description: $description, ingredients: $ingredients, steps: $steps, tags: $tags, servings: $servings, cookingTimeMinutes: $cookingTimeMinutes, preparationTimeMinutes: $preparationTimeMinutes, nutritionInfo: $nutritionInfo, imageUrl: $imagePath)';
+  factory RecipeEntity.empty() {
+    return RecipeEntity(
+      id: '',
+      name: '',
+      description: '',
+      ingredients: [],
+      steps: [],
+      tags: [],
+      servings: 1,
+      duration: DurationEntity(),
+      nutritionInfo: NutritionEntity(),
+      imagePath: '',
+    );
   }
 }
 
 class IngredientEntity {
-  final int? id;
   final String name;
   final double quantity;
   final UnitType unit;
 
   IngredientEntity({
-    this.id,
     required this.name,
     required this.quantity,
     required this.unit,
   });
 
   IngredientEntity copyWith({String? name, double? quantity, UnitType? unit}) {
+    print("Copy ingredient: ${this.name} with name: ${name ?? this.name}, quantity: ${quantity ?? this.quantity}, unit: ${unit ?? this.unit}");
     return IngredientEntity(
       name: name ?? this.name,
       quantity: quantity ?? this.quantity,
       unit: unit ?? this.unit,
     );
   }
+
+  String toJsonString() {
+    return jsonEncode({
+      'name': name,
+      'quantity': quantity,
+      'unit': unit.toString(),
+    });
+  }
+
+  factory IngredientEntity.fromJsonString(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
+    return IngredientEntity(
+      name: json['name'],
+      quantity: (json['quantity'] as num).toDouble(),
+      unit: UnitType.fromString(json['unit'])!,
+    );
+  }
 }
 
 class StepEntity {
-  final int? id;
   final List<StepIngredientEntity> ingredients;
   final String instruction;
   final String? imagePath;
 
   StepEntity({
-    this.id,
     required this.ingredients,
     required this.instruction,
     this.imagePath,
@@ -109,6 +165,25 @@ class StepEntity {
       imagePath: imagePath ?? this.imagePath,
     );
   }
+
+  String toJsonString() {
+    return jsonEncode({
+      'ingredients': ingredients.map((e) => e.toJsonString()).toList(),
+      'instruction': instruction,
+      'imagePath': imagePath,
+    });
+  }
+
+  factory StepEntity.fromJsonString(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
+    return StepEntity(
+      ingredients: (json['ingredients'] as List)
+          .map((e) => StepIngredientEntity.fromJsonString(e))
+          .toList(),
+      instruction: json['instruction'],
+      imagePath: json['imagePath'],
+    );
+  }
 }
 
 class StepIngredientEntity {
@@ -122,5 +197,65 @@ class StepIngredientEntity {
       name: name ?? this.name,
       quantityPercent: quantityPercent ?? this.quantityPercent,
     );
+  }
+
+  String toJsonString() {
+    return jsonEncode({'name': name, 'quantityPercent': quantityPercent});
+  }
+
+  factory StepIngredientEntity.fromJsonString(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
+    return StepIngredientEntity(
+      name: json['name'],
+      quantityPercent: (json['quantityPercent'] as num).toDouble(),
+    );
+  }
+}
+
+class DurationEntity {
+  final int? prepTimeMinutes;
+  final int? cookTimeMinutes;
+  final int? restTimeMinutes;
+
+  DurationEntity({
+    this.prepTimeMinutes,
+    this.cookTimeMinutes,
+    this.restTimeMinutes,
+  });
+
+  DurationEntity copyWith({
+    int? prepTimeMinutes,
+    int? cookTimeMinutes,
+    int? restTimeMinutes,
+  }) {
+    return DurationEntity(
+      prepTimeMinutes: prepTimeMinutes ?? this.prepTimeMinutes,
+      cookTimeMinutes: cookTimeMinutes ?? this.cookTimeMinutes,
+      restTimeMinutes: restTimeMinutes ?? this.restTimeMinutes,
+    );
+  }
+
+  String toJsonString() {
+    return jsonEncode({
+      'prepTimeMinutes': prepTimeMinutes,
+      'cookTimeMinutes': cookTimeMinutes,
+      'restTimeMinutes': restTimeMinutes,
+    });
+  }
+
+  factory DurationEntity.fromJsonString(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
+    return DurationEntity(
+      prepTimeMinutes: json['prepTimeMinutes'],
+      cookTimeMinutes: json['cookTimeMinutes'],
+      restTimeMinutes: json['restTimeMinutes'],
+    );
+  }
+
+  int get totalTimeMinutes {
+    final prep = prepTimeMinutes ?? 0;
+    final cook = cookTimeMinutes ?? 0;
+    final rest = restTimeMinutes ?? 0;
+    return prep + cook + rest;
   }
 }

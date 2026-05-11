@@ -10,9 +10,6 @@ import 'package:personal_hub_app/data/database/tables/emotion_explorer_maps_tabl
 import 'package:personal_hub_app/data/database/tables/meditation/routine_meditation_table.dart';
 import 'package:personal_hub_app/data/database/tables/meditation/routine_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/ingredient_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/step_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/step_ingredient_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/tag_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_tag_table.dart';
 import 'package:personal_hub_app/data/database/tables/food_tracking_table.dart';
@@ -39,9 +36,6 @@ part 'app_database.g.dart';
     RoutineMeditations,
     Routines,
     Recipes,
-    Ingredients,
-    Steps,
-    StepIngredients,
     Tags,
     RecipeTags,
     FoodTrackings,
@@ -60,7 +54,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -75,14 +69,25 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 4 && to >= 4) {
         await migrator.createTable(recipes);
-        await migrator.createTable(ingredients);
-        await migrator.createTable(steps);
-        await migrator.createTable(stepIngredients);
         await migrator.createTable(tags);
         await migrator.createTable(recipeTags);
       }
       if (from < 5 && to >= 5) {
         await migrator.createTable(foodTrackings);
+      }
+      if (from < 6 && to >= 6) {
+        await customStatement('DROP TABLE IF EXISTS step_ingredients;');
+        await customStatement('DROP TABLE IF EXISTS steps;');
+        await customStatement('DROP TABLE IF EXISTS ingredients;');
+
+        await customStatement('DROP TABLE IF EXISTS recipe_tags;');
+        await customStatement('DROP TABLE IF EXISTS tags;');
+        await customStatement('DROP TABLE IF EXISTS recipes;');
+
+        // Recreate new versions
+        await migrator.createTable(recipes);
+        await migrator.createTable(tags);
+        await migrator.createTable(recipeTags);
       }
     },
   );

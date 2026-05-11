@@ -1,49 +1,24 @@
 import 'package:drift/drift.dart';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/ingredient_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/step_table.dart';
-import 'package:personal_hub_app/data/database/tables/cooking/step_ingredient_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/tag_table.dart';
 import 'package:personal_hub_app/data/database/tables/cooking/recipe_tag_table.dart';
 
 part 'recipe_dao.g.dart';
 
 @DriftAccessor(
-  tables: [Recipes, Ingredients, Steps, StepIngredients, Tags, RecipeTags],
+  tables: [Recipes, Tags, RecipeTags],
 )
 class RecipeDao extends DatabaseAccessor<AppDatabase> with _$RecipeDaoMixin {
   RecipeDao(super.db);
 
-  /// Insert a recipe and all its sub-entities in a transaction.
-  ///
-  /// [nutritionInfoJson] must be serialized as a JSON string.
-  Future<void> insertFullRecipe({
+  /// Inserts a new recipe (with nested fields as JSON) and its tags, in a single transaction.
+  Future<void> insertRecipeWithTags({
     required RecipesCompanion recipe,
-    required List<IngredientsCompanion> ingredientList,
-    required List<StepsCompanion> stepList,
-    required List<List<StepIngredientsCompanion>> stepIngredientsByStep, // NEW: stepIngredient companions, grouped by step
     required List<String> tagList,
   }) async {
     await transaction(() async {
       await into(recipes).insert(recipe);
-      for (final ingredient in ingredientList) {
-        await into(ingredients).insert(ingredient);
-      }
-      // Insert each step and its step ingredients
-      for (int i = 0; i < stepList.length; i++) {
-        final stepCompanion = stepList[i];
-        final stepId = await into(steps).insert(stepCompanion);
-        // Insert related step ingredients (if any) for this step
-        if (i < stepIngredientsByStep.length) {
-          for (final si in stepIngredientsByStep[i]) {
-            await into(stepIngredients).insert(
-              si.copyWith(stepId: Value(stepId)), // assign DB stepId
-            );
-          }
-        }
-      }
-      // handle tags
       for (final tag in tagList) {
         await into(tags).insertOnConflictUpdate(TagsCompanion(tag: Value(tag)));
         await into(recipeTags).insert(
@@ -54,55 +29,25 @@ class RecipeDao extends DatabaseAccessor<AppDatabase> with _$RecipeDaoMixin {
     });
   }
 
-  /// Watches a recipe by id, with all nested entities populated.
-  /// Emits new values whenever the recipe or any associated table (ingredients, steps, tags, etc.) changes.
-  Stream<RecipeWithAll?> watchRecipe(String id) async* {
-    // Listen for changes in the recipes table, but refetch everything on any row change.
-    yield* select(recipes)
-      .watch()
-      .asyncMap((_) => getFullRecipe(id));
+  /// Watches a recipe by id. Emits new values whenever the recipe or its tags change.
+  Stream<RecipeWithTags?> watchRecipe(String id) {
+    return (select(recipes)..where((r) => r.id.equals(id)))
+      .watchSingleOrNull()
+      .asyncMap((recipe) async {
+        if (recipe == null) return null;
+        final tagsRows = await (select(recipeTags)..where((t) => t.recipeId.equals(id))).get();
+        final tags = tagsRows.map((row) => row.tag).toList();
+        return RecipeWithTags(recipe: recipe, tags: tags);
+      });
   }
 
-  /// Fetches a recipe by id, with all nested entities populated.
-  /// You can later add mapping to your domain model in the repository/service layer.
-  Future<RecipeWithAll?> getFullRecipe(String id) async {
-    // Get main recipe
-    final recipeRow = await (select(
-      recipes,
-    )..where((r) => r.id.equals(id))).getSingleOrNull();
-    if (recipeRow == null) return null;
-
-    // Get ingredients
-    final ingredientList = await (select(
-      ingredients,
-    )..where((i) => i.recipeId.equals(id))).get();
-
-    // Get steps
-    final stepList = await (select(
-      steps,
-    )..where((s) => s.recipeId.equals(id))).get();
-
-    // Get step ingredients for all steps
-    final stepIds = stepList.map((e) => e.id).toList();
-    final stepIngredientList = stepIds.isEmpty
-        ? <StepIngredient>[]
-        : await (select(
-            stepIngredients,
-          )..where((si) => si.stepId.isIn(stepIds))).get();
-
-    // Get tags (through recipe_tag)
-    final tagJoins = await (select(
-      recipeTags,
-    )..where((t) => t.recipeId.equals(id))).get();
-    final tagList = tagJoins.map((t) => t.tag).toList();
-
-    return RecipeWithAll(
-      recipe: recipeRow,
-      ingredients: ingredientList,
-      steps: stepList,
-      stepIngredients: stepIngredientList,
-      tags: tagList,
-    );
+  /// Fetches a recipe by id, returns the recipe with its tags.
+  Future<RecipeWithTags?> getRecipe(String id) async {
+    final recipe = await (select(recipes)..where((r) => r.id.equals(id))).getSingleOrNull();
+    if (recipe == null) return null;
+    final tagsRows = await (select(recipeTags)..where((t) => t.recipeId.equals(id))).get();
+    final tags = tagsRows.map((row) => row.tag).toList();
+    return RecipeWithTags(recipe: recipe, tags: tags);
   }
 
   /// Delete a recipe and all associated data (cascades assumed to be set in table definitions).
@@ -113,58 +58,17 @@ class RecipeDao extends DatabaseAccessor<AppDatabase> with _$RecipeDaoMixin {
     });
   }
 
-  /// Update a recipe and its nested entities. Deletes any removed children.
-  /// Takes full lists for each sub-entity; omits will leave old ones as is.
-  /// Update a recipe and all its children by fully replacing them.
-  /// All ingredients, steps, step ingredients and tags for the recipe will be deleted and replaced.
+  /// Updates a recipe row and its tags. Removes all previous tags and replaces them with the given tagList. Updates to ingredients/steps/nutrition/duration are handled via the JSON columns at the repository layer.
   Future<void> updateRecipe({
     required RecipesCompanion recipe,
-    List<IngredientsCompanion>? ingredientList,
-    List<StepsCompanion>? stepList,
-    List<StepIngredientsCompanion>? stepIngredientList,
     List<String>? tagList,
   }) async {
     await transaction(() async {
       await update(recipes).replace(recipe);
       final recipeId = recipe.id.value;
-
-      // Remove all old children (ingredients, steps, step_ingredients, tags)
-      await (delete(ingredients)..where((i) => i.recipeId.equals(recipeId))).go();
-      await (delete(steps)..where((s) => s.recipeId.equals(recipeId))).go();
-      final stepIdsForRecipe = (await (select(steps)..where((s) => s.recipeId.equals(recipeId))).get()).map((s) => s.id).toList();
-      if (stepIdsForRecipe.isNotEmpty) {
-        await (delete(stepIngredients)..where((tbl) => tbl.stepId.isIn(stepIdsForRecipe))).go();
-      }
+      // Remove all previous tags
       await (delete(recipeTags)..where((t) => t.recipeId.equals(recipeId))).go();
-
-      // Insert new children (must all point to recipeId)
-      if (ingredientList != null) {
-        for (final ingredient in ingredientList) {
-          await into(ingredients).insert(ingredient);
-        }
-      }
-      if (stepList != null) {
-        // Insert steps and track their new ids
-        final List<int> newStepIds = [];
-        for (final step in stepList) {
-          final stepId = await into(steps).insert(step);
-          newStepIds.add(stepId);
-        }
-        // Insert step ingredients using correct step id mapping if possible
-        if (stepIngredientList != null && newStepIds.isNotEmpty) {
-          int currStep = 0;
-          for (final step in stepList) {
-            final int assignedStepId = newStepIds[currStep];
-            final stepIngredientsForStep = stepIngredientList.where((si) => si.stepId.present ? si.stepId.value == step.id : true).toList();
-            for (final si in stepIngredientsForStep) {
-              await into(stepIngredients).insert(
-                  si.copyWith(stepId: Value(assignedStepId))
-              );
-            }
-            currStep++;
-          }
-        }
-      }
+      // Insert new tags
       if (tagList != null) {
         for (final tag in tagList) {
           await into(tags).insertOnConflictUpdate(TagsCompanion(tag: Value(tag)));
@@ -177,41 +81,35 @@ class RecipeDao extends DatabaseAccessor<AppDatabase> with _$RecipeDaoMixin {
     });
   }
 
-  /// Returns all recipes with nested entities fully populated.
-  Future<List<RecipeWithAll>> getAllRecipes() async {
-    final recipeRows = await select(recipes).get();
-    return Future.wait(
-      recipeRows.map((recipeRow) => getFullRecipe(recipeRow.id)).toList(),
-    ).then((results) => results.whereType<RecipeWithAll>().toList());
+  /// Returns all recipes (with related entities as JSON blobs).
+  /// Returns all recipes with their tags (with related entities as JSON blobs).
+  Future<List<RecipeWithTags>> getAllRecipes() async {
+    final allRecipes = await select(recipes).get();
+    if (allRecipes.isEmpty) return [];
+    final recipeIds = allRecipes.map((r) => r.id).toList();
+    final tagRows = await (select(recipeTags)..where((t) => t.recipeId.isIn(recipeIds))).get();
+    final tagsByRecipe = <String, List<String>>{};
+    for (final row in tagRows) {
+      tagsByRecipe.putIfAbsent(row.recipeId, () => []).add(row.tag);
+    }
+    return allRecipes.map((recipe) => RecipeWithTags(recipe: recipe, tags: tagsByRecipe[recipe.id] ?? [])).toList();
   }
 
-  /// Watches all recipes with nested entities fully populated.
-  Stream<List<RecipeWithAll>> watchAllRecipes() async* {
-    yield* select(recipes).watch().asyncMap((recipesRows) async {
-      return Future.wait(
-        recipesRows.map((row) => getFullRecipe(row.id)).toList(),
-      ).then((results) => results.whereType<RecipeWithAll>().toList());
+  /// Watches all recipes (with related entities as JSON blobs).
+  /// Watches all recipes along with their tags.
+  Stream<List<RecipeWithTags>> watchAllRecipes() {
+    return select(recipes).watch().asyncMap((allRecipes) async {
+      if (allRecipes.isEmpty) return [];
+      final recipeIds = allRecipes.map((r) => r.id).toList();
+      final tagRows = await (select(recipeTags)..where((t) => t.recipeId.isIn(recipeIds))).get();
+      final tagsByRecipe = <String, List<String>>{};
+      for (final row in tagRows) {
+        tagsByRecipe.putIfAbsent(row.recipeId, () => []).add(row.tag);
+      }
+      return allRecipes.map((recipe) => RecipeWithTags(recipe: recipe, tags: tagsByRecipe[recipe.id] ?? [])).toList();
     });
   }
 
-  /// Returns the distinct names of all ingredients, sorted alphabetically.
-  Future<List<String>> getAllIngredientNames() async {
-    final query = customSelect(
-      'SELECT DISTINCT name FROM ingredients ORDER BY name ASC;',
-      readsFrom: {ingredients},
-    );
-    final rows = await query.get();
-    return rows.map((row) => row.read<String>('name')).toList();
-  }
-
-  /// Watches the distinct names of all ingredients, sorted alphabetically.
-  Stream<List<String>> watchAllIngredientNames() {
-    // Re-emits whenever the ingredients table changes
-    return (select(ingredients)
-          ..orderBy([(tbl) => OrderingTerm(expression: tbl.name)]))
-        .watch()
-        .map((rows) => rows.map((row) => row.name).toSet().toList()..sort());
-  }
 
   /// Returns the distinct tags, sorted alphabetically.
   Future<List<String>> getAllTagNames() async {
@@ -233,194 +131,96 @@ class RecipeDao extends DatabaseAccessor<AppDatabase> with _$RecipeDaoMixin {
   }
 
   ///
-  /// Searches for recipes based on a combination of fuzzy/substring search, ingredients and/or tags.
+  /// Searches for recipes based on a combination of substring search and tags.
   ///
   /// If no filters are provided, returns all recipes.
-  /// - [searchString]: The string to search for (optional).
-  /// - [fuzzy]: If true, search all relevant text columns in recipe, ingredient, step, and tag tables. If false, search only the recipe name. Defaults to false.
-  /// - [ingredientList]: List of ingredient names (optional). Case-insensitive. If given, recipes must contain these ingredients (all or any depending on [ingredientAllMustMatch]).
-  /// - [ingredientAllMustMatch]: If true, all provided ingredients must be present in the recipe. If false, any one is enough. Defaults to false.
-  /// - [tagList]: List of tags (optional). Case-insensitive. If given, recipes must contain these tags (all or any depending on [tagAllMustMatch]).
+  /// - [searchString]: The string to search for (optional). If [fuzzy] is true, performs a LIKE search on name and description.
+  /// - [fuzzy]: If true, search both name and description (with LIKE), otherwise just name.
+  /// - [tagList]: List of tags (optional). If given, recipes must contain these tags (all or any depending on [tagAllMustMatch]).
   /// - [tagAllMustMatch]: If true, all tags must be attached to the recipe. If false, any one is enough. Defaults to false.
-  Future<List<RecipeWithAll>> searchRecipes({
+  /// Searches for recipes based on a combination of substring search and tags, returning RecipeWithTags objects.
+  ///
+  /// If no filters are provided, returns all recipes with tags.
+  /// - [searchString]: The string to search for (optional). If [fuzzy] is true, performs a LIKE search on name and description.
+  /// - [fuzzy]: If true, search both name and description (with LIKE), otherwise just name.
+  /// - [tagList]: List of tags (optional). If given, recipes must contain these tags (all or any depending on [tagAllMustMatch]).
+  /// - [tagAllMustMatch]: If true, all tags must be attached to the recipe. If false, any one is enough. Defaults to false.
+  Future<List<RecipeWithTags>> searchRecipes({
     String? searchString,
     bool fuzzy = false,
-    List<String>? ingredientList,
-    bool ingredientAllMustMatch = false,
     List<String>? tagList,
     bool tagAllMustMatch = false,
   }) async {
-    // If no filters are provided, return all recipes.
-    if ((searchString == null || searchString.trim().isEmpty) &&
-        (ingredientList == null || ingredientList.isEmpty) &&
-        (tagList == null || tagList.isEmpty)) {
+    // If no filters are provided, return all recipes with tags.
+    if ((searchString == null || searchString.trim().isEmpty)
+        && (tagList == null || tagList.isEmpty)) {
       return getAllRecipes();
     }
-
     final recipeQuery = select(recipes);
-
-    // -- handle search string --
+    // Handle search string
     if (searchString != null && searchString.trim().isNotEmpty) {
       final pattern = '%${searchString.trim()}%';
       if (!fuzzy) {
         recipeQuery.where((tbl) => tbl.name.like(pattern));
       } else {
-        // Fuzzy: search name, description, ingredients, steps, tags
-        final recipeNameMatch = recipes.name.like(pattern);
-        final recipeDescriptionMatch = recipes.description.like(pattern);
-
-        // Find ids matching ingredients
-        final ingredientSubQuery = select(ingredients)
-          ..where((i) => i.name.like(pattern));
-        final ingredientRecipeIds = (await ingredientSubQuery.get())
-            .map((i) => i.recipeId)
-            .toSet();
-
-        // Find ids matching steps
-        final stepSubQuery = select(steps)
-          ..where((s) => s.instruction.like(pattern));
-        final stepRecipeIds = (await stepSubQuery.get())
-            .map((s) => s.recipeId)
-            .toSet();
-
-        // Find ids matching tags
-        final tagRecipeIds = <String>{};
-        final tagSubQuery = select(recipeTags)
-          ..where((t) => t.tag.like(pattern));
-        for (final tagRow in await tagSubQuery.get()) {
-          tagRecipeIds.add(tagRow.recipeId);
-        }
-
-        // Collect all matching recipe ids
-        final Set<String> collectedIds = {
-          ...ingredientRecipeIds,
-          ...stepRecipeIds,
-          ...tagRecipeIds,
-        };
-
-        recipeQuery.where(
-          (r) =>
-              recipeNameMatch |
-              recipeDescriptionMatch |
-              r.id.isIn(collectedIds.toList()),
-        );
+        recipeQuery.where((tbl) => tbl.name.like(pattern) | tbl.description.like(pattern));
       }
     }
-
-    // -- handle ingredient filter --
-    if (ingredientList != null && ingredientList.isNotEmpty) {
-      // get all recipes with ingredient matches
-      final loweredIngredients = ingredientList
-          .map((e) => e.toLowerCase())
-          .toList();
-      final ingredientRows = await (select(
-        ingredients,
-      )..where((i) => i.name.lower().isIn(loweredIngredients))).get();
-      final recipeIngredientMap = <String, Set<String>>{};
-      for (final row in ingredientRows) {
-        recipeIngredientMap
-            .putIfAbsent(row.recipeId, () => {})
-            .add(row.name.toLowerCase());
-      }
-
-      Set<String> filteredRecipeIds;
-      if (ingredientAllMustMatch) {
-        // All must match
-        filteredRecipeIds = recipeIngredientMap.entries
-            .where(
-              (entry) =>
-                  loweredIngredients.every((ing) => entry.value.contains(ing)),
-            )
-            .map((entry) => entry.key)
-            .toSet();
-      } else {
-        // Any match
-        filteredRecipeIds = recipeIngredientMap.keys.toSet();
-      }
-
-      // Narrow down recipes
-      recipeQuery.where((r) => r.id.isIn(filteredRecipeIds.toList()));
-    }
-
-    // -- handle tags filter --
+    // Handle tags filter
     if (tagList != null && tagList.isNotEmpty) {
       final loweredTags = tagList.map((e) => e.toLowerCase()).toList();
       final tagsRows = await (select(
         recipeTags,
       )..where((t) => t.tag.lower().isIn(loweredTags))).get();
-
       // Map<recipeId, Set<tag>>
       final recipeTagMap = <String, Set<String>>{};
       for (final row in tagsRows) {
-        recipeTagMap
-            .putIfAbsent(row.recipeId, () => {})
-            .add(row.tag.toLowerCase());
+        recipeTagMap.putIfAbsent(row.recipeId, () => {}).add(row.tag.toLowerCase());
       }
-
       Set<String> filteredRecipeIds;
       if (tagAllMustMatch) {
         filteredRecipeIds = recipeTagMap.entries
-            .where(
-              (entry) => loweredTags.every((tag) => entry.value.contains(tag)),
-            )
+            .where((entry) => loweredTags.every((tag) => entry.value.contains(tag)))
             .map((entry) => entry.key)
             .toSet();
       } else {
         filteredRecipeIds = recipeTagMap.keys.toSet();
       }
-
       recipeQuery.where((r) => r.id.isIn(filteredRecipeIds.toList()));
     }
-
-    // -- Execute recipe query and get details --
-    final recipeRows = await recipeQuery.get();
-
-    final List<RecipeWithAll?> resultRecipes = await Future.wait(
-      recipeRows.map((recipeRow) => getFullRecipe(recipeRow.id)),
-    );
-
-    return resultRecipes.whereType<RecipeWithAll>().toList();
+    final foundRecipes = await recipeQuery.get();
+    if (foundRecipes.isEmpty) return [];
+    final recipeIds = foundRecipes.map((r) => r.id).toList();
+    final tagRows = await (select(recipeTags)..where((t) => t.recipeId.isIn(recipeIds))).get();
+    final tagsByRecipe = <String, List<String>>{};
+    for (final row in tagRows) {
+      tagsByRecipe.putIfAbsent(row.recipeId, () => []).add(row.tag);
+    }
+    return foundRecipes.map((recipe) => RecipeWithTags(recipe: recipe, tags: tagsByRecipe[recipe.id] ?? [])).toList();
   }
 
-    /// Watches recipes based on a combination of fuzzy/substring search, ingredients and/or tags.
-  Stream<List<RecipeWithAll>> watchSearchRecipes({
+  /// Watches recipes based on a combination of search and tag filters.
+  /// Watches recipes based on a combination of search and tag filters. Emits lists of RecipeWithTags.
+  Stream<List<RecipeWithTags>> watchSearchRecipes({
     String? searchString,
     bool fuzzy = false,
-    List<String>? ingredientList,
-    bool ingredientAllMustMatch = false,
     List<String>? tagList,
     bool tagAllMustMatch = false,
   }) async* {
-    // This is a naive implementation: just refetch searchRecipes every time there is a database change.
-    // You can make this more efficient using triggers or Drift advanced features if desired.
-    yield* select(recipes).watch().asyncMap((_) {
+    yield* select(recipes).watch().asyncMap((_) async {
       return searchRecipes(
         searchString: searchString,
         fuzzy: fuzzy,
-        ingredientList: ingredientList,
-        ingredientAllMustMatch: ingredientAllMustMatch,
         tagList: tagList,
         tagAllMustMatch: tagAllMustMatch,
       );
     });
   }
-
 }
 
-/// Helper data structure for recipe aggregation.
-/// Map this to/from your domain model in repository/services.
-class RecipeWithAll {
+class RecipeWithTags {
   final Recipe recipe;
-  final List<Ingredient> ingredients;
-  final List<Step> steps;
-  final List<StepIngredient> stepIngredients;
   final List<String> tags;
-
-  RecipeWithAll({
-    required this.recipe,
-    required this.ingredients,
-    required this.steps,
-    required this.stepIngredients,
-    required this.tags,
-  });
+  RecipeWithTags({required this.recipe, required this.tags});
 }
+

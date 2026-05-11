@@ -116,7 +116,10 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
                       },
                     ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, st) => Center(child: Text('Error loading recipes')),
+              error: (e, st) {
+                print('Error loading recipes: $e\n$st');
+                return Center(child: Text('Error loading recipes'));
+              },
             ),
           ),
         ],
@@ -141,7 +144,7 @@ class _RecipeIndexScreenState extends ConsumerState<RecipeIndexScreen> {
 /// A tile widget that displays image, title, and cooking time in a fixed grid layout.
 class RecipeGridTile extends StatelessWidget {
   final RecipeEntity recipe;
-  const RecipeGridTile({required this.recipe, Key? key}) : super(key: key);
+  const RecipeGridTile({required this.recipe, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +163,7 @@ class RecipeGridTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 3,
               offset: const Offset(1, 2),
             ),
@@ -212,7 +215,7 @@ class RecipeGridTile extends StatelessWidget {
                 const Icon(Icons.schedule, size: 18, color: Colors.grey),
                 const SizedBox(width: 4),
                 Text(
-                  '${recipe.preparationTimeMinutes + recipe.cookingTimeMinutes} min',
+                  '${recipe.duration.totalTimeMinutes} min',
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(color: Colors.grey[700]),

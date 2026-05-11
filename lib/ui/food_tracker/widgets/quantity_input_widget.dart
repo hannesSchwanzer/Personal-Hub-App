@@ -21,12 +21,12 @@ class QuantityInputWidget extends StatelessWidget {
   final void Function(String) onChanged;
 
   const QuantityInputWidget({
-    Key? key,
+    super.key,
     required this.controller,
     required this.unitAbbreviation,
     required this.isValid,
     required this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

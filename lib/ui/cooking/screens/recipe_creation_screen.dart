@@ -13,6 +13,7 @@ import 'package:personal_hub_app/ui/cooking/screens/nutrition_editor_screen.dart
 import '../widgets/tags_editor.dart';
 import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/ui/cooking/screens/ingredients_editor_screen.dart';
+import 'package:personal_hub_app/domain/entities/food/ingredient_edit_action.dart';
 
 /// Screen for creating or editing a recipe. Uses Riverpod's RecipeCreationNotifier.
 /// Handles async state, field changes, and saving.
@@ -29,7 +30,7 @@ class RecipeCreationScreen extends ConsumerStatefulWidget {
 
 class _RecipeCreationScreenState extends ConsumerState<RecipeCreationScreen> {
   bool _initialized = false;
-  bool _isGeneratingFromImage = false;
+  final bool _isGeneratingFromImage = false;
 
   @override
   void initState() {
@@ -311,22 +312,17 @@ class _RecipeCreationScreenState extends ConsumerState<RecipeCreationScreen> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
-                      final updated = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => CookingTimesEditorScreen(
-                            preparationTimeMinutes:
-                                recipe.preparationTimeMinutes,
-                            cookingTimeMinutes: recipe.cookingTimeMinutes,
-                          ),
-                        ),
-                      );
+                      final updated =
+                          await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => CookingTimesEditorScreen(
+                                    initialDuration: recipe.duration,
+                                  ),
+                                ),
+                              )
+                              as DurationEntity?;
                       if (updated != null && mounted) {
-                        notifier.setCookingTimeMinutes(
-                          updated['cookingTimeMinutes'] as int,
-                        );
-                        notifier.setPreparationTimeMinutes(
-                          updated['preparationTimeMinutes'] as int,
-                        );
+                        notifier.setDuration(updated);
                       }
                     },
                     child: SizedBox(
@@ -342,11 +338,15 @@ class _RecipeCreationScreenState extends ConsumerState<RecipeCreationScreen> {
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'Prep Time: \t${recipe.preparationTimeMinutes} min',
+                                'Rest Time: \t${recipe.duration.restTimeMinutes} min',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               Text(
-                                'Cooking Time: \t${recipe.cookingTimeMinutes} min',
+                                'Prep Time: \t${recipe.duration.prepTimeMinutes} min',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              Text(
+                                'Cooking Time: \t${recipe.duration.cookTimeMinutes} min',
                                 style: const TextStyle(fontSize: 16),
                               ),
                               const SizedBox(height: 4),
@@ -368,16 +368,16 @@ class _RecipeCreationScreenState extends ConsumerState<RecipeCreationScreen> {
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () async {
-                      final updated = await Navigator.of(context).push(
+                      final recipeUpdated = await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => IngredientsEditorScreen(
-                            initialIngredients: recipe.ingredients,
+                            recipe: recipe,
                           ),
                         ),
                       );
-                      if (updated != null && mounted) {
-                        notifier.setIngredients(
-                          updated as List<IngredientEntity>,
+                      if (recipeUpdated != null && mounted) {
+                        notifier.setRecipe(
+                          recipeUpdated as RecipeEntity,
                         );
                       }
                     },

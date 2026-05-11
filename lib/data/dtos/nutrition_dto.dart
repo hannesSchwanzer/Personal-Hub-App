@@ -44,7 +44,7 @@ class NutritionDto {
 
   factory NutritionDto.fromJson(Map<String, dynamic> json) {
     return NutritionDto(
-      quantityUnit: UnitType.values.byName(json['quantity_unit']),
+      quantityUnit: json['quantity_unit'] == null ? null : UnitType.values.byName(json['quantity_unit']),
       perQuantity: (json['per_quantity'] as num?)?.toDouble(),
       energyKcal: (json['energy_kcal'] as num?)?.toDouble(),
       carbohydrates: (json['carbohydrates'] as num?)?.toDouble(),

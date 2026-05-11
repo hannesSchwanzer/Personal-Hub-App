@@ -12,3 +12,14 @@ class FoodSearchResult {
   const FoodSearchResult({required this.foodProduct, required this.quantity});
 }
 
+class CustomFoodSearchResult {
+  /// The name of the custom food item.
+  final String name;
+
+  /// The nutrition information for the custom food item.
+  final dynamic nutrition; // Replace dynamic with actual Nutrition type if available
+
+  /// Constructs a [CustomFoodSearchResult] with the given [name] and [nutrition].
+  const CustomFoodSearchResult({required this.name, required this.nutrition});
+}
+

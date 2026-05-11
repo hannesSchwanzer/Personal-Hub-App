@@ -13,6 +13,7 @@ class NutritionEntity {
 
   /// The unit of the quantity, e.g., 'gram', 'ml'.
   final UnitType? quantityUnit;
+
   /// The number of [quantityUnit] this entry refers to, e.g. 100 (for 100 g)
   final double? perQuantity;
 
@@ -49,6 +50,25 @@ class NutritionEntity {
       sodium: sodium ?? this.sodium,
       quantityUnit: quantityUnit ?? this.quantityUnit,
       perQuantity: perQuantity ?? this.perQuantity,
+    );
+  }
+
+  /// Multiplies all nutrition fields by (amount / perQuantity).
+  /// If [perQuantity] is null, returns this object unchanged.
+  /// The [quantityUnit] stays the same.
+  NutritionEntity operator *(num amount) {
+    if (perQuantity == null) return this;
+    final ratio = amount / perQuantity!;
+    return NutritionEntity(
+      energyKcal: energyKcal != null ? energyKcal! * ratio : null,
+      carbohydrates: carbohydrates != null ? carbohydrates! * ratio : null,
+      proteins: proteins != null ? proteins! * ratio : null,
+      fat: fat != null ? fat! * ratio : null,
+      sugars: sugars != null ? sugars! * ratio : null,
+      saturatedFat: saturatedFat != null ? saturatedFat! * ratio : null,
+      sodium: sodium != null ? sodium! * ratio : null,
+      quantityUnit: quantityUnit,
+      perQuantity: perQuantity! * ratio,
     );
   }
 

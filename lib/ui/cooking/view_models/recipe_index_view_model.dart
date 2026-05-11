@@ -7,16 +7,12 @@ import 'package:personal_hub_app/utils/providers.dart';
 class RecipeSearchFilters {
   final String? searchString;
   final bool fuzzy;
-  final List<String>? ingredientList;
-  final bool ingredientAllMustMatch;
   final List<String>? tagList;
   final bool tagAllMustMatch;
 
   const RecipeSearchFilters({
     this.searchString,
     this.fuzzy = false,
-    this.ingredientList,
-    this.ingredientAllMustMatch = false,
     this.tagList,
     this.tagAllMustMatch = false,
   });
@@ -24,16 +20,12 @@ class RecipeSearchFilters {
   RecipeSearchFilters copyWith({
     String? searchString,
     bool? fuzzy,
-    List<String>? ingredientList,
-    bool? ingredientAllMustMatch,
     List<String>? tagList,
     bool? tagAllMustMatch,
   }) {
     return RecipeSearchFilters(
       searchString: searchString ?? this.searchString,
       fuzzy: fuzzy ?? this.fuzzy,
-      ingredientList: ingredientList ?? this.ingredientList,
-      ingredientAllMustMatch: ingredientAllMustMatch ?? this.ingredientAllMustMatch,
       tagList: tagList ?? this.tagList,
       tagAllMustMatch: tagAllMustMatch ?? this.tagAllMustMatch,
     );
@@ -64,8 +56,6 @@ class RecipeIndexViewModel extends StreamNotifier<List<RecipeEntity>> {
     return _recipeRepository.watchSearchRecipes(
       searchString: _filters.searchString,
       fuzzy: _filters.fuzzy,
-      ingredientList: _filters.ingredientList,
-      ingredientAllMustMatch: _filters.ingredientAllMustMatch,
       tagList: _filters.tagList,
       tagAllMustMatch: _filters.tagAllMustMatch,
     );

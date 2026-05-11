@@ -47,7 +47,8 @@ class _RecipeFromUrlScreenState
 
       if (!mounted) return;
       widget.onRecipeGenerated(recipe);
-    } catch (e) {
+    } catch (e, stack) {
+      print('Error in RecipeFromUrlScreen: $e\n$stack');
       setState(() => _error = 'Failed: $e');
     }
   }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-/// Screen for editing preparation time and cooking time. Returns updated values on save.
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+
+/// Screen for editing recipe durations (prep, cook, rest). Returns updated [DurationEntity] on save.
 class CookingTimesEditorScreen extends StatefulWidget {
-  /// Initial values to prepopulate the fields.
-  final int preparationTimeMinutes;
-  final int cookingTimeMinutes;
+  /// Initial duration values to prepopulate the fields.
+  final DurationEntity initialDuration;
 
   const CookingTimesEditorScreen({
     super.key,
-    required this.preparationTimeMinutes,
-    required this.cookingTimeMinutes,
+    required this.initialDuration,
   });
 
   @override
@@ -17,22 +17,24 @@ class CookingTimesEditorScreen extends StatefulWidget {
 }
 
 class _CookingTimesEditorScreenState extends State<CookingTimesEditorScreen> {
-  late int _preparationTimeMinutes;
-  late int _cookingTimeMinutes;
+  late int? _prepTimeMinutes;
+  late int? _cookTimeMinutes;
+  late int? _restTimeMinutes;
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _preparationTimeMinutes = widget.preparationTimeMinutes;
-    _cookingTimeMinutes = widget.cookingTimeMinutes;
+    _prepTimeMinutes = widget.initialDuration.prepTimeMinutes;
+    _cookTimeMinutes = widget.initialDuration.cookTimeMinutes;
+    _restTimeMinutes = widget.initialDuration.restTimeMinutes;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Cooking Times')),
+      appBar: AppBar(title: const Text('Edit Recipe Times')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -41,37 +43,55 @@ class _CookingTimesEditorScreenState extends State<CookingTimesEditorScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                initialValue: _preparationTimeMinutes.toString(),
+                initialValue: (_prepTimeMinutes ?? '').toString(),
                 decoration: const InputDecoration(labelText: 'Prep Time (min)'),
                 keyboardType: TextInputType.number,
                 validator: (v) {
-                  final value = int.tryParse(v ?? '');
+                  if (v == null || v.isEmpty) return null; // allow null
+                  final value = int.tryParse(v);
                   if (value == null || value < 0) return 'Enter 0 or more';
                   return null;
                 },
-                onSaved: (v) => _preparationTimeMinutes = int.parse(v ?? '0'),
+                onSaved: (v) => _prepTimeMinutes = (v == null || v.isEmpty) ? null : int.parse(v),
               ),
               const SizedBox(height: 16),
               TextFormField(
-                initialValue: _cookingTimeMinutes.toString(),
+                initialValue: (_cookTimeMinutes ?? '').toString(),
                 decoration: const InputDecoration(labelText: 'Cooking Time (min)'),
                 keyboardType: TextInputType.number,
                 validator: (v) {
-                  final value = int.tryParse(v ?? '');
+                  if (v == null || v.isEmpty) return null;
+                  final value = int.tryParse(v);
                   if (value == null || value < 0) return 'Enter 0 or more';
                   return null;
                 },
-                onSaved: (v) => _cookingTimeMinutes = int.parse(v ?? '0'),
+                onSaved: (v) => _cookTimeMinutes = (v == null || v.isEmpty) ? null : int.parse(v),
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                initialValue: (_restTimeMinutes ?? '').toString(),
+                decoration: const InputDecoration(labelText: 'Rest Time (min)'),
+                keyboardType: TextInputType.number,
+                validator: (v) {
+                  if (v == null || v.isEmpty) return null;
+                  final value = int.tryParse(v);
+                  if (value == null || value < 0) return 'Enter 0 or more';
+                  return null;
+                },
+                onSaved: (v) => _restTimeMinutes = (v == null || v.isEmpty) ? null : int.parse(v),
               ),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
                   if (!_formKey.currentState!.validate()) return;
                   _formKey.currentState!.save();
-                  Navigator.of(context).pop({
-                    'preparationTimeMinutes': _preparationTimeMinutes,
-                    'cookingTimeMinutes': _cookingTimeMinutes,
-                  });
+                  Navigator.of(context).pop(
+                    DurationEntity(
+                      prepTimeMinutes: _prepTimeMinutes,
+                      cookTimeMinutes: _cookTimeMinutes,
+                      restTimeMinutes: _restTimeMinutes,
+                    ),
+                  );
                 },
                 child: const Text('Save'),
               ),

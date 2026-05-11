@@ -15,10 +15,10 @@ class AdvancedSearchPanel extends ConsumerStatefulWidget {
   final ValueChanged<RecipeSearchFilters> onFiltersChanged;
 
   const AdvancedSearchPanel({
-    Key? key,
+    super.key,
     required this.filters,
     required this.onFiltersChanged,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<AdvancedSearchPanel> createState() => _AdvancedSearchPanelState();
@@ -26,8 +26,6 @@ class AdvancedSearchPanel extends ConsumerStatefulWidget {
 
 class _AdvancedSearchPanelState extends ConsumerState<AdvancedSearchPanel> {
   late bool _fuzzy;
-  late List<String> _ingredientList;
-  late bool _ingredientAllMustMatch;
   late List<String> _tagList;
   late bool _tagAllMustMatch;
 
@@ -47,8 +45,6 @@ class _AdvancedSearchPanelState extends ConsumerState<AdvancedSearchPanel> {
 
   void _initFields() {
     _fuzzy = widget.filters.fuzzy;
-    _ingredientList = List.of(widget.filters.ingredientList ?? []);
-    _ingredientAllMustMatch = widget.filters.ingredientAllMustMatch;
     _tagList = List.of(widget.filters.tagList ?? []);
     _tagAllMustMatch = widget.filters.tagAllMustMatch;
     setState(() {});
@@ -58,8 +54,6 @@ class _AdvancedSearchPanelState extends ConsumerState<AdvancedSearchPanel> {
     widget.onFiltersChanged(
       widget.filters.copyWith(
         fuzzy: _fuzzy,
-        ingredientList: _ingredientList,
-        ingredientAllMustMatch: _ingredientAllMustMatch,
         tagList: _tagList,
         tagAllMustMatch: _tagAllMustMatch,
       ),
@@ -68,7 +62,6 @@ class _AdvancedSearchPanelState extends ConsumerState<AdvancedSearchPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final ingredientAsync = ref.watch(ingredientNameRecommendationsProvider);
     final tagAsync = ref.watch(tagNameRecommendationsProvider);
     return ExpansionTile(
       title: const Text('Advanced Search'),
@@ -82,29 +75,6 @@ class _AdvancedSearchPanelState extends ConsumerState<AdvancedSearchPanel> {
             _notifyChange();
           }),
           title: const Text('Fuzzy search'),
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-        ingredientAsync.when(
-          data: (suggestions) => IngredientNamesEditor(
-            initialIngredients: _ingredientList,
-            onChanged: (list) {
-              setState(() {
-                _ingredientList = list;
-                _notifyChange();
-              });
-            },
-            ingredientRecommendations: suggestions,
-          ),
-          loading: () => const LinearProgressIndicator(),
-          error: (e, st) => const Text('Failed to load ingredient suggestions'),
-        ),
-        CheckboxListTile(
-          value: _ingredientAllMustMatch,
-          onChanged: (v) => setState(() {
-            _ingredientAllMustMatch = v ?? false;
-            _notifyChange();
-          }),
-          title: const Text('Require all ingredients'),
           controlAffinity: ListTileControlAffinity.leading,
         ),
         const Divider(),

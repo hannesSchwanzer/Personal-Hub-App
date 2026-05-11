@@ -46,10 +46,10 @@ class FoodProductDto {
   final String barcode;
 
   /// Display quantity (e.g. '500g', '1L').
-  final String quantity;
+  final String? quantity;
 
   /// Brand name of the product.
-  final String brand;
+  final String? brand;
 
   const FoodProductDto({
     required this.id,

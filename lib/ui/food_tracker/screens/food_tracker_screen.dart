@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/ui/food_tracker/screens/barcode_scan_screen.dart';
+import 'package:personal_hub_app/ui/food_tracker/screens/custom_input_screen.dart';
 import 'package:personal_hub_app/ui/food_tracker/screens/food_search_screen.dart';
 import 'package:personal_hub_app/ui/food_tracker/ui_models/food_search_result.dart';
 import 'package:personal_hub_app/ui/food_tracker/view_models/food_tracker_view_model.dart';
@@ -99,7 +100,7 @@ class FoodTrackerScreen extends ConsumerWidget {
                           final entries = List.of(state.todayTrackings)
                             ..sort((a, b) => b.trackedAt.compareTo(a.trackedAt));
                           final tracking = entries[index];
-                          final nutrition = tracking.nutrition;
+                          final nutrition = tracking.nutrition * tracking.quantity;
                           return Card(
                             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                             child: ListTile(
@@ -177,14 +178,22 @@ class FoodTrackerScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Placeholder for Custom
+                    onPressed: () async {
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Custom entry: Coming soon!'),
+                      final result = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CustomInputScreen(),
                         ),
-                      );
+                      ) as CustomFoodSearchResult?;
+                      if (result != null) {
+                        await notifier.addFoodEntryFromCustomInput(
+                          name: result.name,
+                          nutrition: result.nutrition,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Food entry saved!')),
+                        );
+                      }
                     },
                     child: const Text('Custom'),
                   ),

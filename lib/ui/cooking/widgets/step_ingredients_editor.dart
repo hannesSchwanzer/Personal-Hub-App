@@ -34,7 +34,7 @@ class _StepIngredientsEditorState extends State<StepIngredientsEditor> {
       final name = widget.availableIngredients.isNotEmpty
           ? widget.availableIngredients[0].name
           : '';
-      _ings.add(StepIngredientEntity(name: name, quantityPercent: 100.0));
+      _ings.add(StepIngredientEntity(name: name, quantityPercent: 1.0));
       widget.onChanged(_ings);
     });
   }
@@ -118,16 +118,16 @@ class _StepIngredientsEditorState extends State<StepIngredientsEditor> {
                     SizedBox(
                       width: 75,
                       child: TextFormField(
-                        initialValue: ing.quantityPercent.toStringAsFixed(0),
+                        initialValue: (ing.quantityPercent * 100).toStringAsFixed(0),
                         decoration: const InputDecoration(labelText: 'Percent'),
                         keyboardType:
                             const TextInputType.numberWithOptions(decimal: false),
                         onChanged: (v) {
-                          final q = int.tryParse(v) ?? 0;
-                          // Calculate percent for display
-                          final base = ingredientMap[ing.name]?.quantity ?? 1;
-                          final percent = base > 0 ? (q * 100.0 / base) : 100.0;
-                          _onChanged(i, ing.copyWith(quantityPercent: percent));
+                          final q = int.tryParse(v);
+                          if (q != null) {
+                            final percent = q.clamp(0, 100).toDouble() / 100.0;
+                            _onChanged(i, ing.copyWith(quantityPercent: percent));
+                          }
                         },
                       ),
                     ),

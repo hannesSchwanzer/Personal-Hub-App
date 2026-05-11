@@ -1,15 +1,29 @@
 import 'package:personal_hub_app/data/dtos/nutrition_dto.dart';
 import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
+/// Data Transfer Object for recipes coming from the server.
 class RecipeDto {
+  /// The recipe name.
   final String name;
+
+  /// The recipe description.
   final String description;
+
+  /// The list of ingredients for the recipe.
   final List<IngredientDto> ingredients;
+
+  /// The procedural steps for the recipe.
   final List<StepDto> steps;
+
+  /// Number of servings this recipe makes.
   final int servings;
-  final int cookingTimeMinutes;
-  final int preparationTimeMinutes;
+
+  /// Nutrition facts for the recipe.
   final NutritionDto nutritionInfo;
+
+  final DurationDto? duration;
+
+  /// Optional URL for a recipe image.
   final String? imageUrl;
 
   RecipeDto({
@@ -18,9 +32,8 @@ class RecipeDto {
     required this.ingredients,
     required this.steps,
     required this.servings,
-    required this.cookingTimeMinutes,
-    required this.preparationTimeMinutes,
     required this.nutritionInfo,
+    this.duration,
     this.imageUrl,
   });
 
@@ -35,11 +48,11 @@ class RecipeDto {
           .map((e) => StepDto.fromJson(e))
           .toList(),
       servings: json['servings'],
-      cookingTimeMinutes: json['cookingTimeMinutes'],
-      preparationTimeMinutes: json['preparationTimeMinutes'],
-      nutritionInfo:
-          NutritionDto.fromJson(json['nutritionInfo']),
+      nutritionInfo: NutritionDto.fromJson(json['nutritionInfo']),
       imageUrl: json['imageUrl'],
+      duration: json['duration'] != null
+          ? DurationDto.fromJson(json['duration'])
+          : null,
     );
   }
 
@@ -50,10 +63,9 @@ class RecipeDto {
       'ingredients': ingredients.map((e) => e.toJson()).toList(),
       'steps': steps.map((e) => e.toJson()).toList(),
       'servings': servings,
-      'cookingTimeMinutes': cookingTimeMinutes,
-      'preparationTimeMinutes': preparationTimeMinutes,
       'nutritionInfo': nutritionInfo.toJson(),
       'imageUrl': imageUrl,
+      'duration': duration?.toJson(),
     };
   }
 }
@@ -136,3 +148,37 @@ class IngredientDto {
   }
 }
 
+/// Data Transfer Object representing preparation, cooking, and resting times (in minutes) for a recipe as sent by the server.
+class DurationDto {
+  /// Preparation time in minutes. Nullable since the server may omit it.
+  final int? prepTimeMinutes;
+  /// Cooking time in minutes. Nullable since the server may omit it.
+  final int? cookTimeMinutes;
+  /// Rest time in minutes. Nullable since the server may omit it.
+  final int? restTimeMinutes;
+
+  /// Creates a [DurationDto] with the given times. All fields are optional.
+  DurationDto({
+    this.prepTimeMinutes,
+    this.cookTimeMinutes,
+    this.restTimeMinutes,
+  });
+
+  /// Creates a [DurationDto] from a JSON map from the server.
+  factory DurationDto.fromJson(Map<String, dynamic> json) {
+    return DurationDto(
+      prepTimeMinutes: json['prepTimeMinutes'],
+      cookTimeMinutes: json['cookTimeMinutes'],
+      restTimeMinutes: json['restTimeMinutes'],
+    );
+  }
+
+  /// Converts this [DurationDto] into a JSON map.
+  Map<String, dynamic> toJson() {
+    return {
+      if (prepTimeMinutes != null) 'prepTimeMinutes': prepTimeMinutes,
+      if (cookTimeMinutes != null) 'cookTimeMinutes': cookTimeMinutes,
+      if (restTimeMinutes != null) 'restTimeMinutes': restTimeMinutes,
+    };
+  }
+}

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
-import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
-import 'package:personal_hub_app/ui/cooking/view_models/recipe_creation_view_model.dart';
-import 'package:personal_hub_app/ui/cooking/widgets/ingredient_tile.dart';
-
-/// A full-screen editor for modifying a recipe's ingredients. Receives initial list and returns updated list on done.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IngredientsEditorScreen extends ConsumerStatefulWidget {
-  final List<IngredientEntity> initialIngredients;
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
+import 'package:personal_hub_app/ui/cooking/widgets/ingredient_tile.dart';
 
-  const IngredientsEditorScreen({super.key, required this.initialIngredients});
+class IngredientsEditorScreen extends ConsumerStatefulWidget {
+  final RecipeEntity recipe;
+
+  const IngredientsEditorScreen({
+    super.key,
+    required this.recipe,
+  });
 
   @override
   ConsumerState<IngredientsEditorScreen> createState() =>
@@ -19,101 +20,150 @@ class IngredientsEditorScreen extends ConsumerStatefulWidget {
 
 class _IngredientsEditorScreenState
     extends ConsumerState<IngredientsEditorScreen> {
-  late List<IngredientEntity> _ingredients;
+  late RecipeEntity _recipe;
 
   @override
   void initState() {
     super.initState();
-    _ingredients = List<IngredientEntity>.from(widget.initialIngredients);
+
+    _recipe = widget.recipe.copyWith(
+      ingredients: List<IngredientEntity>.from(widget.recipe.ingredients),
+      steps: List<StepEntity>.from(widget.recipe.steps),
+    );
   }
 
   void _done() {
-    Navigator.of(context).pop(_ingredients);
+    Navigator.of(context).pop(_recipe);
+  }
+
+  void _addIngredient() {
+    setState(() {
+      _recipe = _recipe.addIngredient(
+        IngredientEntity(
+          name: '',
+          quantity: 1,
+          unit: UnitType.pieces,
+        ),
+      );
+    });
+  }
+
+  void _removeIngredient(int index) {
+    final ingredient = _recipe.ingredients[index];
+
+    setState(() {
+      _recipe = _recipe.removeIngredient(ingredient.name);
+    });
+  }
+
+  void _updateIngredient(
+    int index,
+    IngredientEntity updated,
+  ) {
+    final currentIngredient = _recipe.ingredients[index];
+
+    RecipeEntity updatedRecipe = _recipe;
+
+    // Rename everywhere (ingredients + step references)
+    if (currentIngredient.name != updated.name) {
+      updatedRecipe = updatedRecipe.renameIngredient(
+        currentIngredient.name,
+        updated.name,
+      );
+    }
+
+    // Update quantity/unit in ingredients list
+    final updatedIngredients =
+        List<IngredientEntity>.from(updatedRecipe.ingredients);
+
+    final ingredientIndex = updatedIngredients.indexWhere(
+      (e) => e.name == updated.name,
+    );
+
+    if (ingredientIndex != -1) {
+      updatedIngredients[ingredientIndex] = updated;
+    }
+
+    setState(() {
+      _recipe = updatedRecipe.copyWith(
+        ingredients: updatedIngredients,
+      );
+    });
+  }
+
+  void _reorderIngredients(int oldIndex, int newIndex) {
+    setState(() {
+      if (newIndex > oldIndex) {
+        newIndex--;
+      }
+
+      final updatedIngredients =
+          List<IngredientEntity>.from(_recipe.ingredients);
+
+      final item = updatedIngredients.removeAt(oldIndex);
+
+      updatedIngredients.insert(newIndex, item);
+
+      _recipe = _recipe.copyWith(
+        ingredients: updatedIngredients,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final ingredients = _recipe.ingredients;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Edit Ingredients'),
-        actions: [TextButton(onPressed: _done, child: const Text('Done'))],
+        actions: [
+          TextButton(
+            onPressed: _done,
+            child: const Text('Done'),
+          ),
+        ],
       ),
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () => FocusScope.of(context).unfocus(),
-        child: ref
-            .watch(ingredientNameRecommendationsProvider)
-            .when(
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text('Error loading suggestions')),
-              data: (ingredientSuggestions) => Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ReorderableListView.builder(
-                        itemCount: _ingredients.length + 1,
-                        onReorder: (oldIndex, newIndex) {
-                          setState(() {
-                            if (oldIndex < _ingredients.length &&
-                                newIndex > oldIndex) {
-                              newIndex--;
-                            }
-                            if (oldIndex == _ingredients.length) return;
-                            final item = _ingredients.removeAt(oldIndex);
-                            if (newIndex > _ingredients.length) {
-                              newIndex = _ingredients.length;
-                            }
-                            _ingredients.insert(newIndex, item);
-                          });
-                        },
-                        itemBuilder: (context, index) {
-                          if (index == _ingredients.length) {
-                            return ListTile(
-                              key: const ValueKey('add-ingredient'),
-                              title: Center(
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    setState(() {
-                                      _ingredients.add(
-                                        IngredientEntity(
-                                          name: '',
-                                          quantity: 1,
-                                          unit: UnitType.pieces,
-                                        ),
-                                      );
-                                    });
-                                  },
-                                  icon: const Icon(Icons.add),
-                                  label: const Text('Add ingredient'),
-                                ),
-                              ),
-                            );
-                          }
-                          final ing = _ingredients[index];
-                          return IngredientTile(
-                            key: ValueKey(index),
-                            ingredient: ing,
-                            onChanged: (updated) {
-                              setState(() {
-                                _ingredients[index] = updated;
-                              });
-                            },
-                            onRemove: () {
-                              setState(() {
-                                _ingredients.removeAt(index);
-                              });
-                            },
-                            ingredientNameRecommendations: ingredientSuggestions,
-                          );
-                        },
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: ReorderableListView.builder(
+            itemCount: ingredients.length + 1,
+            onReorder: _reorderIngredients,
+            itemBuilder: (context, index) {
+              if (index == ingredients.length) {
+                return ListTile(
+                  key: const ValueKey('add-ingredient'),
+                  title: Center(
+                    child: ElevatedButton.icon(
+                      onPressed: _addIngredient,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add ingredient'),
                     ),
-                  ],
+                  ),
+                );
+              }
+
+              final ingredient = ingredients[index];
+
+              return IngredientTile(
+                key: ValueKey(
+                  '${ingredient.name}_$index',
                 ),
-              ),
-            ),
+                ingredient: ingredient,
+                onChanged: (updated) {
+                  _updateIngredient(index, updated);
+                },
+                onRemove: () {
+                  _removeIngredient(index);
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

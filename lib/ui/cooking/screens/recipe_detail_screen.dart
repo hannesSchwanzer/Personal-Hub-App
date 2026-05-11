@@ -126,7 +126,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                 InfoIconText(
                   icon: Icons.schedule,
                   text:
-                      '${recipe.preparationTimeMinutes + recipe.cookingTimeMinutes} min',
+                      '${recipe.duration.totalTimeMinutes} min',
                 ),
                 const SizedBox(width: 16),
                 InfoIconText(
@@ -138,7 +138,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: Theme.of(
                       context,
-                    ).colorScheme.primary.withOpacity(0.1),
+                    ).colorScheme.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(7),
                   ),
                   child: Row(

@@ -95,3 +95,22 @@ class FoodProductEntity {
   }
 }
 
+class CustomFoodEntity {
+  final String name;
+  final NutritionEntity nutrition;
+
+  const CustomFoodEntity({
+    required this.name,
+    required this.nutrition,
+  });
+
+  CustomFoodEntity copyWith({
+    String? name,
+    NutritionEntity? nutrition,
+  }) {
+    return CustomFoodEntity(
+      name: name ?? this.name,
+      nutrition: nutrition ?? this.nutrition,
+    );
+  }
+}

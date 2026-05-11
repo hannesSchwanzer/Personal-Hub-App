@@ -21,8 +21,8 @@ extension FoodProductDtoMapper on FoodProductDto {
       name: name,
       nutrition: nutrition.toEntity(),
       barcode: barcode,
-      quantity: quantity,
-      brand: brand,
+      quantity: quantity ?? '',
+      brand: brand ?? '',
     );
   }
 }
