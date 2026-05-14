@@ -27,3 +27,4 @@ class FoodSearchViewModel extends AsyncNotifier<FoodProductEntity?> {
 
 final foodSearchViewModelProvider = AsyncNotifierProvider<FoodSearchViewModel, FoodProductEntity?>(() => FoodSearchViewModel());
 
+

@@ -18,11 +18,11 @@ class FoodAutofillWidget extends ConsumerStatefulWidget {
   final String? initialValue;
 
   const FoodAutofillWidget({
-    Key? key,
+    super.key,
     required this.onSelected,
     this.labelText,
     this.initialValue,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<FoodAutofillWidget> createState() => _FoodAutofillWidgetState();

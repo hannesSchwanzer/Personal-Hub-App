@@ -1,3 +1,5 @@
+import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+
 /// Model representing the result of a food barcode search/scan.
 ///
 /// Contains the found food product and the user-provided quantity.
@@ -23,3 +25,10 @@ class CustomFoodSearchResult {
   const CustomFoodSearchResult({required this.name, required this.nutrition});
 }
 
+class RecipeSearchResult {
+  final RecipeEntity recipe;
+
+  final double quantity;
+
+  const RecipeSearchResult({required this.recipe, required this.quantity});
+}

@@ -43,6 +43,13 @@ class ImageService {
     return filePath;
   }
 
+  Future<void> deleteImage(String imagePath) async {
+    final file = File(imagePath);
+    if (file.existsSync()) {
+      await file.delete();
+    }
+  }
+
   Future<String> _ensureImageDirectoryExists() async {
     final appDir = await getApplicationDocumentsDirectory();
     final imageDir = Directory(path.join(appDir.path, imageSubdirectory));

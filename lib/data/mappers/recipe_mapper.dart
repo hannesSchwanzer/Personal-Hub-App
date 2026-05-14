@@ -3,21 +3,22 @@ import 'dart:convert';
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
 import 'package:personal_hub_app/data/dtos/recipe_dto.dart';
-import 'package:personal_hub_app/data/mappers/nutition_mapper.dart';
 import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
 import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
+import 'package:personal_hub_app/data/mappers/nutition_mapper.dart';
 import 'package:drift/drift.dart';
 
 /// Maps a [RecipesData] and its children into a domain [RecipeEntity].
 /// Maps a RecipesData row (with JSON columns for nested objects) and its tags to a RecipeEntity.
 RecipeEntity recipeFromDb(Recipe recipe, List<String> tags) {
-  final List<IngredientEntity> ingredientEntities = (jsonDecode(
-    recipe.ingredientsJson,
-  ) as List).map<IngredientEntity>((i) => IngredientEntity.fromJsonString(i)).toList();
+  final List<IngredientEntity> ingredientEntities =
+      (jsonDecode(recipe.ingredientsJson) as List)
+          .map<IngredientEntity>((i) => IngredientEntity.fromJsonString(i))
+          .toList();
 
-  final List<StepEntity> stepEntities = (jsonDecode(
-    recipe.stepsJson,
-  ) as List).map<StepEntity>((s) => StepEntity.fromJsonString(s)).toList();
+  final List<StepEntity> stepEntities = (jsonDecode(recipe.stepsJson) as List)
+      .map<StepEntity>((s) => StepEntity.fromJsonString(s))
+      .toList();
 
   final NutritionEntity nutritionInfo = NutritionEntity.fromJsonString(
     recipe.nutritionJson,
@@ -52,8 +53,12 @@ Map<String, dynamic> recipeToDb(RecipeEntity entity) {
     id: Value(entity.id),
     name: Value(entity.name),
     description: Value(entity.description),
-    ingredientsJson: Value(jsonEncode(entity.ingredients.map((i) => i.toJsonString()).toList())),
-    stepsJson: Value(jsonEncode(entity.steps.map((s) => s.toJsonString()).toList())),
+    ingredientsJson: Value(
+      jsonEncode(entity.ingredients.map((i) => i.toJsonString()).toList()),
+    ),
+    stepsJson: Value(
+      jsonEncode(entity.steps.map((s) => s.toJsonString()).toList()),
+    ),
     servings: Value(entity.servings),
     nutritionJson: Value(entity.nutritionInfo.toJsonString()),
     durationJson: Value(entity.duration.toJsonString()),
@@ -62,10 +67,7 @@ Map<String, dynamic> recipeToDb(RecipeEntity entity) {
 
   final tags = entity.tags;
 
-  return {
-    'recipe': recipeCompanion,
-    'tags': tags,
-  };
+  return {'recipe': recipeCompanion, 'tags': tags};
 }
 
 extension RecipeDtoMapper on RecipeDto {
@@ -79,7 +81,7 @@ extension RecipeDtoMapper on RecipeDto {
       tags: [],
       servings: servings,
       duration: duration != null ? duration!.toEntity() : DurationEntity(),
-      nutritionInfo: nutritionInfo.toEntity(),
+      nutritionInfo: nutritionInfo?.toEntity() ?? NutritionEntity(),
       imagePath: localImagePath ?? '',
     );
   }

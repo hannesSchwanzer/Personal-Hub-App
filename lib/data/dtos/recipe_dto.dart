@@ -19,7 +19,7 @@ class RecipeDto {
   final int servings;
 
   /// Nutrition facts for the recipe.
-  final NutritionDto nutritionInfo;
+  final NutritionDto? nutritionInfo;
 
   final DurationDto? duration;
 
@@ -32,7 +32,7 @@ class RecipeDto {
     required this.ingredients,
     required this.steps,
     required this.servings,
-    required this.nutritionInfo,
+    this.nutritionInfo,
     this.duration,
     this.imageUrl,
   });
@@ -48,7 +48,9 @@ class RecipeDto {
           .map((e) => StepDto.fromJson(e))
           .toList(),
       servings: json['servings'],
-      nutritionInfo: NutritionDto.fromJson(json['nutritionInfo']),
+      nutritionInfo: json['nutritionInfo'] != null
+          ? NutritionDto.fromJson(json['nutritionInfo'])
+          : null,
       imageUrl: json['imageUrl'],
       duration: json['duration'] != null
           ? DurationDto.fromJson(json['duration'])
@@ -63,7 +65,7 @@ class RecipeDto {
       'ingredients': ingredients.map((e) => e.toJson()).toList(),
       'steps': steps.map((e) => e.toJson()).toList(),
       'servings': servings,
-      'nutritionInfo': nutritionInfo.toJson(),
+      'nutritionInfo': nutritionInfo?.toJson(),
       'imageUrl': imageUrl,
       'duration': duration?.toJson(),
     };

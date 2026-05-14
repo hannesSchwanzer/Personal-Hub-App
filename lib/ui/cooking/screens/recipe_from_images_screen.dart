@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:personal_hub_app/ui/cooking/view_models/recipe_generation_view_model.dart';
+import 'package:personal_hub_app/data/services/recipe_generation_queue.dart';
 import 'package:personal_hub_app/domain/entities/food/recipe_entity.dart';
 import 'package:personal_hub_app/ui/cooking/widgets/language_selector.dart';
 
@@ -12,10 +12,10 @@ class RecipeFromImagesScreen extends ConsumerStatefulWidget {
   final bool showEditWarning;
 
   const RecipeFromImagesScreen({
-    Key? key,
+    super.key,
     required this.onRecipeGenerated,
     this.showEditWarning = false,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<RecipeFromImagesScreen> createState() =>
@@ -29,6 +29,7 @@ class _RecipeFromImagesScreenState
   String? _inputLanguage;
   String? _outputLanguage;
   bool _keepOriginalSize = false;
+  bool _isProcessing = false;
 
   String? _error;
 
@@ -52,7 +53,7 @@ class _RecipeFromImagesScreenState
     }
   }
 
-  Future<void> _onConfirm() async {
+  Future<void> _onConfirmWaiting() async {
     if (_images.isEmpty) {
       setState(() {
         _error = 'Please select at least one image.';
@@ -60,26 +61,62 @@ class _RecipeFromImagesScreenState
       return;
     }
 
-    final notifier = ref.read(recipeGenerationNotifierProvider.notifier);
+    setState(() {
+      _isProcessing = true;
+      _error = null;
+    });
+
+    final notifier = ref.read(recipeGenerationQueueProvider.notifier);
+
+    final files = _images.map((x) => File(x.path)).toList();
+    final jobId = await notifier.enqueueFromImages(
+      files,
+      inputLanguage: _inputLanguage,
+      outputLanguage: _outputLanguage,
+      keepOriginalSize: _keepOriginalSize,
+    );
 
     try {
-      final files = _images.map((x) => File(x.path)).toList();
-
-      final recipe = await notifier.generateFromImages(files, inputLanguage: _inputLanguage, outputLanguage: _outputLanguage, keepOriginalSize: _keepOriginalSize);
-
-      if (!mounted) return;
-
+      final recipe = await notifier.waitForJob(jobId);
       widget.onRecipeGenerated(recipe);
     } catch (e) {
       setState(() {
         _error = 'Failed to generate recipe: $e';
       });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isProcessing = false;
+        });
+      }
     }
+  }
+
+  void _onConfirmAutoSave() {
+    if (_images.isEmpty) {
+      setState(() {
+        _error = 'Please select at least one image.';
+      });
+      return;
+    }
+
+    final notifier = ref.read(recipeGenerationQueueProvider.notifier);
+
+    final files = _images.map((x) => File(x.path)).toList();
+    notifier.enqueueFromImages(
+      files,
+      inputLanguage: _inputLanguage,
+      outputLanguage: _outputLanguage,
+      keepOriginalSize: _keepOriginalSize,
+      autoSave: true,
+    );
+
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(recipeGenerationNotifierProvider);
+    
 
     return Scaffold(
       appBar: AppBar(title: const Text('Select Images')),
@@ -171,29 +208,44 @@ class _RecipeFromImagesScreenState
                   ),
           ),
 
-          if (state.isLoading)
+          if (_isProcessing)
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: CircularProgressIndicator(),
             ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Column(
             children: [
-              ElevatedButton.icon(
-                icon: const Icon(Icons.photo),
-                label: const Text('Gallery'),
-                onPressed: state.isLoading ? null : _pickImagesFromGallery,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.photo),
+                    label: const Text('Gallery'),
+                    onPressed: _isProcessing ? null : _pickImagesFromGallery,
+                  ),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Camera'),
+                    onPressed: _isProcessing ? null : _pickImageFromCamera,
+                  ),
+                ],
               ),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.camera_alt),
-                label: const Text('Camera'),
-                onPressed: state.isLoading ? null : _pickImageFromCamera,
-              ),
-              ElevatedButton.icon(
-                icon: const Icon(Icons.done),
-                label: const Text('Confirm'),
-                onPressed: state.isLoading ? null : _onConfirm,
+              SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.done),
+                    label: const Text('Confirm - Wait'),
+                    onPressed: _isProcessing ? null : _onConfirmWaiting,
+                  ),
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.save),
+                    label: const Text('Confirm - Auto Save'),
+                    onPressed: _isProcessing ? null : _onConfirmAutoSave,
+                  ),
+                ],
               ),
             ],
           ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:personal_hub_app/ui/food_tracker/screens/barcode_scan_screen.dart';
 import 'package:personal_hub_app/ui/food_tracker/screens/custom_input_screen.dart';
 import 'package:personal_hub_app/ui/food_tracker/screens/food_search_screen.dart';
+import 'package:personal_hub_app/ui/food_tracker/screens/recipe_tracker_input_screen.dart';
 import 'package:personal_hub_app/ui/food_tracker/ui_models/food_search_result.dart';
 import 'package:personal_hub_app/ui/food_tracker/view_models/food_tracker_view_model.dart';
 
@@ -97,26 +98,41 @@ class FoodTrackerScreen extends ConsumerWidget {
                     : ListView.builder(
                         itemCount: state.todayTrackings.length,
                         itemBuilder: (context, index) {
-                          final entries = List.of(state.todayTrackings)
-                            ..sort((a, b) => b.trackedAt.compareTo(a.trackedAt));
+                          final entries = List.of(
+                            state.todayTrackings,
+                          )..sort((a, b) => b.trackedAt.compareTo(a.trackedAt));
                           final tracking = entries[index];
-                          final nutrition = tracking.nutrition * tracking.quantity;
+                          final nutrition =
+                              tracking.nutrition * tracking.quantity;
                           return Card(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 6,
+                            ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(12),
-                              title: Text(tracking.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                              title: Text(
+                                tracking.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('${tracking.quantity} ${tracking.nutrition.quantityUnit?.abbreviation}'),
+                                  Text(
+                                    '${tracking.quantity} ${tracking.nutrition.quantityUnit?.abbreviation}',
+                                  ),
                                   const SizedBox(height: 6),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       _MacroSummary(
                                         title: 'kcal',
-                                        value: nutrition.energyKcal?.toStringAsFixed(0) ?? '0',
+                                        value:
+                                            nutrition.energyKcal
+                                                ?.toStringAsFixed(0) ??
+                                            '0',
                                         unit: '',
                                         fontSize: 14,
                                         spacing: 6,
@@ -124,7 +140,11 @@ class FoodTrackerScreen extends ConsumerWidget {
                                       SizedBox(width: 14),
                                       _MacroSummary(
                                         title: 'Protein',
-                                        value: nutrition.proteins?.toStringAsFixed(1) ?? '0',
+                                        value:
+                                            nutrition.proteins?.toStringAsFixed(
+                                              1,
+                                            ) ??
+                                            '0',
                                         unit: 'g',
                                         fontSize: 14,
                                         spacing: 2,
@@ -132,7 +152,10 @@ class FoodTrackerScreen extends ConsumerWidget {
                                       SizedBox(width: 14),
                                       _MacroSummary(
                                         title: 'Carbs',
-                                        value: nutrition.carbohydrates?.toStringAsFixed(1) ?? '0',
+                                        value:
+                                            nutrition.carbohydrates
+                                                ?.toStringAsFixed(1) ??
+                                            '0',
                                         unit: 'g',
                                         fontSize: 14,
                                         spacing: 2,
@@ -140,7 +163,9 @@ class FoodTrackerScreen extends ConsumerWidget {
                                       SizedBox(width: 14),
                                       _MacroSummary(
                                         title: 'Fat',
-                                        value: nutrition.fat?.toStringAsFixed(1) ?? '0',
+                                        value:
+                                            nutrition.fat?.toStringAsFixed(1) ??
+                                            '0',
                                         unit: 'g',
                                         fontSize: 14,
                                         spacing: 2,
@@ -150,12 +175,17 @@ class FoodTrackerScreen extends ConsumerWidget {
                                 ],
                               ),
                               trailing: IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
                                 tooltip: 'Delete entry',
                                 onPressed: () async {
                                   await notifier.deleteFoodEntry(tracking.id);
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('Entry deleted!')),
+                                    const SnackBar(
+                                      content: Text('Entry deleted!'),
+                                    ),
                                   );
                                 },
                               ),
@@ -180,11 +210,14 @@ class FoodTrackerScreen extends ConsumerWidget {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      final result = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const CustomInputScreen(),
-                        ),
-                      ) as CustomFoodSearchResult?;
+                      final result =
+                          await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const CustomInputScreen(),
+                                ),
+                              )
+                              as CustomFoodSearchResult?;
                       if (result != null) {
                         await notifier.addFoodEntryFromCustomInput(
                           name: result.name,
@@ -201,25 +234,50 @@ class FoodTrackerScreen extends ConsumerWidget {
                     onPressed: () {
                       // Placeholder for From Recipe
                       Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Add from Recipe: Coming soon!'),
-                        ),
-                      );
+                      final result =
+                          Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RecipeTrackerInputScreen(),
+                                ),
+                              )
+                              as RecipeSearchResult?;
+
+                      if (result != null) {
+                        print(
+                          "Adding food entry from recipe ${result.recipe.name} with quantity ${result.quantity}",
+                        );
+                        notifier.addFoodEntryFromRecipe(
+                          recipe: result.recipe,
+                          quantity: result.quantity,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Food entry saved!')),
+                        );
+                      } else {
+                        print('No recipe selected');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('No recipe selected.')),
+                        );
+                      }
                     },
                     child: const Text('From Recipe'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      final result = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const FoodSearchScreen(),
-                        ),
-                      ) as FoodSearchResult?;
+                      final result =
+                          await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const RecipeTrackerInputScreen(),
+                                ),
+                              )
+                              as RecipeSearchResult?;
                       if (result != null) {
-                        await notifier.addFoodEntryFromProduct(
-                          product: result.foodProduct,
+                        // Save the food entry with the view model, using repository.
+                        await notifier.addFoodEntryFromRecipe(
+                          recipe: result.recipe,
                           quantity: result.quantity,
                         );
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -232,11 +290,14 @@ class FoodTrackerScreen extends ConsumerWidget {
                   ElevatedButton(
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      final result = await Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const BarcodeScanScreen(),
-                        ),
-                      ) as FoodSearchResult?;
+                      final result =
+                          await Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const BarcodeScanScreen(),
+                                ),
+                              )
+                              as FoodSearchResult?;
                       if (result != null) {
                         // Save the food entry with the view model, using repository.
                         await notifier.addFoodEntryFromProduct(
@@ -286,9 +347,21 @@ class _MacroSummary extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: fontSize * 0.75)),
-          Text(value, style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w500)),
-          Text(unit, style: TextStyle(color: Colors.grey, fontSize: fontSize * 0.70)),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: fontSize * 0.75,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            unit,
+            style: TextStyle(color: Colors.grey, fontSize: fontSize * 0.70),
+          ),
         ],
       ),
     );
