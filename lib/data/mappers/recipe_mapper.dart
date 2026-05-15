@@ -80,8 +80,8 @@ extension RecipeDtoMapper on RecipeDto {
       steps: steps.map((e) => e.toEntity()).toList(),
       tags: [],
       servings: servings,
-      duration: duration != null ? duration!.toEntity() : DurationEntity(),
-      nutritionInfo: nutritionInfo?.toEntity() ?? NutritionEntity(),
+      duration: duration.toEntity(),
+      nutritionInfo: nutritionInfo.toEntity(),
       imagePath: localImagePath ?? '',
     );
   }
@@ -93,6 +93,7 @@ extension IngredientDtoMapper on IngredientDto {
       name: name,
       quantity: quantity,
       unit: unit, // same enum
+      additionalInfo: additionalInfo,
     );
   }
 }

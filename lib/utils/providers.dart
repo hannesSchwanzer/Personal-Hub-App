@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:personal_hub_app/domain/entities/food/food_tracking_entity.dart';
+
 import 'package:personal_hub_app/data/database/app_database.dart';
 import 'package:personal_hub_app/data/database/daos/cooking/recipe_dao.dart';
 import 'package:personal_hub_app/data/database/daos/food_tracking_dao.dart';
@@ -203,4 +207,42 @@ final foodTrackingDaoProvider = Provider<FoodTrackingDao>((ref) {
 final foodTrackingRepositoryProvider = Provider<FoodTrackingRepository>((ref) {
   final dao = ref.watch(foodTrackingDaoProvider);
   return FoodTrackingRepositoryImpl(dao: dao);
+});
+
+/// StreamProvider that emits food tracking entries for the specified date, updating reactively.
+final foodTrackingsForDateProvider = StreamProvider.family<List<FoodTrackingEntity>, DateTime>((ref, date) {
+  final repo = ref.watch(foodTrackingRepositoryProvider);
+
+  // Calculate midnight for the NEXT day
+  final nextMidnight = DateTime(date.year, date.month, date.day + 1);
+  final now = DateTime.now();
+  Duration durationUntilNextMidnight;
+  if (date.isAtSameMomentAs(DateTime(now.year, now.month, now.day))) {
+    // Only set timer for today as a convenience
+    durationUntilNextMidnight = nextMidnight.difference(now);
+    ref.keepAlive();
+    Timer(durationUntilNextMidnight, () {
+      ref.invalidateSelf();
+    });
+  }
+
+  return repo.watchFoodTrackingsForDate(date);
+});
+
+/// StreamProvider that emits all food tracking entries for today, updating reactively.
+final todayFoodTrackingsProvider = StreamProvider<List<FoodTrackingEntity>>((ref) {
+  final repo = ref.watch(foodTrackingRepositoryProvider);
+  final now = DateTime.now();
+
+  // Calculate the next midnight
+  final nextMidnight = DateTime(now.year, now.month, now.day + 1);
+  final durationUntilMidnight = nextMidnight.difference(now);
+
+  // Set up an invalidation timer
+  ref.keepAlive();
+  Timer(durationUntilMidnight, () {
+    ref.invalidateSelf();
+  });
+
+  return repo.watchFoodTrackingsForDate(now);
 });

@@ -19,9 +19,9 @@ class RecipeDto {
   final int servings;
 
   /// Nutrition facts for the recipe.
-  final NutritionDto? nutritionInfo;
+  final NutritionDto nutritionInfo;
 
-  final DurationDto? duration;
+  final DurationDto duration;
 
   /// Optional URL for a recipe image.
   final String? imageUrl;
@@ -32,8 +32,8 @@ class RecipeDto {
     required this.ingredients,
     required this.steps,
     required this.servings,
-    this.nutritionInfo,
-    this.duration,
+    required this.nutritionInfo,
+    required this.duration,
     this.imageUrl,
   });
 
@@ -48,13 +48,10 @@ class RecipeDto {
           .map((e) => StepDto.fromJson(e))
           .toList(),
       servings: json['servings'],
-      nutritionInfo: json['nutritionInfo'] != null
-          ? NutritionDto.fromJson(json['nutritionInfo'])
-          : null,
+      nutritionInfo: NutritionDto.fromJson(json['nutritionInfo'])
+          ,
       imageUrl: json['imageUrl'],
-      duration: json['duration'] != null
-          ? DurationDto.fromJson(json['duration'])
-          : null,
+      duration: json['duration'] = DurationDto.fromJson(json['duration']),
     );
   }
 
@@ -65,9 +62,9 @@ class RecipeDto {
       'ingredients': ingredients.map((e) => e.toJson()).toList(),
       'steps': steps.map((e) => e.toJson()).toList(),
       'servings': servings,
-      'nutritionInfo': nutritionInfo?.toJson(),
+      'nutritionInfo': nutritionInfo.toJson(),
       'imageUrl': imageUrl,
-      'duration': duration?.toJson(),
+      'duration': duration.toJson(),
     };
   }
 }
@@ -126,11 +123,13 @@ class IngredientDto {
   final String name;
   final double quantity;
   final UnitType unit;
+  final String? additionalInfo;
 
   IngredientDto({
     required this.name,
     required this.quantity,
     required this.unit,
+    this.additionalInfo
   });
 
   factory IngredientDto.fromJson(Map<String, dynamic> json) {
@@ -138,6 +137,7 @@ class IngredientDto {
       name: json['name'],
       quantity: (json['quantity'] as num).toDouble(),
       unit: UnitType.values.byName(json['unit']),
+      additionalInfo: json['additionalInfo'],
     );
   }
 
@@ -146,6 +146,7 @@ class IngredientDto {
       'name': name,
       'quantity': quantity,
       'unit': unit.name,
+      'additionalInfo': additionalInfo,
     };
   }
 }

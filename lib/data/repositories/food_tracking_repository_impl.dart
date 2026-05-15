@@ -29,6 +29,7 @@ class FoodTrackingRepositoryImpl implements FoodTrackingRepository {
 
   @override
   Future<void> insertFoodTracking(FoodTrackingEntity entity) async {
+    print('Inserting food tracking: ${entity.name}, quantity: ${entity.quantity}, trackedAt: ${entity.trackedAt}');
     final id = entity.id.isEmpty ? const Uuid().v4() : entity.id;
     final now = DateTime.now();
     await _dao.insertFoodTracking(

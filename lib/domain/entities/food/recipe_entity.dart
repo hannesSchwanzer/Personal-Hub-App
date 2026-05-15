@@ -32,7 +32,8 @@ class RecipeEntity {
   /// Returns a new RecipeEntity with the specified ingredient added.
   RecipeEntity addIngredient(IngredientEntity ingredient) {
     print("Add ingredient: ${ingredient.name}");
-    final updatedIngredients = List<IngredientEntity>.from(ingredients)..add(ingredient);
+    final updatedIngredients = List<IngredientEntity>.from(ingredients)
+      ..add(ingredient);
     return copyWith(ingredients: updatedIngredients);
   }
 
@@ -43,10 +44,15 @@ class RecipeEntity {
         .map((ing) => ing.name == oldName ? ing.copyWith(name: newName) : ing)
         .toList();
     final updatedSteps = steps
-        .map((step) => step.copyWith(
+        .map(
+          (step) => step.copyWith(
             ingredients: step.ingredients
-                .map((si) => si.name == oldName ? si.copyWith(name: newName) : si)
-                .toList()))
+                .map(
+                  (si) => si.name == oldName ? si.copyWith(name: newName) : si,
+                )
+                .toList(),
+          ),
+        )
         .toList();
     return copyWith(ingredients: updatedIngredients, steps: updatedSteps);
   }
@@ -54,11 +60,17 @@ class RecipeEntity {
   /// Returns a new RecipeEntity with the given ingredient removed from ingredients and any steps it is referenced in.
   RecipeEntity removeIngredient(String nameToRemove) {
     print("Remove ingredient: $nameToRemove");
-    final updatedIngredients = ingredients.where((ing) => ing.name != nameToRemove).toList();
+    final updatedIngredients = ingredients
+        .where((ing) => ing.name != nameToRemove)
+        .toList();
     final updatedSteps = steps
-        .map((step) => step.copyWith(
-              ingredients: step.ingredients.where((si) => si.name != nameToRemove).toList(),
-            ))
+        .map(
+          (step) => step.copyWith(
+            ingredients: step.ingredients
+                .where((si) => si.name != nameToRemove)
+                .toList(),
+          ),
+        )
         .toList();
     return copyWith(ingredients: updatedIngredients, steps: updatedSteps);
   }
@@ -109,19 +121,26 @@ class IngredientEntity {
   final String name;
   final double quantity;
   final UnitType unit;
+  final String? additionalInfo;
 
   IngredientEntity({
     required this.name,
     required this.quantity,
     required this.unit,
+    this.additionalInfo,
   });
 
-  IngredientEntity copyWith({String? name, double? quantity, UnitType? unit}) {
-    print("Copy ingredient: ${this.name} with name: ${name ?? this.name}, quantity: ${quantity ?? this.quantity}, unit: ${unit ?? this.unit}");
+  IngredientEntity copyWith({
+    String? name,
+    double? quantity,
+    UnitType? unit,
+    String? additionalInfo,
+  }) {
     return IngredientEntity(
       name: name ?? this.name,
       quantity: quantity ?? this.quantity,
       unit: unit ?? this.unit,
+      additionalInfo: additionalInfo ?? this.additionalInfo,
     );
   }
 
@@ -130,6 +149,7 @@ class IngredientEntity {
       'name': name,
       'quantity': quantity,
       'unit': unit.toString(),
+      'additionalInfo': additionalInfo,
     });
   }
 
@@ -139,6 +159,7 @@ class IngredientEntity {
       name: json['name'],
       quantity: (json['quantity'] as num).toDouble(),
       unit: UnitType.fromString(json['unit'])!,
+      additionalInfo: json['additionalInfo'],
     );
   }
 }

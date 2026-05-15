@@ -1,5 +1,4 @@
 import 'package:personal_hub_app/domain/entities/food/nutrition_entity.dart';
-import 'package:personal_hub_app/domain/entities/food/unit_type.dart';
 
 enum FoodTrackingSource { recipe, manual, product, generic }
 
@@ -19,7 +18,7 @@ class FoodTrackingEntity {
   final String? referenceId;
 
   FoodTrackingEntity({
-    required this.id,
+    this.id = "",
     required this.name,
     required this.nutrition,
     required this.trackedAt,
